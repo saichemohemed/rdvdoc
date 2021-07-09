@@ -1,0 +1,11 @@
+<form method="post" action="{{ path('patient_delete', {'id': patient_event.id}) }}" onsubmit='return confirmation();'>
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ patient_event.id) }}">
+    <button class="btn btn-outline-danger">{{'profile_user.ConfirmationAppointment.cancel'|trans}}</button>
+</form>
+<script type="text/javascript">
+function confirmation() {
+var str = "{{'profile_user.ConfirmationAppointment.msg'|trans}}";
+return confirm(str);
+}
+</script>

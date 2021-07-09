@@ -1,0 +1,135 @@
+{% trans_default_domain 'FOSUserBundle' %}
+    
+ 	<link href="{{asset('src/fosuser/register/style.css')}}" rel="stylesheet" type="text/css">
+   
+    
+<div class="sufee-login d-flex align-content-center flex-wrap">
+        <div class="container">
+            <div class="login-content">
+
+                <div class="login-form">
+    {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+
+                <div class="col-sm-12 col-md-12">
+                
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group">
+                                <label>{{ 'Registration_User.Lastname'|trans }} <span>*<span></label>
+                                {{ form_widget(form.firstName, {'attr': {'class': 'md-form form-control md-form', 'autocomplete': 'off'}}) }}
+                            </div>             
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group">
+                                <label>{{ 'Registration_User.Firstname'|trans }} <span>*<span></label>
+                                {{ form_widget(form.lastName, {'attr': {'class': 'md-form form-control md-form', 'autocomplete': 'off'}}) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12 col-md-5">
+                            <div class="form-group">
+                                <label>{{ 'Registration_User.username'|trans }} <span>*<span></label>
+                                {{ form_widget(form.username, {'attr': {'class': 'md-form form-control md-form', 'autocomplete': 'off'}}) }}
+                                <div style="margin-left: -20%;">
+                                    {{ form_errors(form.username) }}
+                                </div>             
+                            </div>             
+                        </div>
+                        <div class="col-sm-12 col-md-7">
+                            <div class="form-group">
+                                <label>{{ 'Registration_User.Email'|trans }} <span>*<span></label>
+                                {{ form_widget(form.email, {'attr': {'class': 'md-form form-control md-form', 'autocomplete': 'off','required': false}}) }}
+                                 <div style="margin-left: -10%;">
+                                   {{ form_errors(form.email) }}
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group">
+                                <label>{{ 'Registration_User.password'|trans }} <span>*<span></label>
+                                {{ form_widget(form.plainPassword.first ,{'attr': {'class': 'md-form form-control ', 'autocomplete': 'off'}}) }}
+                                 <div style="margin-left: -20%;">
+                                {{ form_errors(form.plainPassword.first) }}
+                                </div>  
+                            </div>             
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group">
+                                <label> {{ 'Registration_User.Repeat_password'|trans }} <span>*<span></label>
+                                {{ form_widget(form.plainPassword.second,{'attr': {'class': 'form-control md-form', 'autocomplete': 'off'}}) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group">
+                                <label>{{ 'Registration_User.Phone'|trans }} <span>*<span></label>
+                                {{ form_widget(form.phone,{'attr': {'class': 'md-form form-control md-form', 'autocomplete': 'off'}}) }}
+                                {{ form_errors(form.phone) }}
+                            </div>             
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group">
+                                <label> {{ 'Registration_User.Gender'|trans }} <span>*<span></label>
+                               {{ form_widget(form.gender,{'attr': {'autocomplete': 'off'}}) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12">
+                            <div class="form-group">
+                                <label>{{ 'Registration_User.Address'|trans }}</label>
+                                {{ form_widget(form.address,{'attr': {'class': 'md-form form-control md-form', 'autocomplete': 'off',}}) }}
+                            </div>             
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group">
+                                <label>{{ 'Registration_User.Place_of_birth'|trans }}</label>
+                                {{ form_widget(form.birthPlace ,{'attr': {'class': 'md-form form-control md-form', 'autocomplete': 'off',}}) }}
+                            </div>             
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group">
+                                <label>{{ 'Registration_User.Date_of_Birth'|trans }}</label>
+                                {{ form_widget(form.birthdate,{'attr': {'class': 'md-form form-control md-form', 'autocomplete': 'off'} }) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-check pl-0">
+                            <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" required>
+                                 <label class="form-check-label" for="invalidCheck2">
+                                    {{ 'Registration_User.Accept_the_terms_and_policy'|trans }}
+                                </label>
+                        </div>
+                        <div>
+                            <a href="{{asset('pdf/Conditions générales RDVDoc.pdf')}}" class="button"><i class="fa fa-download"></i>&nbsp;{{'Registration_User.Download_pdf_terms_and_conditions'|trans }}</a>
+                        </div>
+                    </div>
+
+
+            </div>
+                        <button type="submit" class="btn btn-success btn-flat m-b-30 m-t-30">{{ 'Registration_User.register'|trans }}</button>
+
+
+                        <div class="register-link m-t-15 text-center">
+                            <p>{{ 'Registration_User.Already_have_an_account'|trans }}?
+                                <a href="{{ path('fos_user_security_login') }}">{{ 'Registration_User.login'|trans }}</a>
+                            </p>
+                        </div>
+ {{ form_end(form) }}  
+                </div>
+            </div>
+        </div>
+    </div>

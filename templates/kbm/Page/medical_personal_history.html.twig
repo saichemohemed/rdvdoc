@@ -1,0 +1,365 @@
+{% extends 'baseDashboard.html.twig' %}
+
+{% block title %}Dossier patient{% endblock %}
+
+{% block body %}
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> 
+{# <link href="{{asset('/src/medical personal history/style.css')}}" rel="stylesheet"> #}
+
+<div class="content_wrapper">
+	<div class="container-fluid">
+
+
+            <div class="container"> 
+              <div class="card  mb-3">
+                <ul class="nav nav-pills nav-pills-info nav-justified">
+                  <li class="nav-item">
+                    <a href="javascript:void();" data-target="#profile" data-toggle="pill" class="nav-link active show"><i class="icon-user"></i> <span class="hidden-xs">{{'medical_personal_history.Doctor_Dealing'|trans}}</span></a>
+                      <div class="container ">
+                        <div class="col-12">
+                          <div class="container ">
+                            <div class="row">
+                              <div class="col-1">
+                              </div>
+                              <div class="col-10">
+                                <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref" style="display: inline-block !important;">
+                                  <option selected disabled>{{'medical_personal_history.list_of_Doctors_Dealings'|trans }}</option>
+                                    {% for Treating in Treatings %}
+                                      <option value="{{Treating}}">{{Treating}}</option>
+                                    {% endfor %}
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+
+
+        <div class="row">
+                <div class="col-lg-12">
+                  <div class="card z-depth-3">
+                      <ul class="nav nav-pills nav-pills-info nav-justified">
+                        <li class="nav-item">                 
+                        </li> 
+                      </ul>           
+                      <div class="card-body">
+                    <ul class="nav nav-pills nav-pills-info nav-justified">
+                        <li class="nav-item">
+                            <a href="javascript:void();" data-target="#profile" data-toggle="pill" class="nav-link active show"><i class="icon-user"></i> <span class="hidden-xs">{{'medical_personal_history.Patient_Record'|trans }}</span></a>
+                        </li>
+                    </ul>
+                    <div class="tab-content p-3">
+                        <div class="tab-pane active show" id="profile">
+                            <div class="col-12">
+                            <input  id="id"  type="text" value="{{id}}">
+                            
+
+        {{ form_start(form) }}
+        {#  #}
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-Personnels" role="tab" aria-controls="pills-Personnels" aria-selected="true">{{'medical_personal_history.Personal'|trans }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-Familiaux" role="tab" aria-controls="pills-Familiaux" aria-selected="false">{{'medical_personal_history.Family'|trans }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-Physiologiques" role="tab" aria-controls="pills-Physiologiques" aria-selected="false">{{'medical_personal_history.Physiological'|trans }}</a>
+          </li>
+            <li class="nav-item">
+            <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-Obstétricaux" role="tab" aria-controls="pills-Obstétricaux" aria-selected="false">{{'medical_personal_history.Obstetricians'|trans }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-Psychiatriques" role="tab" aria-controls="pills-Psychiatriques" aria-selected="false">{{'medical_personal_history.Psychiatriques'|trans }}</a>
+          </li>
+        </ul>
+        <div class="tab-content" id="pills-tabContent">
+          <div class="tab-pane fade show active" id="pills-Personnels" role="tabpanel" aria-labelledby="pills-Personnels-tab">
+          
+            <div class="row">
+                <div class="col-md-6 col-sm-12">     
+                <div class="form-group purple-border">
+                  <label for="exampleFormControlTextarea4">{{'medical_personal_history.allergies'|trans }} </label>
+                {{ form_widget(form.allergies, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                </div>
+                </div>
+                <div class="col-md-6 col-sm-12">     
+                <div class="form-group purple-border">
+                  <label for="exampleFormControlTextarea4">{{'medical_personal_history.Surgical'|trans }}</label>
+                {{ form_widget(form.surgicalHistories, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                </div>
+                </div>
+
+                <div class="col-md-6 col-sm-12">     
+                <div class="form-group purple-border">
+                  <label for="exampleFormControlTextarea4">{{'medical_personal_history.Medical'|trans }}</label>
+                {{ form_widget(form.medicalHistories, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                </div>
+                </div>
+
+                <div class="col-md-6 col-sm-12">     
+                <div class="form-group purple-border">
+                  <label for="exampleFormControlTextarea4">{{'medical_personal_history.summary'|trans }}</label>
+                {{ form_widget(form.summary, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="tab-pane fade" id="pills-Familiaux" role="tabpanel" aria-labelledby="pills-Familiaux-tab">
+          
+          <div class="row">
+                <div class="col-md-6 col-sm-12">     
+                <div class="form-group purple-border">
+                  <label for="exampleFormControlTextarea4">{{'medical_personal_history.Medical'|trans }}</label>
+                {{ form_widget(form.familymedical, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                </div>
+                </div>
+                <div class="col-md-6 col-sm-12">     
+                <div class="form-group purple-border">
+                  <label for="exampleFormControlTextarea4">{{'medical_personal_history.Surgical'|trans }}</label>
+                {{ form_widget(form.familysurgical, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="tab-pane fade" id="pills-Physiologiques" role="tabpanel" aria-labelledby="pills-Physiologiques-tab">
+          
+            <div class="row">
+                <div class="col-md-6 col-sm-12">     
+                <div class="form-group purple-border">
+                  <label for="exampleFormControlTextarea4">{{'medical_personal_history.Menarche'|trans }}</label>
+                {{ form_widget(form.menarche, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                </div>
+                </div>
+                
+                <div class="col-md-6 col-sm-12">     
+                <div class="form-group purple-border">
+                  <label for="exampleFormControlTextarea4">{{'medical_personal_history.Menopause'|trans }}</label>
+                {{ form_widget(form.menopause, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                </div>
+                </div>
+            </div>
+          
+              <div class="row">
+                <div class="col-md-6 col-sm-12">     
+                <div class="form-group purple-border">
+                  <label for="exampleFormControlTextarea4">{{'medical_personal_history.Dysmenorrhea'|trans }}</label>
+                {{ form_widget(form.dysmenorrhea, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                </div>
+                </div>
+                
+                <div class="col-md-6 col-sm-12">     
+                <div class="form-group purple-border">
+                  <label for="exampleFormControlTextarea4">{{'medical_personal_history.Dyspareunie'|trans }}</label>
+                {{ form_widget(form.dyspareunia, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                </div>
+                </div>
+            </div>
+
+                <div class="row">
+                <div class="col-md-6 col-sm-12">     
+                <div class="form-group purple-border">
+                  <label for="exampleFormControlTextarea4">{{'medical_personal_history.Duration_and_type_of_menstrual_cycle'|trans }}</label>
+                {{ form_widget(form.cycle, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                </div>
+                </div>
+                
+                <div class="col-md-6 col-sm-12">     
+                <div class="form-group purple-border">
+                  <label for="exampleFormControlTextarea4">{{'medical_personal_history.Duration_of_menstruation'|trans }}</label>
+                {{ form_widget(form.menstruationDuration, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                </div>
+                </div>
+            </div>
+          
+                <div class="row">
+                <div class="col-md-6 col-sm-12">     
+                <div class="form-group purple-border">
+                  <label for="exampleFormControlTextarea4">{{'medical_personal_history.abundance'|trans }}</label>
+                {{ form_widget(form.abundance, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                </div>
+                </div>
+                
+
+                      <div class="col-md-6 col-sm-12">     
+                <div class="form-group purple-border">
+                  <label for="exampleFormControlTextarea4">{{'medical_personal_history.Initial'|trans }}</label>
+                {{ form_widget(form.initialWeight, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                </div>
+                </div>
+
+            </div>
+
+
+            <div class="row">
+                <div class="col-12">     
+                <div class="form-group purple-border">
+                  <label for="exampleFormControlTextarea4">{{'medical_personal_history.Other'|trans }}</label>
+                {{ form_widget(form.other, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="tab-pane fade" id="pills-Obstétricaux" role="tabpanel" aria-labelledby="pills-Obstétricaux-tab">
+
+              <div class="row">
+                <div class="col-md-6 col-sm-12">     
+                <div class="form-group purple-border">
+                  <label for="exampleFormControlTextarea4">{{'medical_personal_history.Gesture'|trans }}</label>
+                {{ form_widget(form.gravidity, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                </div>
+                </div>
+                
+                <div class="col-md-6 col-sm-12">     
+                <div class="form-group purple-border">
+                  <label for="exampleFormControlTextarea4">{{'medical_personal_history.Parity'|trans }}</label>
+                {{ form_widget(form.parity, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                </div>
+                </div>
+            </div>
+
+              <div class="row">
+                <div class="col-md-6 col-sm-12">     
+                <div class="form-group purple-border">
+                  <label for="exampleFormControlTextarea4">{{'medical_personal_history.Cesarean'|trans }}</label>
+                {{ form_widget(form.cesarean, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                </div>
+                </div>
+                
+                <div class="col-md-6 col-sm-12">     
+                <div class="form-group purple-border">
+                  <label for="exampleFormControlTextarea4">{{'medical_personal_history.Abortions'|trans }}</label>
+                {{ form_widget(form.abortion, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 col-sm-12">     
+                <div class="form-group purple-border">
+                  <label for="exampleFormControlTextarea4">{{'medical_personal_history.Type_of_contraception'|trans }}</label>
+                {{ form_widget(form.contraceptionType, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                </div>
+                </div>
+                <div class="col-md-6 col-sm-12">     
+                <div class="form-group purple-border">
+                  <label for="exampleFormControlTextarea4">{{'medical_personal_history.Obstetric_antiossidante'|trans }}</label>
+                {{ form_widget(form.obstetricalHistories, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="tab-pane fade" id="pills-Psychiatriques" role="tabpanel" aria-labelledby="pills-Psychiatriques-tab">
+
+          <div class="row">
+                <div class="col-md-6 col-sm-12">     
+                <div class="form-group purple-border">
+                  <label for="exampleFormControlTextarea4">{{'medical_personal_history.Psychiatric'|trans }}</label>
+                {{ form_widget(form.psychiatric, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                </div>
+                </div>
+                
+                <div class="col-md-6 col-sm-12">     
+                <div class="form-group purple-border">
+                  <label for="exampleFormControlTextarea4">{{'medical_personal_history.Psycho_traumatic'|trans }}</label>
+                {{ form_widget(form.trauma, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                </div>
+                </div>
+            </div>
+
+          <div class="row">
+                <div class="col-md-6 col-sm-12">     
+                <div class="form-group purple-border">
+                  <label for="exampleFormControlTextarea4">{{'medical_personal_history.Toxic'|trans }}</label>
+                {{ form_widget(form.toxic, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                </div>
+                </div>
+                
+                <div class="col-md-6 col-sm-12">     
+                <div class="form-group purple-border">
+                  <label for="exampleFormControlTextarea4">{{'medical_personal_history.Prisoners'|trans }}</label>
+                {{ form_widget(form.prison, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                </div>
+                </div>
+            </div>
+
+          <div class="row">
+                <div class="col-md-6 col-sm-12">     
+                <div class="form-group purple-border">
+                  <label for="exampleFormControlTextarea4">{{'medical_personal_history.Psychomotor_development'|trans }}</label>
+                {{ form_widget(form.psychomotorDevelopment, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                </div>
+                </div>
+                
+                <div class="col-md-6 col-sm-12">     
+                <div class="form-group purple-border">
+                  <label for="exampleFormControlTextarea4">{{'medical_personal_history.Traumatic_stories'|trans }}</label>
+                {{ form_widget(form.traumaticHistories, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+        </div>
+        </div>
+                            {# <button type="button" class="btn btn-outline-info">{{'medical_personal_history.Update_History_medical'|trans }}</button>  #}
+                    <button class="btn btn-outline-info ">{{ button_label|default('medical_personal_history.Update_History_medical'|trans) }}</button> 
+
+                        {{ form_end(form) }}
+
+        </div></div></div></div></div></div></div></div>
+
+
+  </div>
+</div>  
+
+
+
+<script>
+     $("#id").hide();
+		var idPatient = $("#id").val();
+		var idDoctor = '{{app.user.id}}';
+	$.ajax({
+					url:"{{ path('ajax_add_doctor') }}",
+					data: {'idPatient':idPatient,'idDoctor':idDoctor},
+							method: 'post',
+								success: function (data) 
+							{	
+							//	alert("success");
+							//alert(data);
+							//location.reload()
+							
+							},
+								error: function (data) 
+							{
+								//alert("error");							
+               //alert(data);
+
+                      		    console.log("PLease Re delete"+JSON.stringify(data) );
+							},
+						});
+
+</script>
+{% endblock %}

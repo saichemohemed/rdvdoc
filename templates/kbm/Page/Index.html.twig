@@ -1,0 +1,423 @@
+ {% extends 'base.html.twig' %} 
+ {% block title 'Prenez rendez-vous' %} {% block body %}
+
+
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	    <link href="{{asset('src/index/style.css')}}" rel="stylesheet" type="text/css">
+
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+<section>
+
+
+    {% if is_granted('ROLE_ADMIN') %}
+
+        {% elseif is_granted('ROLE_USER') %}
+            {% for notifications_au in notifications_auj %}
+
+                    {% if notifications_au.NumberOfChangeDoctor == 1 and notifications_au.startDatetime|date("Y-m-d H:i") >= "now"|date("Y-m-d H:i") %}
+
+                        <div class="col-12" style="margin-left: auto;">
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                le rendez vous et modifié par <strong>{{notifications_au.doctor.lastName}} {{notifications_au.doctor.firstName}}</strong>
+                                 nouvelle date est  <strong> {{notifications_au.startDatetime|date("Y-m-d H:i", "Europe/Paris")}}</strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+
+        <div class="gtco-banner-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h1> {{ 'Home.Titel'|trans }} <span>{{ 'Home.Titel.Span'|trans }}</span> {{ 'Home.Titel.H1'|trans }}</h1>
+                        <p> <span> {{ 'Home.Paragraph.Span'|trans }}</span></p>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card"><img class="card-img-top img-fluid" src="{{asset('src/assets/images/banner-img.png')}}" alt="">
+                        </div>
+                    </div>
+                </div>
+
+                {{ form_start(Form) }}
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row">
+            
+                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 p-2">
+                                    {{form_row(Form.doctor)}}
+                                </div>
+    
+                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 p-2">
+                                    {{form_row(Form.willaya)}}
+                                </div>
+                            
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 p-2">
+                                    {{form_row(Form.submit)}}
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                {{ form_end(Form) }}
+
+            </div>
+
+            <section class="section">
+                <div class="container">
+                    <!--|Section Header|-->
+                    <header class="section-header text-center wow bounceIn" data-wow-delay=".05s">
+                        <div class="row">
+                            <div class="col-md-12 block-center" style="margin-bottom: 4%;">
+                                <h2 class="section-title">Trouver un médecin </h2>
+                                <h4>Dans toute l'Algérie </h4>
+                            </div>
+                        </div>
+                    </header>
+                    <!--|End Section Header|-->
+
+                    <div class="row">
+                        <div class="col-md-3 col-sm-6">
+                            <!--|Text Box|-->
+                            <div class="text-box wow fadeInDown" data-wow-delay=".25s">
+                                <img src="{{asset('src/assets/images/calendar.png')}}" alt="" width="20%">
+                                <div class="text">
+                                    <h5 class="title">36% des RDV </h5>
+                                    <p>Plus d’un tiers des RDV sont pris en soirée ou le week-end. Prenez rendez-vous quand vous voulez.</p>
+                                </div>
+                            </div>
+                            <!--|End Text Box|-->
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <!--|Text Box|-->
+                            <div class="text-box wow fadeInDown" data-wow-delay=".1s">
+                                <img src="{{asset('src/assets/images/maps.png')}}" alt="" width="20%">
+                                <div class="text">
+                                    <h5 class="title">500 villes</h5>
+                                    <p>C'est le nombre de villes déjà couvertes en algérie.</p>
+                                </div>
+                            </div>
+                            <!--|End Text Box|-->
+                        </div>
+
+                        <div class="col-md-3 col-sm-6">
+                            <!--|Text Box|-->
+                            <div class="text-box wow fadeInDown" data-wow-delay=".15s">
+                                <img src="{{asset('src/assets/images/calenda.png')}}" alt="" width="20%">
+                                <div class="text">
+                                    <h5 class="title">82 secondes</h5>
+                                    <p>C'est le temps moyen pour prendre RDV en ligne.</p>
+                                </div>
+                            </div>
+                            <!--|End Text Box|-->
+                        </div>
+
+                        <div class="col-md-3 col-sm-6">
+                            <!--|Text Box|-->
+                            <div class="text-box wow fadeInDown" data-wow-delay=".2s">
+                                <img src="{{asset('src/assets/images/calendar.png')}}" alt="" width="20%">
+                                <div class="text">
+                                    <h5 class="title">Moins de 24h</h5>
+                                    <p>24% des Rendez-vous sont obtenus sous 24h.</p>
+                                </div>
+                            </div>
+                            <!--|End Text Box|-->
+                        </div>
+
+
+                    </div>
+                </div>
+            </section>
+
+
+            <div class="container-fluid gtco-feature">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="cover">
+                                <div class="card">
+
+                       <img src="{{asset('src/assets/images/doctor.png')}}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <br>
+                            <h2> Vous êtes professionnel de santé ? Découvrez la prise de rendez-vous en ligne </h2>
+                            <br>
+                        {% if  (is_granted('ROLE_USER') == false) %}
+                            <a href="{{ path('Professeure')}}">EN SAVOIR PLUS<i class="fa fa-angle-right" aria-hidden="true"></i></a></div>
+                        {% endif %}
+                                
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid gtco-features" id="about">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <h2>Gratuit</h2>
+                            <p>Prenez un rendez-vous chez votre médecin sans aucun frais. Notre service est gratuit, simple et sécurisé</p>
+                            </div>
+                        <div class="col-lg-8">
+
+                            <div class="row">
+                                <div class="col">
+                                    <div class="card text-center">
+                                        <div class="oval"><img class="card-img-top" src="{{asset('src/assets/images/web-design.png')}}" alt=""></div>
+                                        <div class="card-body">
+                                            <h3 class="card-title">Rechercher</h3>
+                                            <p>Sélectionnez la spécialité recherchée et trouvez un médecin, un dentiste ou une clinique près de chez vous.</p>
+
+                                        </div>
+                                    </div>
+                                    <div class="card text-center">
+                                        <div class="oval"><img class="card-img-top" src="{{asset('src/assets/images/médecin.png')}}" alt=""></div>
+                                        <div class="card-body">
+                                            <h3 class="card-title">Choisir votre médecin</h3>
+                                            <p>Accédez à toutes les informations nécessaires pour vous aider à choisir votre médecin en toute confiance.</p>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="card text-center">
+                                        <div class="oval"><img class="card-img-top" src="{{asset('src/assets/images/horaires.png')}}" alt=""></div>
+                                        <div class="card-body">
+                                            <h3 class="card-title">horaires</h3>
+                                            <p>Consultez les horaires de disponibilité de votre médecin et réservez la date et l’heure du rendez-vous qui vous convient le mieux.</p>
+
+                                        </div>
+                                    </div>
+                                    <div class="card text-center">
+                                        <div class="oval"><img class="card-img-top" src="{{asset('src/assets/images/temps.png')}}" alt=""></div>
+                                        <div class="card-body">
+                                            <h3 class="card-title">Gagnez de temps</h3>
+                                            <p>Utilisez RDVDoc pour gagner plus de temps afin de prendre un rendez-vous.</p>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid gtco-numbers-block">
+                <div class="container">
+                    <svg width="100%" viewBox="0 0 1600 400">
+            <defs>
+                <linearGradient id="PSgrad_03" x1="80.279%" x2="0%"  y2="0%">
+                    <stop offset="0%" stop-color="rgb(1,230,248)" stop-opacity="1" />
+                    <stop offset="100%" stop-color="rgb(29,62,222)" stop-opacity="1" />
+
+                </linearGradient>
+
+            </defs>
+
+            <path fill-rule="evenodd"  fill="url(#PSgrad_03)"
+                  d="M98.891,386.002 L1527.942,380.805 C1581.806,380.610 1599.093,335.367 1570.005,284.353 L1480.254,126.948 C1458.704,89.153 1408.314,59.820 1366.025,57.550 L298.504,0.261 C238.784,-2.944 166.619,25.419 138.312,70.265 L16.944,262.546 C-24.214,327.750 12.103,386.317 98.891,386.002 Z"></path>
+
+            <clipPath id="ctm" fill="none">
+                <path
+                        d="M98.891,386.002 L1527.942,380.805 C1581.806,380.610 1599.093,335.367 1570.005,284.353 L1480.254,126.948 C1458.704,89.153 1408.314,59.820 1366.025,57.550 L298.504,0.261 C238.784,-2.944 166.619,25.419 138.312,70.265 L16.944,262.546 C-24.214,327.750 12.103,386.317 98.891,386.002 Z"></path>
+            </clipPath>
+
+            <!-- xlink:href for modern browsers, src for IE8- -->
+            <image  clip-path="url(#ctm)" xlink:href="{{asset('src/assets/images/word-map.png')}}" height="800px" width="100%" class="svg__image">
+
+            </image>
+
+        </svg>
+                    <div class="row">
+                        <div class="col-1">
+                            <div class="card">
+                                <div class="card-body">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><center>{{total_doctor}}</center></h5>
+                                   <center> <p class="card-text">Total Docteur</p></center>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-1">
+                            <div class="card">
+                                <div class="card-body">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><center>{{total_Patient}}</center></h5>
+                                    <center><p class="card-text">Total Patient</p></center>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-1">
+                            <div class="card">
+                                <div class="card-body">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><center>{{total_rdv}}</center></h5>
+                                    <center><p class="card-text">Total Rendez-vous</p></center>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-fluid gtco-logo-area">
+                <div class="container">
+                    <div class="row">
+                       
+                    </div>
+                </div>
+            </div>
+
+
+
+
+    </section>
+
+<div id='test'>
+   		
+	<script>	
+	
+
+{% for notification in notifications  %}
+
+	{% if notification.updatedate|date_modify(" + 960 minute")|date("Y-m-d H:i") <= "now"|date("Y-m-d H:i") %}
+
+			var annuler ='{{notification.id}}';
+			$.ajax({
+					url:"{{ path('annuler') }}",
+					data: {'id':annuler},
+							method: 'post',
+								success: function (data) 
+							{	
+							},
+								error: function () 
+							{
+							},
+						});
+
+
+
+	{% endif %}
+{% endfor %}
+
+
+
+$('#doctor ').autocomplete({
+         	delay: 0, // show suggestions immediately
+         	position: { collision: 'flip' }, // automatic menu position up/down
+         	minLength: 1,
+         	source : function(requete, reponse){
+         		var term = $('#doctor').val();
+         		var DATA = 'term=' + term;
+         		$.ajax({
+         			type:"POST",
+         			url : "{{ path('ajax_autocomplete_doctor') }}",
+         			dataType : 'json',
+         			data : DATA,
+         
+         			success : function(donnee){
+         				//Use $.map() to change the values of an array.
+         				reponse($.map(donnee, function(objet){
+         					return objet;
+         				}));
+         			}
+         		});
+         	},
+         })
+
+		          	//pour afficher les informations sur deux lignes
+
+         	.data("ui-autocomplete")._renderItem = function (ul, item) {
+
+                    var doctor;
+                    if (item.c == ' ') {  
+                        doctor = "<img src='{{asset('images/icon/worning.png')}}'>";
+                    }
+                    else {
+                        doctor = "<img src='{{asset('images/image_user/')}}"+item.c+"' class='avatar'  style=' max-width:40px;border-radius: 50%;'>" ;
+                    }
+
+         		return $("<div class='container'><li>")
+         			.data("ui-autocomplete-item", item)
+                    .append(doctor)
+                     .append("<a style='color:#A8A8A8' >" 
+         			+ "<span style='font-weight: 600; color:#888888'>" +" " + item.label + "</span><br>" + item.desc+ "</a></li></div>")
+         			.appendTo(ul);
+         	}; 
+
+
+    $('#willaya').autocomplete({
+         	delay: 0, // show suggestions immediately
+         	position: { collision: 'flip' }, // automatic menu position up/down
+         	minLength: 1,
+         	source : function(requete, reponse){
+         		var term = $('#willaya').val();
+         		var DATA = 'term=' + term;
+         		$.ajax({
+         			type:"POST",
+         			url : "{{ path('ajax_autocomplete_Wilaya') }}",
+         			dataType : 'json',
+         			data : DATA,
+         
+         			success : function(donnee){
+         				//Use $.map() to change the values of an array.
+         				reponse($.map(donnee, function(objet){
+         					return objet;
+         				}));
+         			}
+         		});
+         	},
+         })
+		          	//pour afficher les informations sur deux lignes
+         	.data("ui-autocomplete")._renderItem = function (ul, item) {
+                                     var wilaya;
+                    if (item.label == 'aucun résultat trouvé veuillez vérifier les données Wilaya') {  
+
+                        wilaya = "<img src='{{asset('images/icon/worning.png')}}'>";
+                    }
+                    else {
+
+                        wilaya = "<img src='{{asset('images/country/algeria.png')}}'>" ;
+                    }
+         		return $("<div class='container'><li>")
+         			.data("ui-autocomplete-item", item)
+                    .append(wilaya)
+         			.append("<a style='color:#A8A8A8'>" 
+         			+ "<span style='font-weight: 600; color:#888888'>" + item.label + "</span>"+ "</a></li></div>")
+         			.appendTo(ul);
+         	};
+
+
+</script> 
+</div></div>
+</div></div>
+{% endblock %}

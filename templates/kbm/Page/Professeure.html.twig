@@ -1,0 +1,203 @@
+{% extends 'baseDashboard.html.twig' %}{% block title 'Professeur' %}
+ {% block body %}
+
+
+	    <link href="{{asset('src/Doctor/style.css')}}" rel="stylesheet">
+        <script type="text/javascript" src="{{asset('src/Dashboard/js/jquery.min.js')}}"></script>
+
+
+    <div class="sufee-login d-flex align-content-center flex-wrap">
+        <div class="container">
+            <div class="login-content">
+
+
+                <div class="login-form">
+     {{ form_start(form) }}
+
+                <div class="col-sm-12 col-md-12">
+                
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group">
+                                <label>{{ 'Registration_Doctor.Firstname'|trans }} <span>*<span></label>
+                                    {{ form_widget(form.firstName, {'attr': {'class': 'md-form form-control md-form', 'autocomplete': 'off'}}) }}
+                            </div>             
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group">
+                                <label>{{ 'Registration_Doctor.Lastname'|trans }} <span>*<span></label>
+                                {{ form_widget(form.lastName, {'attr': {'class': 'md-form form-control md-form', 'autocomplete': 'off'}}) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12 col-md-5">
+                            <div class="form-group">
+                                <label>{{ 'Registration_Doctor.username'|trans }} <span>*<span></label>
+                                    {{ form_widget(form.username, {'attr': {'class': 'md-form form-control md-form', 'autocomplete': 'off'}}) }}
+                                <div style="margin-left: -20%;">
+                                    {{ form_errors(form.username) }}
+                                </div>             
+                            </div>             
+                        </div>
+                        <div class="col-sm-12 col-md-7">
+                            <div class="form-group">
+                                <label> {{ 'Registration_Doctor.Email'|trans }} <span>*<span></label>
+                                     {{ form_widget(form.email, {'attr': {'class': 'md-form form-control md-form', 'autocomplete': 'off'}}) }}
+                                 <div style="margin-left: -10%;">
+                                   {{ form_errors(form.email) }}
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group">
+                                <label>{{ 'Registration_Doctor.password'|trans }}<span>*<span></label>
+                                {{ form_widget(form.plainPassword.first ,{'attr': {'class': 'md-form form-control ', 'autocomplete': 'off'}}) }}
+                                 <div style="margin-left: -20%;">
+                                {{ form_errors(form.plainPassword.first) }}
+                                </div>  
+                            </div>             
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group">
+                                <label>{{ 'Registration_Doctor.Repeat_password'|trans }}<span>*<span></label>
+                                {{ form_widget(form.plainPassword.second,{'attr': {'class': 'form-control md-form', 'autocomplete': 'off'}}) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group">
+                                <label>{{ 'Registration_Doctor.specialization'|trans }} <span>*<span></label>
+                                {{ form_widget(form.specialisation, {'attr': {'class': 'md-form form-control md-form', 'autocomplete': 'off'}}) }}
+                            </div>             
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group">
+                                <label>{{ 'Registration_Doctor.company'|trans }}</label>
+                                 {{ form_widget(form.company, {'attr': {'class': 'form-control md-form', 'autocomplete': 'off'}}) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12">
+                            <div class="form-group">
+                                <label>{{ 'Registration_Doctor.Phone'|trans }} <span>*<span></label>
+                                {{ form_widget(form.phone,{'attr': {'class': 'form-control md-form', 'autocomplete': 'off'}}) }}
+                                    {{ form_errors(form.phone) }}
+
+                            </div>             
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group">
+                                <label>{{ 'Registration_Doctor.Gender'|trans }} </label>
+                             {{ form_widget(form.gender,{'attr': {'class': 'form-control md-form', 'autocomplete': 'off'}}) }}
+                            </div>             
+                        </div>
+
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group">
+                                <label>{{ 'Registration_Doctor.title'|trans }}</label>
+                                {{ form_widget(form.title, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-check pl-0">
+                            <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" required>
+                                 <label class="form-check-label" for="invalidCheck2">
+                                    {{ 'Registration_Doctor.Accept_the_terms_and_policy'|trans }}
+                                </label>
+                        </div>
+                        <div>
+                            <a href="{{asset('pdf/Conditions générales RDVDoc.pdf')}}" class="button"><i class="fa fa-download"></i>&nbsp; {{ 'Registration_Doctor.Download_pdf_terms_and_conditions'|trans }}</a>
+                        </div>
+                    </div>
+
+
+            </div>
+
+                                        {{form_row(form.submit)}}
+
+                        <div class="register-link m-t-15 text-center">
+                            <p>{{ 'Registration_Doctor.Already_have_an_account'|trans }}?
+                                <a href="{{ path('fos_user_security_login') }}">{{ 'Registration_Doctor.login'|trans }}</a>
+                            </p>
+                        </div>
+ {{ form_end(form) }}  
+                </div>
+            </div>
+        </div>
+    </div>
+
+  
+<script>
+
+        	$("#user_username , #user_email , #user_plainPassword_first").change(function () {
+
+					var  username = $("#user_username").val();
+					var  email = $("#user_email").val();
+				$.ajax({
+					url:"{{ path('username_exists') }}",
+					data: {'username':username,'email':email},
+							method: 'post',
+								success: function (data) 
+							{	
+
+                                $("#username").html(data.res_username);
+                                $("#email").html(data.res_email);
+                                if(data.res_username == "Ce nom d'utilisateur est déjà utilisé. Essayez un autre nom." || data.res_email == "Cet Email est déjà utilisé. Essayez un autre nom." || $("#user_plainPassword_first").val().length < 7 ){
+                                    $("#user_submit").attr('disabled','disabled');
+                                        if(data.res_username == "Ce nom d'utilisateur est déjà utilisé. Essayez un autre nom."){
+                                        $("#submit_username").html('Avez-vous correctement saisi votre nom ?');
+                                            }else{
+                                            $("#submit_username").html('');
+                                                 };
+
+                                        if(data.res_email == "Cet Email est déjà utilisé. Essayez un autre nom."){
+                                         $("#submit_email").html('Avez-vous correctement saisi votre email ?');
+                                        }else{
+                                            $("#submit_email").html('');
+                                                 };
+
+                                        if ($("#user_plainPassword_first").val().length < 7) {
+                                         $("#Password").html('Votre mot de passe doit comporter sept caractères ou plus')
+                                         $("#submit_Password").html('Votre mot de passe doit comporter sept caractères ou plus');
+                                        }else{
+                                            $("#Password").html('');
+                                           $("#submit_Password").html('');
+                                        };
+                                }else{
+                                    $("#user_submit").removeAttr('disabled');
+                                    $("#submit_email").html('');
+                                    $("#submit_username").html('');
+                                    $("#submit_Password").html('');
+                                    $("#Password").html('');
+
+                                }
+							
+							},
+								error: function () 
+							{
+								alert("error");
+                      		    alert("PLease Re delete"+JSON.stringify(data) );
+							},
+						});
+						
+					});  
+
+
+</script>
+
+
+ {% endblock %}

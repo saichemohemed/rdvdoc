@@ -1,0 +1,265 @@
+<div class="content_wrapper">
+<div class="container-fluid">
+
+
+    {% if is_granted('ROLE_ADMIN') %}
+    <link href="{{asset('src/profile/style-admin.css')}}" rel="stylesheet">
+    <div class="admin" >
+    <div> 
+    <div class="row">
+
+        <div class="col-lg-4">
+           <div class="profile-card-4 z-depth-3">
+            <div class="card">
+              <div class="card-body text-center bg-primary rounded-top">
+               <div class="user-box">
+                <img src="{{asset(app.user.imagePath)}}{{app.user.imageName }}" alt="user avatar" >
+              </div>
+              <h5 class="mb-1 text-white">DR {{app.user.firstName }} {{app.user.lastName }}</h5>
+              <h6 class="text-light">{{app.user.specialisation.description }}</h6>
+             </div>
+              <div class="card-body">
+                <ul class="list-group shadow-none">
+                <li class="list-group-item">
+                  <div class="list-icon">
+                    <i class="fa fa-phone-square"></i>
+                  </div>
+                  <div class="list-details">
+                    <span>{{app.user.phone }}</span>
+                    <small>{{ 'Profile.show.mobile_number'|trans }}</small>
+                  </div>
+                </li>
+                <li class="list-group-item">
+                  <div class="list-icon">
+                    <i class="fa fa-envelope"></i>
+                  </div>
+                  <div class="list-details" style="word-break: break-all;">
+                    <span>{{app.user.email }}</span>
+                    <small>{{ 'Profile.show.Email_Address'|trans }} </small>
+                  </div>
+                </li>
+                <li class="list-group-item">
+                  <div class="list-icon">
+                    <br>
+                  </div>
+                  <div class="list-details">
+                    <span></span>
+                    <small></small>
+                  </div>
+                </li>
+                </ul>
+                <div class="row text-center mt-4">
+                  <div class="col p-2">
+                   <h4 class="mb-1 line-height-5"></h4>
+                    <small class="mb-0 font-weight-bold badge badge-success"></small>
+                   </div>
+                    <div class="col p-2">
+                   <h4 class="mb-1 line-height-5"></h4>
+                    <small class="mb-0 font-weight-bold badge badge-success"></small>
+                   </div>
+                    <div class="col p-2">
+                      <h4 class="mb-1 line-height-5"></h4>
+                     <small class="mb-0 font-weight-bold badge badge-primary"></small>
+                    </div>
+
+                 </div>
+               </div>
+               <div class="card-footer text-center">
+        
+                </div>
+             </div>
+           </div>
+        </div>
+        <div class="col-lg-8">
+           <div class="card z-depth-3">
+            <div class="card-body">
+            <ul class="nav nav-pills nav-pills-primary nav-justified">
+                <li class="nav-item">
+                    <a href="javascript:void();" data-target="#profile" data-toggle="pill" class="nav-link active show"><i class="icon-user"></i> <span class="hidden-xs">{{ 'Profile.show.Doctor_Profile'|trans }}</span></a>
+                </li>
+            </ul>
+            <div class="tab-content p-3">
+                <div class="tab-pane active show" id="profile">
+                    <div class="row">
+                        <div class="col-md-9">
+                        <div class="row">
+                            <h5>{{ 'Profile.show.Username'|trans }} :</h5>   &nbsp; &nbsp; &nbsp;  <h5> {{app.user.username }}</h5>
+                            </div>
+                            <br>
+                             <div class="row">
+                            <h5>{{ 'Profile.show.Profession_number'|trans }}  :</h5>   &nbsp; &nbsp; &nbsp;  <h5>{{app.user.numProf}}</h5>
+                            </div>
+                             <br>
+                              <div class="row">
+                            <h5>{{ 'Profile.show.Date_of_Birth'|trans }}   :</h5>   &nbsp; &nbsp; &nbsp;  <h5>{{app.user.birthDate|date('d/m/Y')}}</h5>
+                            </div>
+                             <br>
+                             <div class="row">
+                            <h5>{{ 'Profile.show.Place_of_birth'|trans }} :</h5>   &nbsp; &nbsp; &nbsp;  <h5>{{app.user.birthPlace }}</h5>
+                            </div>
+                            <br>
+                            <div class="row">
+                            <h5>{{ 'Profile.show.Sex'|trans }}  :</h5>   &nbsp; &nbsp; &nbsp;  <h5>{{app.user.gender }}</h5>
+                            </div>                            
+                            <br>
+                            <div class="row">
+                            <h5>{{ 'Profile.show.Address_of_the_medical_cabin'|trans }}  :</h5>   &nbsp; &nbsp; &nbsp;  <h5>{{app.user.address }} {{app.user.company }} </h5>
+                            </div> 
+                            <br>
+                            <div class="row">
+                            <h5>{{ 'Profile.show.Account_opening_date'|trans }}  :</h5>  &nbsp; &nbsp;  <h5>{{app.user.dateOpened |date('d/m/Y')}}</h5>
+                            </div>
+                            <br> 
+                        </div>
+                         <div class="col-12">
+                            <div class="alert alert-success" role="alert">
+                             {{ 'Profile.show.last_connection_on'|trans }}  {{app.user.lastLogin|date('d/m/Y H:i')}}
+                            </div>
+                        </div>
+                    </div>
+                    <!--/row-->
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-center">
+        
+         </div>
+      </div>
+      </div>
+    </div>
+</div>
+<br><br>
+</div>
+  {% else %}
+<link href="{{asset('src/profile/style.css')}}" rel="stylesheet">
+
+<div class="container emp-profile">
+            <form method="post">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="profile-img">
+                <img src="{{asset(app.user.imagePath)}}{{app.user.imageName }}" alt="user avatar" style="width: 150px;height: 150px;margin-left: -12%;">
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="profile-head">
+                                    <h5>
+                                        {{app.user.lastName}} {{app.user.firstName}}
+                                    </h5>
+                                    <h6>
+                                        {{app.user.profession}}
+                                    </h6>
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">{{'profile_user.Profile_Patient.Patient_Profile'|trans}}</a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="profile-work">
+                            <p>>{{'profile_user.Profile_Patient.Phone'|trans}}</p>
+                            <H6>{{app.user.phone}}</H6>
+                            <p>{{'profile_user.Profile_Patient.Emergency_telephone'|trans}}</p>
+                            <H6>{{app.user.EmergencyPhone}}</H6>
+                            <p>{{'profile_user.Profile_Patient.fax'|trans}}</p>
+                            <H6>{{app.user.fax}}</H6>
+                            <p>{{'profile_user.Profile_Patient.Chifae_Card_Num'|trans}}</p>
+                            <H6>{{app.user.numCartechifae}}</H6>
+                            <p>{{'profile_user.Profile_Patient.Family_situation'|trans}}</p>
+                            <H6>{{app.user.familyStatus}}</H6>                            
+                            <p>{{'profile_user.Profile_Patient.referenced_by'|trans}}</p>
+                            <H6>{{app.user.referencedBy}}</H6>                            
+  
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="tab-content profile-tab" id="myTabContent">
+                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>{{'profile_user.Profile_Patient.username'|trans}}</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>{{app.user.username}}</p>
+                                            </div>
+                                        </div>
+                                              <div class="row">
+
+                                            <div class="col-md-6">
+                                                <label>{{'profile_user.Profile_Patient.Last_name_and_first_name'|trans}}</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>{{app.user.lastName}} {{app.user.firstName}}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>{{'profile_user.Profile_Patient.Email'|trans}}</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>{{app.user.email}} </p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>{{'profile_user.Profile_Patient.Date_of_Birth'|trans}}</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>{{app.user.birthDate|date("m/d/Y")}} </p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>{{'profile_user.Profile_Patient.Place_of_birth'|trans}}</label>
+                                            </div>
+                                        <div class="col-md-6">
+                                                <p>{{app.user.birthPlace}}</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>{{'profile_user.Profile_Patient.sex'|trans}}</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>{{app.user.gender}}</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>{{'profile_user.Profile_Patient.Address'|trans}}</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>{{app.user.address}}</p>
+                                            </div>
+                                        </div>  
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>{{'profile_user.Profile_Patient.Origin'|trans}}</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>{{app.user.origin}}</p>
+                                            </div>
+                                        </div>
+                                        <div class="alert alert-success" role="alert">
+                                             {{'profile_user.Profile_Patient.last_connection'|trans}} {{app.user.lastLogin|date('d/m/Y H:i')}}
+                                        </div>
+
+                                    </div>
+                       
+                        </div>
+                    </div>
+                </div>
+            </form>           
+        </div>           
+         {% endif %}
+<div>
+</div>

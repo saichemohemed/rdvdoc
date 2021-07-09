@@ -1,0 +1,138 @@
+{% extends 'baseDashboard.html.twig' %}
+
+{% block title %}Liste des Motifs{% endblock %}
+
+{% block body %}
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> 
+<div class="content_wrapper">
+	<div class="container-fluid">
+
+
+<link href="{{asset('src/profile/style.css')}}" rel="stylesheet">
+     {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+	 {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+<br>
+<div class="container emp-profile">
+
+
+<center><h3></h3></center>
+
+<br><br>
+<div class="container row">
+<div class="col-md-6 mb-3">
+ {{ form_start(form2) }}
+<div class="row">
+<div class="col-md-8 mb-2">{{ form_widget(form2.Motif  ,{'attr': {'placeholder': "Ajouter des Motifs", 'autocomplete': 'off'}})}}</div>
+<div class="col-md-4"><input type="submit" class="btn btn-primary" id="ajouter"  value="{{'Pattern.Add'|trans }}" style="margin-top: -0.5px;"></div>
+
+{{ form_end(form2) }}
+</div>
+</div>
+
+
+<div class="col-md-6 mb-12">
+<div class="modal-body1">
+			<div class='row'>
+			<div class='col-12' style="margin-top: -1%;">
+                    <select class="custom-select my-1 mr-sm-2" style="display: inline-block !important;">     
+					<option value="" disabled selected>Mes Motif</option>
+						{% for Motif in Motifs %}
+						<option value="{{Motif}}">{{Motif}}</option>
+						{% endfor %}
+					</select>		
+</div>	
+</div>
+</div> 
+</div> 
+<br><br><br>
+</div> 
+<div class="container row">
+<div class="col-md-4 mb-8">
+  <select class="custom-select my-1 mr-sm-2" id="supprimer_motif" style="display: inline-block !important;">     
+    <option selected>supprimer Motif</option>
+    {% for Motif in Motifs %}
+	<option value="{{Motif}}">{{Motif}}</option>
+	{% endfor %}
+  </select>
+  </div>
+  <div class="col-md-2 mb-4"> 
+    <button type="submit" class="btn btn-danger my-1" id="BtnSupprimer">{{'Pattern.Remove'|trans }}</button>
+</div> 
+</div> 
+
+
+</div>
+
+<!-- start Modal HTML supprimer note  -->
+<div id="myModal_BtnSupprimer" class="modal fade">
+	<div class="modal-dialog modal-confirm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="icon-box">
+					<i class="material-icons">&#xE5CD;</i>
+				</div>				
+				<h4 class="modal-title">Êtes-vous sûr?</h4>	
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body">
+				<p>Voulez-vous vraiment supprimer ces enregistrements? Ce processus ne peut pas être annulé.</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-info" data-dismiss="modal">Annuler</button>
+				<button type="button" class="btn btn-danger" id="btn_myModal_BtnSupprimer">supprimer </button>
+			</div>
+		</div>
+	</div>
+</div> 
+<!-- end Modal HTML supprimer note  -->
+</div>
+</div>
+
+<script>
+
+
+	$( "#supprimer_motif" ).change(function() {
+		var id = '{{app.user.id}}';
+		var supprimer_motif = $( this ).val();
+
+          	$( "#BtnSupprimer" ).click(function() {
+              $('#myModal_BtnSupprimer').modal();     
+});
+
+
+$( "#btn_myModal_BtnSupprimer" ).click(function() {
+			$.ajax({
+					url:"{{ path('ajaxDeleteMotif') }}",
+					data: {'id':id,'motif':supprimer_motif},
+							method: 'post',
+								success: function (data) 
+							{	
+							    location.reload()
+							
+							},
+								error: function () 
+							{
+
+							},
+						});
+
+
+					
+		});
+		});
+
+		
+
+    </script>
+
+{% endblock %}

@@ -1,0 +1,620 @@
+lang: en
+Menu:
+    MENU: MENU
+    log_in: login
+    Registerp: Create an account for a patient
+    Registerm: Create an account for a doctor
+    Profile: Profile
+    Edit_Profile: Edit Profile
+    Change_password: Change password
+    Disconnect: Disconnect
+    Dashboard: Dashboard
+    website: website
+    personal_agenda: personal agenda    
+    Appointment_unconfirmed: Appointment - unconfirmed
+    Appointment_confirmed: Appointment - confirmed
+    Appointment_Of_the_Day: Appointment - Of the Day
+    My_Appointments: My Appointments
+    Waiting_appointment: Waiting appointment
+    Establishment: Establishment
+    Reason_for_consultation: Reason for consultation  
+    My_schedule: My schedule
+
+Doc:
+    Search_Filter: Search Filter
+    Filter_Specialist_or_name_Doctor: Filter Specialist or name Doctor
+    Description: Description
+    VISIT_WEBSITE: VISIT WEBSITE
+    MAKE_AN_APPOINTMENT: MAKE AN APPOINTMENT  
+
+
+Home:
+    Titel: Make an appointment
+    Titel.Span:  online
+    Titel.H1: with a health professional
+    Paragraph.Span: It's immediate, simple and free.
+
+Waiting_appointment:
+    Waiting_appointment: Waiting appointment
+
+DataTable:
+    sEmptyTable:    No data available in table
+    sInfo:           Showing _START_ to _END_ of _TOTAL_ entries
+    sInfoEmpty:      Showing 0 to 0 of 0 entries
+    sInfoFiltered:   (filtered from _MAX_ total entries)
+    sLengthMenu:     Show _MENU_ entries
+    sLoadingRecords: Loading...
+    sProcessing:     Processing...
+    sSearch:     Search 
+    sZeroRecords:    No matching records found
+    oPaginate_sFirst:    First
+    oPaginate_sLast:     Last
+    oPaginate_sNext:     Next
+    oPaginate_sPrevious: Previous
+    oAria_sSortAscending:   activate to sort column ascending
+    oAria_sSortDescending:  activate to sort column descending
+    N°: N°
+    Lastname: Lastname
+    Firstname: Firstname
+    date_hour: date hour 
+    pattern: pattern
+    status: status
+    validate: validate
+    remove: remove
+    To_patient_record: To patient record
+
+HospitalCenter:
+    Name_Establishments: Name Establishments
+    Phone: Phone 
+    Fax: Fax
+    Address: Address
+    Wilaya: Wilaya
+    City: City
+    Type_Establishments: Type Establishments
+    website: website
+
+Pattern:
+    Add: Add
+    Remove: Remove
+
+calendar_hour:
+    choose_the_working_time: choose the working time
+    minutes: minutes
+    hour: hour
+    Work_schedule: Work schedule 
+    title: title
+    Start_date: Start date
+    end_date: end date
+    background: background
+    text_color: text color
+    the_days_of_this_week: the days of this week
+    the_next_period: the next period
+    add_work_schedule: add work schedule
+    modify_hour: modify hour
+
+calendar_Appointment:
+    Add_Appointment: Add Appointment
+    Username_or_Email_or_Phone: Username or Email or Phone
+    choice_of_time: choice of time
+    Date_and_hour: Date and hour
+    confirm: confirm
+    Edit_Appointment: Edit Appointment
+    title: title
+    date: date
+    edit: edit
+    delete_appointment: delete appointment
+    Are_you_sure: Are you sure?
+    msg: Are you sure you want to delete these records? This process cannot be canceled.
+    cancel: cancel
+    remove: remove
+
+calendar_Reminding:
+    Add_Reminding: Add Reminding
+    Username_or_Email_or_Phone: Username or Email or Phone
+    hour: hour
+    Date_and_hour_start: Date and hour start
+    End_date_and_time: End date and time
+    state: state
+    write: write ...
+    emergency: emergency
+    important: important
+    intermediate: intermediate
+    choose_status: choose status
+    edit_Reminding: edit Reminding
+    New_start_time: New start time
+    New_end_time: New end time
+    New_Date_and_time: New Date and time
+    New_End_date_and_time: New End date and time
+    edit: edit
+    delete_Reminding: delete Reminding
+    Are_you_sure: Are you sure?
+    msg: Are you sure you want to delete these records? This process cannot be canceled.
+    cancel: cancel
+    remove: remove
+
+
+
+
+Profile:
+    show.mobile_number: mobile number
+    show.Email_Address: Email Address
+    show.Username: Username 
+    show.Profession_number: Profession number
+    show.Date_of_Birth: Date of Birth
+    show.Place_of_birth: Place of birth
+    show.Sex: Sex
+    show.Address_of_the_medical_cabin: Address of the medical cabin
+    show.Account_opening_date: Account opening date
+    show.last_connection_on: last connection on
+    show.Doctor_Profile: Doctor Profile
+
+AppointmentPatient:
+    Appointment_Of_the_Day: Appointment - Of the Day                                             
+    pending_Consultation: pending Consultation
+    to_patient_record: to patient record
+
+medical_personal_history:
+    Doctor_Dealing: Doctor Dealing
+    list_of_Doctors_Dealings: list_of_Doctors_Dealings
+    Patient_Record: Patient Record
+    Personal: Personal
+    Family: Family
+    Physiological: Physiological
+    Obstetricians: Obstetricians
+    Psychiatriques: Psychiatriques
+    allergies: allergies
+    Surgical: Surgical
+    Medical: Medical 
+    summary: summary
+    Menarche: Menarche
+    Menopause: Menopause
+    Dysmenorrhea: Dysmenorrhea
+    Dyspareunie: Dyspareunie
+    Duration_and_type_of_menstrual_cycle: Duration and type of menstrual cycle
+    Duration_of_menstruation: Duration of menstruation
+    abundance: abundance
+    Initial: Initial
+    Other: Other
+    Gesture: Gesture
+    Parity: Parity
+    Cesarean: Cesarean
+    Abortions: Abortions
+    Type_of_contraception: Type of contraception
+    Obstetric_antiossidante: Obstetric antiossidante 
+    Psychiatric: Psychiatric
+    Psycho_traumatic: Psycho-traumatic
+    Toxic: Toxic 
+    Prisoners: Prisoners
+    Psychomotor_development: Psychomotor development
+    Traumatic_stories: Traumatic stories
+    Update_History_medical: Update History medical
+
+RegistrationType:
+    gender:
+        placeholder: 'choose...'
+        choices:
+            Women: Women 
+            Man: Man 
+
+ProfileType:
+    gender:
+        placeholder: 'choose...'
+        choices:
+            Women: Women 
+            Man: Man             
+
+HospitalCenterType:
+    gender:
+        btn_submit: update
+        placeholder: 'choose...'
+        wilaya:
+            Adrar: Adrar 
+            Chlef: Chlef                
+            Laghouat: Man                
+            Oum_bouaghi: Oum bouaghi                
+            Batna: Batna                
+            Bejaia: Bejaia                
+            Biskra: Biskra                
+            Bechar: Bechar                
+            Blida: Blida                
+            Bouira: Bouira                
+            Tamanrasset: Tamanrasset                
+            Tebessa: Tebessa                
+            Tlemcen: Tlemcen                
+            Tiaret: Tiaret                
+            Tizi_ouzou: Tizi ouzou                
+            Alger: Alger                
+            Djelfa: Djelfa                
+            Jijel: Jijel                
+            Setif: Setif                
+            Saida: Saida                
+            Skikda: Skikda                
+            Sidi_Bel_Abbes: Sidi Bel Abbes                
+            Annaba: Annaba                
+            Guelma: Guelma                
+            Constantine: Constantine                
+            Medea: Medea                
+            Mostaganem: Mostaganem                
+            Msila: M'sila                
+            Mascara: Mascara                
+            Ouargla: Ouargla   
+            Oran: Oran                                           
+            El_Baydh: El Baydh                
+            Illizi: Illizi                
+            Bordj_Bou_Arreridj: Bordj Bou Arreridj                
+            Boumerdes: Boumerdes                
+            El_Taref: El Taref                
+            Tindouf: Tindouf                
+            Tissemsilt: Tissemsilt                
+            El_Oued: El Oued                
+            Khenchla: Khenchla                
+            Souk_Ahrass: Souk Ahrass                
+            Tipaza: Tipaza                
+            Mila: Mila                
+            Aïn_Defla: Aïn Defla                
+            Nâama: Nâama                
+            Aïn_Temouchent: Aïn Temouchent                
+            Ghardaïa: Ghardaïa                
+            Relizane: Relizane                
+        Type_Establishments:    
+            doctors_office: doctor's office
+            group_medical_office: group medical office
+            clinical: clinical
+            radiology_center: radiology center
+
+profile_user:
+    ConfirmationAppointment:
+        Your_appointment_on: Your appointment on
+        Confirmed: Confirmed
+        Doctor: Doctor
+        Address: Address
+        Specialty: specialty
+        Reason: Reason
+        informations: informations
+        edit: modifier
+        cancel: cancel
+        No_confirmed_appointment_found: No confirmed appointment found
+        msg: Are you sure you want to delete this Appointment?
+        
+    ConfirmationShow:
+        start_date: start date
+        end_date: end date
+        pattern: pattern
+        status: status
+        confirmed: confirmed
+
+    waitingConfirmationAppointment:
+        Your_appointment_on: Your appointment on
+        Confirmed: Confirmed
+        Doctor: Doctor
+        Address: Address
+        Specialty: specialty
+        Reason: Reason
+        waiting: waiting
+        title: list of pending appointments
+
+    Profile_Patient:
+        Phone: Phone
+        Emergency_telephone: Emergency telephone
+        fax: fax
+        Chifae_Card_Num: Chifae Card Num
+        Family_situation: Family situation
+        referenced_by: referenced by
+        Patient_Profile: Patient Profile
+        username: username
+        Last_name_and_first_name: Last name and first name
+        Email: Email
+        Date_of_Birth: Date of Birth
+        Place_of_birth: Place of birth
+        sex: gender
+        Address: Address
+        Origin: Origin
+        last_connection: last connection
+
+Searche:
+    SearcheDoctor
+
+Doctor:
+    error:
+        mgs1: Sorry  -
+        mgs2: or
+        mgs3: '- not found '
+        mgs4: this name or the wilaya or this specialty does not exist try with another name or check if you have written the name correctly.
+        mgs6: MAKE AN APPOINTMENT
+        mgs7: to make an appointment choose a specific time
+
+Confirmation:
+    choose_your_motif: choose your reason 
+    patient_information: patient information
+    It_s_over: It's over
+    Practitioner: Practitione
+    Place_of_consultation: Place of consultation
+    Specialty: Specialty
+    Date_and_hour: Date and hour
+    Choice_of_reason: Choice of reason
+    msg: to continue filling the reason field
+    next: next
+    Lastname: Last name
+    Firstname: First name
+    E-mail: E-mail
+    gender: gender
+    Phone: Phone
+    previous: previous
+    login: login
+    register: register
+    msg1: CONFIRM YOUR APPOINTMENT    
+    Date: Date
+    reason: reason
+    make_an_appointment: make an appointment
+    msag: Appointment booked Successfully!
+    msag1: Appointment booked with
+    msag2: at 
+
+
+
+
+admin:
+    User:
+        User: User
+        title: User list
+        fields:
+            id: id
+            username: username
+            firstName: firstName
+            lastName: lastName
+            enabled: enabled
+            phone: phone
+            gender: gender
+            email: email
+            firstLoginToday: firstLoginToday
+        form:
+            firstName: firstName
+            lastName: lastName
+            username: username
+            email: email
+            imageFile: imageFile
+            updatedAt: updatedAt
+            phone: phone
+            enabled: enabled
+            lastLogin: lastLogin
+            plainPassword: plainPassword
+            roles: roles
+            ADMIN: ADMIN
+            Doctor: Doctor
+            Patient: Patient
+    
+    admin:
+        admin: Admin
+        title: list of Admin
+        fields:
+            id: id
+            username: username
+            firstName: firstName
+            lastName: lastName
+            enabled: enabled
+            phone: phone
+            gender: gender
+            email: email
+            firstLoginToday: firstLoginToday
+        form:
+            username: username
+            firstName: firstName
+            lastName: lastName
+            enabled: enabled
+            phone: phone
+            gender: gender
+            email: email
+            firstLoginToday: firstLoginToday
+            imageFile: imageFile
+            updatedAt: updated image file
+            plainPassword: plainPassword
+            roles: roles
+            ADMIN: ADMIN
+    
+    Doctor:
+        Doctor: Doctor
+        title: list of Doctor
+        fields:
+            id: id
+            username: username
+            firstName: firstName
+            lastName: lastName
+            enabled: enabled
+            phone: phone
+            email: email
+            Doctorsnumber: Doctors number
+            Professionalnumber : Professional number
+            gender: gender
+            specialty: specialty
+            firstLoginToday: firstLoginToday
+            accountopeningdate: account opening date
+            workingtime: workingtime
+        form:
+            username: username
+            firstName: firstName
+            lastName: lastName
+            enabled: enabled
+            phone: phone
+            email: email
+            Doctorsnumber: Doctors number
+            medicaloffice : medical office
+            gender: gender
+            specialty: specialty
+            imageFile: imageFile
+            updatedAt: updated image file
+            accountopeningdate: account opening date
+            plainPassword: plainPassword
+            roles: roles
+            Doctor: Doctor
+
+    Patient:
+        Patient: Patient
+        title: list of Patient
+        fields:
+            id: id
+            username: username
+            firstName: firstName
+            lastName: lastName
+            enabled: enabled
+            phone: phone
+            email: email
+            gender: gender
+            firstLoginToday: firstLoginToday
+        form:
+            username: username
+            firstName: firstName
+            lastName: lastName
+            enabled: enabled
+            phone: phone
+            email: email
+            gender: gender
+            imageFile: imageFile
+            updatedAt: updated image file
+            plainPassword: plainPassword
+            roles: roles
+            Patient: Patient
+
+    Calendar:
+        Calendar: Calendar
+        title: list of Calendar
+        fields:
+            id: id
+            bgColor: bacground color
+            type: type
+            service: service
+        form:
+            bgColor: bacground color
+            type: type
+            service: service
+
+    Evenement:
+        Evenement: Evenement
+        title: list of Evenement
+        fields:
+            id: id
+            title: title
+            startDatetime: startDatetime
+            endDatetime: endDatetime
+            bgColor: bacground color
+            fgColor: font color
+        form:
+            title: title
+            startDatetime: startDatetime
+            endDatetime: endDatetime
+            bgColor: bacground color
+            fgColor: font color
+
+    Service:
+        Service: Service
+        title: list of Service
+        fields:
+            id: id
+            name: name
+            updateDate: updateDate
+            adminCreated: adminCreated
+            responsible: responsible
+        form:
+            name: name
+            Description: description
+            adminCreated: adminCreated
+            responsible: responsible
+            updateDate: updateDate
+
+
+
+    Hospital_center:
+        Hospital_center: Hospital center
+        title: list of Hospital center
+        fields:
+            id: id
+            doctor: doctor
+            name: Name of Establishments
+            type: type Establishments
+            phone: phone
+            wilaya: wilaya
+            address: address
+            town: town
+            fax: fax
+            webSite: webSite
+        form:
+            doctor: doctor
+            name: name
+            type: type
+            phone: phone            
+            wilaya: wilaya            
+            address: address
+            town: town            
+            fax: fax
+            webSite: webSite
+            updateDate: updateDate            
+            wilaya_alger:
+                Adrar: Adrar 
+                Chlef: Chlef                
+                Laghouat: Man                
+                Oum_bouaghi: Oum bouaghi                
+                Batna: Batna                
+                Bejaia: Bejaia                
+                Biskra: Biskra                
+                Bechar: Bechar                
+                Blida: Blida                
+                Bouira: Bouira                
+                Tamanrasset: Tamanrasset                
+                Tebessa: Tebessa                
+                Tlemcen: Tlemcen                
+                Tiaret: Tiaret                
+                Tizi_ouzou: Tizi ouzou                
+                Alger: Alger                
+                Djelfa: Djelfa                
+                Jijel: Jijel                
+                Setif: Setif                
+                Saida: Saida                
+                Skikda: Skikda                
+                Sidi_Bel_Abbes: Sidi Bel Abbes                
+                Annaba: Annaba                
+                Guelma: Guelma                
+                Constantine: Constantine                
+                Medea: Medea                
+                Mostaganem: Mostaganem                
+                Msila: M'sila                
+                Mascara: Mascara                
+                Ouargla: Ouargla   
+                Oran: Oran                                           
+                El_Baydh: El Baydh                
+                Illizi: Illizi                
+                Bordj_Bou_Arreridj: Bordj Bou Arreridj                
+                Boumerdes: Boumerdes                
+                El_Taref: El Taref                
+                Tindouf: Tindouf                
+                Tissemsilt: Tissemsilt                
+                El_Oued: El Oued                
+                Khenchla: Khenchla                
+                Souk_Ahrass: Souk Ahrass                
+                Tipaza: Tipaza                
+                Mila: Mila                
+                Aïn_Defla: Aïn Defla                
+                Nâama: Nâama                
+                Aïn_Temouchent: Aïn Temouchent                
+                Ghardaïa: Ghardaïa                
+                Relizane: Relizane                
+            Type_Establishments:    
+                doctors_office: doctor's office
+                group_medical_office: group medical office
+                clinical: clinical
+                radiology_center: Radiology center
+
+Registration_Doctor:
+    Lastname: Last name
+    Firstname: First name
+    username: username 
+    Email: Email
+    password: password
+    Repeat_password: Repeat password
+    specialization: specialization
+    company: company
+    Phone: Phone
+    Gender: Gender
+    title: title
+    Accept_the_terms_and_policy: Accept the terms and policy
+    Already_have_an_account: Already have an account
+    Download_pdf_terms_and_conditions: Download pdf terms and conditions
+    login: log in

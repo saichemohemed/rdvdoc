@@ -1,0 +1,115 @@
+{% extends 'baseDashboard.html.twig' %}
+
+{% block title %}Centre hospitalier{% endblock %}
+
+{% block body %}
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+
+<div class="content_wrapper">
+	<div class="container-fluid">
+
+
+     {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+	 {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+
+
+
+
+
+<link href="{{asset('src/profile/style.css')}}" rel="stylesheet">
+
+
+<div class="container emp-profile">
+
+                {{ form_start(form) }}
+  <div class="form-row">
+
+
+    <div class="col-md-4 mb-3">
+      <label for="validationDefault01">{{'HospitalCenter.Name_Establishments'|trans }}</label>
+        {{ form_widget(form.name, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+    </div>
+
+
+
+    <div class="col-md-4 mb-3">
+      <label for="validationDefault02"> {{'HospitalCenter.Phone'|trans }}</label>
+        {{ form_widget(form.phone, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+    </div>
+
+
+    <div class="col-md-4 mb-3">
+      <label for="validationDefault02"> {{'HospitalCenter.Fax'|trans }}</label>
+        {{ form_widget(form.fax, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+    </div>
+
+    </div>
+
+
+  <div class="form-row">
+
+    <div class="col-md-6 mb-3">
+      <label for="validationDefault03">{{'HospitalCenter.Address'|trans }}</label>
+        {{ form_widget(form.address, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+    </div>
+
+    <div class="col-md-3 mb-3">
+      <label for="validationDefault04"> {{'HospitalCenter.Wilaya'|trans }}</label>
+        {{ form_widget(form.wilaya, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+    </div>
+
+    <div class="col-md-3 mb-3">
+      <label for="validationDefault05">{{'HospitalCenter.City'|trans }}</label>
+        {{ form_widget(form.town, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+    </div>
+  </div>
+
+
+ <div class="form-row">
+
+
+    <div class="col-md-6 mb-3">
+      <label for="validationDefault01">{{'HospitalCenter.Type_Establishments'|trans }}</label>
+        {{ form_widget(form.type, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+    </div>
+
+   <div class="col-md-6 mb-3">
+      <label for="validationDefaultUsername">{{'HospitalCenter.website'|trans }}</label>
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="inputGroupPrepend2">www</span>
+        </div>
+        {{ form_widget(form.webSite, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+      </div>
+    </div>
+                <div class="col-md-12 col-sm-12">     
+                <div class="form-group purple-border">
+                  <label for="exampleFormControlTextarea4">description</label>
+                {{ form_widget(form.description, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                </div>
+                </div>
+
+    </div>
+    <input type="submit" class="btn btn-primary" value="{{ 'HospitalCenterType.gender.btn_submit'|trans }}" />
+                {{ form_end(form) }}
+    </div>    
+        
+        
+
+</div>
+</div>
+
+
+
+{% endblock %}

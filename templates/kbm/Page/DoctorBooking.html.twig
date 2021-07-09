@@ -1,0 +1,308 @@
+{% extends 'baseDashboard.html.twig' %}
+{% block title 'Recherche Médecin' %} {% block body %}
+
+
+
+		<!-- Bootstrap CSS -->
+		<link href="{{asset('src/SearchDoctor/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
+
+		<!-- Fontawesome CSS -->
+		<link href="{{asset('src/SearchDoctor/plugins/fontawesome/css/fontawesome.min.css')}}" rel="stylesheet" type="text/css">
+        <link href="{{asset('src/SearchDoctor/plugins/fontawesome/css/all.min.css')}}" rel="stylesheet" type="text/css">
+
+		<!-- Datetimepicker CSS -->
+		<link href="{{asset('src/SearchDoctor/css/bootstrap-datetimepicker.min.css')}}" rel="stylesheet" type="text/css">
+
+		<!-- Select2 CSS -->
+		<link href="{{asset('src/SearchDoctor/plugins/select2/css/select2.min.css')}}" rel="stylesheet" type="text/css">
+
+		<!-- Fancybox CSS -->
+		<link href="{{asset('src/SearchDoctor//plugins/fancybox/jquery.fancybox.min.css')}}" rel="stylesheet" type="text/css">
+
+		<!-- Main CSS -->
+        <link href="{{asset('src/SearchDoctor/css/style.css')}}" rel="stylesheet" type="text/css">
+
+<link rel="stylesheet" href="{{asset('css/mobiscroll.javascript.min.css')}}">
+<script src="{{asset('js/mobiscroll.javascript.min.js')}}"></script>
+
+<style>
+
+.mbsc-ios.mbsc-fr-inline .mbsc-fr-c {
+    border-bottom: none;
+}
+
+</style>
+
+
+		<!-- Main Wrapper -->
+		<div class="main-wrapper">
+
+	{% for doctor in doctors %}
+        {% set type = ''%}
+        {% set address = ''%}
+        {% set wilaya = ''%}
+        {% set town = ''%}
+        {% set fax = ''%}
+        {% set webSite = ''%}
+        {% set phone = ''%}
+            {% for HospitalCenter in HospitalCenters %}
+                {% if HospitalCenter.doctor.id == doctor.id %}
+                    {% set address = HospitalCenter.address %}
+                    {% set wilaya = HospitalCenter.wilaya %}
+                    {% set town = HospitalCenter.town %}
+                    {% set type = HospitalCenter.type  %}
+                    {% set fax = HospitalCenter.fax %}
+                    {% set webSite =  HospitalCenter.webSite %}
+                    {% set phone = HospitalCenter.phone %}
+
+                {% endif %}
+            {% endfor %}
+			<!-- Page Content -->
+			<div class="content">
+				<div class="container">
+					<div class="row">
+						<div class="col-12">
+
+							<div class="card">
+								<div class="card-body">
+									<div class="booking-doc-info">
+										<a href="doctor-profile.html" class="booking-doc-img">
+												<img src="{{asset(doctor.imagePath)}}{{doctor.imageName }}" class="img-fluid" alt="User Image">
+										</a>
+										<div class="booking-info">
+											<h4><a href="doctor-profile.html">{{doctor.title}}. {{doctor.lastName}} {{doctor.firstName}}</a></h4>
+												<h5 class="doc-department"><img src="{{asset('src/SearchDoctor/img/specialities/specialities-05.png')}}"class="img-fluid" alt="Speciality">{{doctor.specialisation.description}}</h5>
+											<p class="text-muted mb-0"><i class="fas fa-map-marker-alt"></i>{{wilaya}} {{address}} {{town}}</p>
+										</div>
+									</div>
+								</div>
+							</div>
+	   
+							<!-- Schedule Widget -->
+							<div class="card booking-schedule schedule-widget">
+							
+								<!-- Schedule Header -->
+								<div class="schedule-header"  style="word-break: break-all;">
+									<div class="row">
+										<div class="col-md-12">
+										
+
+											<!-- Day Slot -->
+										         <div id="{{doctor.id}}"></div>
+											<!-- /Day Slot -->
+											
+										</div>
+									</div>
+								</div>
+								<!-- /Schedule Header -->
+								
+								<!-- Schedule Content -->
+								<div class="schedule-cont" id="test{{doctor.id}}">
+									<div class="row">
+										<div class="col-md-12" >
+										
+											<!-- Time Slot -->
+											<div class="time-slot">
+                                            <ul class="clearfix">
+{#  #}
+
+
+                        {% set te =  '' %}
+                            {% set foo = [] %}
+                            {% set date_exst = [] %}
+                
+                                {% for PatientEvent in PatientEvents  %}
+
+                                    {% if PatientEvent.doctor.id == doctor.id and PatientEvent.startDatetime|date("Y-m-d") ==  datedep %}
+
+                                        {% set te =  PatientEvent.startDatetime|date("H:i") %}
+
+                                            {% if te not in foo %}
+
+                                                {% set foo = foo|merge([PatientEvent.startDatetime|date("H:i")])  %}
+
+                                            {% elseif te in foo and te not in date_exst %}
+
+                                                {% set date_exst = date_exst|merge([PatientEvent.startDatetime|date("H:i")])  %}
+
+                                            {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+
+
+                             {% set rr = 0 %}
+                                {% for workingtime in workingtimes %}
+                                    {% set test = 0 %}
+                                    {% set rr =  rr + test %}
+
+                                        {% if workingtime.doctor.id == doctor.id and workingtime.startDatetime|date("Y-m-d") ==  datedep %} 
+                                            {% set test =  1 %}
+                                            {% set rr =  rr + test %}
+
+                                        {% endif %}
+                                 {% endfor %}
+
+                            {% if rr >= 1 %}
+                                {% for workingtime in workingtimes %}
+
+                                    {% if workingtime.doctor.id == doctor.id and workingtime.startDatetime|date("Y-m-d") ==  datedep %} 
+                                        {% set date_disabled = "now"|date("Y-m-d H:i")|date_modify('+60 minute')|date("Y-m-d H:i") %}
+                                    {% if  workingtime.startDatetime|date("H:i") in foo or  workingtime.startDatetime|date("Y-m-d H:i") < date_disabled  %}        
+                                        {% if is_granted('ROLE_ADMIN') %}
+                                           <li data-placement="top" data-toggle="tooltip" title="Prenez rendez-vous dont vous devez posséder le compte patient"><a class="timing" ><span id="{{doctor.id}}">{{ workingtime.startDatetime|date("H:i")}}</span></a></li>
+                                        {% else %}
+                                            <li><a class="timing" ><span id="{{doctor.id}}">{{ workingtime.startDatetime|date("H:i")}}</span></a></li>
+                                        {% endif %}
+
+                                    {% else %}
+                                        {% if is_granted('ROLE_ADMIN') %}
+                                            <li data-placement="top" data-toggle="tooltip" title="Prenez rendez-vous dont vous devez posséder le compte patient"><a class="timing" ><span id="{{doctor.id}}">{{ workingtime.startDatetime|date("H:i")}}</span></a></li>
+                                        {% else %}
+                                            <li><a class="timingg" href="{{ path('Confirmation',{'id': doctor.id,'heure':workingtime.startDatetime|date("H:i") }) }}"><span id="{{doctor.id}}">{{ workingtime.startDatetime|date("H:i")}}</span></a></li>
+                                        {% endif %}
+                                    {% endif %}
+                                        {% set date = workingtime.startDatetime|date("H:i") %}
+                                        {% set date1 = workingtime.startDatetime|date("Y-m-d H:i") %}
+                                        {% set condition = true %} 
+                                        {% set test1 = 0 %} 
+
+                                                {% for i in 1.. 10000 if condition %}
+                                                    {% set date = date|date_modify(workingtime.doctor.workingtime)|date("H:i") %}
+                                                    {% set date1 = date1|date_modify(workingtime.doctor.workingtime)|date("Y-m-d H:i") %}
+
+                                                        {% if date|date("H") == "01" %}
+                                                            {% set test1 = test1 + 1 %} 
+                                                        {% endif %}
+
+                                                            {% if date == workingtime.endDatetime|date("H:i") 
+                                                                or (date|date("H") > workingtime.endDatetime|date("H") ) 
+                                                                or date == "00:00" 
+                                                                or date|date("H") == "00"
+                                                                or test1 > 1 %}
+                                                                    {% set condition = false %}
+                                                            {% else %}
+
+                                                                    {% set date_disabled = "now"|date("Y-m-d H:i")|date_modify('+60 minute')|date("Y-m-d H:i") %}
+
+                                                                        {% if  date in foo or date1 < date_disabled %}
+
+                                                                            {% if is_granted('ROLE_ADMIN') %}
+                                                                                <li data-placement="top" data-toggle="tooltip" title="Prenez rendez-vous dont vous devez posséder le compte patient"><a class="timing" ><span id="{{doctor.id}}">{{date}}</span></a></li>
+                                                                            {% else %}
+                                                                                <li><a class="timing" ><span id="{{doctor.id}}">{{date}}</span></a></li>
+                                                                            {% endif %}
+
+                                                                        {% else %}
+                                                                            {% if is_granted('ROLE_ADMIN') %}
+                                                                                <li data-placement="top" data-toggle="tooltip" title="Prenez rendez-vous dont vous devez posséder le compte patient"><a class="timingg" ><span id="{{doctor.id}}">{{date}}</span></a></li>
+                                                                            {% else %}
+                                                                                <li><a class="timingg" href="{{ path('Confirmation',{'id': doctor.id,'heure':date}) }}"><span id="{{doctor.id}}">{{ date}}</span></a></li>
+                                                                            {% endif %}
+                                                                        {% endif %}
+                                                                    
+                                                            {% endif %}
+
+                                                {% endfor %}
+
+                                    {% endif %}
+
+                                {% endfor %}
+
+                            {% else %}
+                                <center><h3>Aucun horaires de travail trouvé</h3></center>
+                        {% endif %}
+
+{#  #}
+                                            </ul>
+											</div>
+											<!-- /Time Slot -->
+											
+										</div>
+									</div>
+								</div>
+								<!-- /Schedule Content -->
+								
+							</div>
+							<!-- /Schedule Widget -->
+
+
+                                <!-- Submit Section -->
+                                <div class="submit-section proceed-btn text-left ">
+                                    <a href="{{ path('Index',{'doctor':'','willaya':'','submit':'','page':'1'}) }}" class="btn btn-secondary submit-btn">Retour</a>
+                                </div>
+                                <!-- /Submit Section -->
+
+
+						</div>
+					</div>
+				</div>
+
+			</div>		
+			<!-- /Page Content -->
+
+ 
+		   
+		</div>
+		<!-- /Main Wrapper -->
+
+
+
+
+
+		<!-- jQuery -->
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+
+		<!-- Sticky Sidebar JS -->
+        <script src="{{asset('src/SearchDoctor/plugins/theia-sticky-sidebar/ResizeSensor.js')}}"></script>
+        <script src="{{asset('src/SearchDoctor/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js')}}"></script>
+
+		<!-- Select2 JS -->
+		<script src="{{asset('src/SearchDoctor/plugins/select2/js/select2.min.js')}}"></script>
+
+
+		<!-- Fancybox JS -->
+		<script src="{{asset('src/SearchDoctor/plugins/fancybox/jquery.fancybox.min.js')}}"></script>
+
+
+
+    <script>   
+        var date = new Date();
+        var date =  date.getFullYear()+ '-' +((date.getMonth() > 8) ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1))) + '-' + ((date.getDate() > 9) ? date.getDate() : ('0' + date.getDate())) ;
+            document.cookie="date_rdv="+date;
+                $('#test'+{{doctor.id}}).load(location.href +  ' #test'+{{doctor.id}});
+
+    mobiscroll.setOptions({
+        locale: mobiscroll.localeFr,  // Specify language like: locale: mobiscroll.localePl or omit setting to use default
+        theme: 'ios',                 // Specify theme like: theme: 'ios' or omit setting to use default
+        themeVariant: 'light'         // More info about themeVariant: https://docs.mobiscroll.com/5-4-0/javascript/calendar#opt-themeVariant
+    });
+         
+             mobiscroll.datepicker(document.getElementById({{doctor.id}}), {
+                onSet: function(event, inst) {
+
+                var date = new Date(inst.getVal());
+                var date =  date.getFullYear()+ '-' +((date.getMonth() > 8) ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1))) + '-' + ((date.getDate() > 9) ? date.getDate() : ('0' + date.getDate())) ;
+                document.cookie="date_rdv="+date;
+                var cookieValue = getCook('date_rdv');
+                $('#test'+{{doctor.id}}).load(location.href +  ' #test'+{{doctor.id}});
+
+                    },
+                min: new Date(),
+                        controls: ['calendar'],       // More info about controls: https://docs.mobiscroll.com/5-4-0/javascript/calendar#opt-controls
+        display: 'inline',            // Specify display mode like: display: 'bottom' or omit setting to use default
+        calendarType: 'week',
+                weeks: 1
+             });
+
+    </script>
+
+
+    <script>
+        function getCook(cookiename)  {
+            var cookiestring=RegExp(cookiename+"=[^;]+").exec(document.cookie);
+            return decodeURIComponent(!!cookiestring ? cookiestring.toString().replace(/^[^=]+./,"") : "");
+             };
+    </script>
+    {% endfor %} 
+
+{% endblock %}

@@ -1,0 +1,723 @@
+{% extends 'baseDashboard.html.twig' %}
+{% block title 'Recherche Médecin' %} {% block body %}
+
+
+
+		<!-- Bootstrap CSS -->
+		<link href="{{asset('src/SearchDoctor/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
+
+		<!-- Fontawesome CSS -->
+		<link href="{{asset('src/SearchDoctor/plugins/fontawesome/css/fontawesome.min.css')}}" rel="stylesheet" type="text/css">
+        <link href="{{asset('src/SearchDoctor/plugins/fontawesome/css/all.min.css')}}" rel="stylesheet" type="text/css">
+
+		<!-- Datetimepicker CSS -->
+		<link href="{{asset('src/SearchDoctor/css/bootstrap-datetimepicker.min.css')}}" rel="stylesheet" type="text/css">
+
+		<!-- Select2 CSS -->
+		<link href="{{asset('src/SearchDoctor/plugins/select2/css/select2.min.css')}}" rel="stylesheet" type="text/css">
+
+		<!-- Fancybox CSS -->
+		<link href="{{asset('src/SearchDoctor//plugins/fancybox/jquery.fancybox.min.css')}}" rel="stylesheet" type="text/css">
+
+		<!-- Main CSS -->
+        <link href="{{asset('src/SearchDoctor/css/style.css')}}" rel="stylesheet" type="text/css">
+
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+
+			<!-- Page Content -->
+			<div class="content">
+				<div class="container-fluid">
+
+    {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+    {% endfor %}
+
+  					<div class="row">
+						<div class="col-md-12 col-lg-4 col-xl-3 theiaStickySidebar">
+
+
+
+							<!-- Search Filter -->
+							<div class="card search-filter">
+								<div class="card-header">
+									<h4 class="card-title mb-0">{{'Doc.Search_Filter'|trans}}</h4>
+								</div>
+								<div class="card-body">
+
+                            {{ form_start(Form) }}
+                                <div class="filter-widget">
+									<h4>{{'Doc.Filter_Specialist_or_name_Doctor'|trans}}</h4>
+									<div>
+                                    {{form_row(Form.doctor)}}
+									</div>
+                                    <br>
+									<div>
+                                    {{form_row(Form.willaya)}}
+									</div>
+								</div>
+                                <div class="btn-search">
+                                   {{form_row(Form.submit)}}
+								</div>	
+
+                            {{ form_end(Form) }}
+									
+								</div>
+							</div>
+							<!-- /Search Filter -->
+						    
+						</div>
+
+
+
+
+
+{% if recharche == 0 %}
+    {% if doc == null and wilaaya != null %}
+    							<div class="col-md-12 col-lg-8 col-xl-9">
+
+    <div id="notfound">
+            <div class="notfound">
+                <div class="notfound-404">
+                    <h1>:(</h1>
+                </div>
+                <h2>{{'Doctor.error.mgs1'|trans}}<span class="h2">{{ wilaaya}}</span> {{'Doctor.error.mgs3'|trans}}</h2>
+                <p class="p">{{'Doctor.error.mgs4'|trans}}</p>
+                <a href="{{path('Index')}}">{{'Doctor.error.mgs5'|trans}}</a>
+            </div>
+        </div>    
+    {% elseif doc != null and wilaaya == null %}
+        <div id="notfound">
+            <div class="notfound">
+                <div class="notfound-404">
+                    <h1>:(</h1>
+                </div>
+                <h2>Désolé  - <span class="h2">{{ doc}}</span>{{'Doctor.error.mgs3'|trans}}</h2>
+                <p class="p">{{'Doctor.error.mgs4'|trans}}</p>
+                <a href="{{path('Index')}}">{{'Doctor.error.mgs5'|trans}}</a>
+            </div>
+        </div>
+        </div>    
+    {% else %}
+        <div id="notfound">
+		    <div class="notfound">
+			    <div class="notfound-404">
+				    <h1>:(</h1>
+			    </div>
+			        <h2>Désolé  - <span class="h2">{{ doc}}</span>  {{'Doctor.error.mgs2'|trans}} <span class="h2">{{ wilaaya}}</span>{{'Doctor.error.mgs3'|trans}}</h2>
+			        <p class="p">{{'Doctor.error.mgs4'|trans}}</p>
+			     <a href="{{path('Index')}}">{{'Doctor.error.mgs5'|trans}}</a>
+		    </div>
+	    </div>
+	</div> 
+    						</div>
+
+    {% endif %}
+{% endif %}
+
+
+
+
+
+						<div class="col-md-12 col-lg-8 col-xl-9">
+    {% for doctor in doctors %}
+
+        {% set type = ''%}
+        {% set address = ''%}
+        {% set wilaya = ''%}
+        {% set town = ''%}
+        {% set fax = ''%}
+        {% set webSite = ''%}
+        {% set phone = ''%}
+        {% set description = ''%}
+            {% for HospitalCenter in HospitalCenters %}
+                {% if HospitalCenter.doctor.id == doctor.id %}
+                    {% set address = HospitalCenter.address %}
+                    {% set wilaya = HospitalCenter.wilaya %}
+                    {% set town = HospitalCenter.town %}
+                    {% set type = HospitalCenter.type  %}
+                    {% set fax = HospitalCenter.fax %}
+                    {% set webSite =  HospitalCenter.webSite %}
+                    {% set phone = HospitalCenter.phone %}
+                    {% set description = HospitalCenter.description %}
+                {% endif %}
+            {% endfor %} 
+
+							<!-- Doctor Widget -->
+							<div class="card">
+								<div class="card-body">
+									<div class="doctor-widget">
+										<div class="doc-info-left">
+											<div class="doctor-img">
+												<a href="doctor-profile.html">
+													<img src="{{asset(doctor.imagePath)}}{{doctor.imageName }}" class="img-fluid" alt="User Image">
+												</a>
+											</div>
+											<div class="doc-info-cont">
+												<h4 class="doc-name"><a href="doctor-profile.html">{{doctor.title}}. {{doctor.lastName}} {{doctor.firstName}}</a></h4>
+												<p class="doc-speciality"></p>
+												<h5 class="doc-department"><img src="{{asset('src/SearchDoctor/img/specialities/specialities-05.png')}}"class="img-fluid" alt="Speciality">{{doctor.specialisation.description}}</h5>
+												<p class="doc-location"><i class="fas fa-map-marker-alt"></i> {{wilaya}} {{address}} {{town}}</p>
+    											
+                                                <div class="clinic-details">
+                                                	<span class="d-inline-block average-rating">{{'Doc.Description'|trans}}</span>
+                                                    <p class="doc-speciality">{{description}}</p>
+												</div>
+											</div>
+										</div>
+										<div class="doc-info-right">
+											<div class="clini-infos">
+												<ul>
+													<li><i class="fas fa-hospital"></i> {{doctor.company|upper}} {{type}}</li>
+													<li><i class="fas fa-globe"></i> {{webSite}}  </li>
+													<li><i class="fas fa-fax"></i> {{fax}}</li>
+													<li><i class="fas fa-phone-alt"></i>{{phone}} </li>
+												</ul>
+											</div>
+											<div class="clinic-booking">
+												<a class="view-pro-btn" href="#">{{'Doc.VISIT_WEBSITE'|trans}}</a>
+												<a class="apt-btn" href="{{path('Booking',{'id': doctor.id})}}">{{'Doc.MAKE_AN_APPOINTMENT'|trans}}</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- /Doctor Widget -->
+
+    {% endfor %}
+
+							<div class="load-more text-center">
+                                    {{ knp_pagination_render(doctors) }}
+							</div>	
+						</div>
+					</div>
+
+				</div>
+
+			</div>		
+			<!-- /Page Content -->
+
+
+		<!-- Custom JS -->
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+
+		<!-- Sticky Sidebar JS -->
+        <script src="{{asset('src/SearchDoctor/plugins/theia-sticky-sidebar/ResizeSensor.js')}}"></script>
+        <script src="{{asset('src/SearchDoctor/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js')}}"></script>
+
+		<!-- Select2 JS -->
+		<script src="{{asset('src/SearchDoctor/plugins/select2/js/select2.min.js')}}"></script>
+
+
+
+		<!-- Datetimepicker JS -->
+		<script src="{{asset('src/SearchDoctor/js/moment.min.js')}}"></script>
+		<script src="{{asset('src/SearchDoctor/js/bootstrap-datetimepicker.min.js')}}"></script>
+
+		<!-- Fancybox JS -->
+		<script src="{{asset('src/SearchDoctor/plugins/fancybox/jquery.fancybox.min.js')}}"></script>
+
+		<!-- autocomplete JS -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+
+    <script>
+
+        //$.noConflict();
+ $('#doctor ').autocomplete({
+         	delay: 0, // show suggestions immediately
+         	position: { collision: 'flip' }, // automatic menu position up/down
+         	minLength: 1,
+         	source : function(requete, reponse){
+         		var term = $('#doctor').val();
+         		var DATA = 'term=' + term;
+         		$.ajax({
+         			type:"POST",
+         			url : "{{ path('ajax_autocomplete_doctor') }}",
+         			dataType : 'json',
+         			data : DATA,
+         
+         			success : function(donnee){
+         				//Use $.map() to change the values of an array.
+         				reponse($.map(donnee, function(objet){
+         					return objet;
+         				}));
+         			}
+         		});
+         	},
+         })
+
+		          	//pour afficher les informations sur deux lignes
+
+         	.data("ui-autocomplete")._renderItem = function (ul, item) {
+
+                    var doctor;
+                    if (item.c == ' ') {  
+                        doctor = "<img src='{{asset('images/icon/worning.png')}}'>";
+                    }
+                    else {
+                        doctor = "<img src='{{asset('images/image_user/')}}"+item.c+"' class='avatar'  style=' max-width:40px;border-radius: 50%;'>" ;
+                    }
+
+         		return $("<div class='container'><li>")
+         			.data("ui-autocomplete-item", item)
+                    .append(doctor)
+                     .append("<a style='color:#A8A8A8' >" 
+         			+ "<span style='font-weight: 600; color:#888888'>" +" " + item.label + "</span><br>" + item.desc+ "</a></li></div>")
+         			.appendTo(ul);
+         	}; 
+
+
+    $('#willaya').autocomplete({
+         	delay: 0, // show suggestions immediately
+         	position: { collision: 'flip' }, // automatic menu position up/down
+         	minLength: 1,
+         	source : function(requete, reponse){
+         		var term = $('#willaya').val();
+         		var DATA = 'term=' + term;
+         		$.ajax({
+         			type:"POST",
+         			url : "{{ path('ajax_autocomplete_Wilaya') }}",
+         			dataType : 'json',
+         			data : DATA,
+         
+         			success : function(donnee){
+         				//Use $.map() to change the values of an array.
+         				reponse($.map(donnee, function(objet){
+         					return objet;
+         				}));
+         			}
+         		});
+         	},
+         })
+		          	//pour afficher les informations sur deux lignes
+         	.data("ui-autocomplete")._renderItem = function (ul, item) {
+                                     var wilaya;
+                    if (item.label == 'aucun résultat trouvé veuillez vérifier les données Wilaya') {  
+
+                        wilaya = "<img src='{{asset('images/icon/worning.png')}}'>";
+                    }
+                    else {
+
+                        wilaya = "<img src='{{asset('images/country/algeria.png')}}'>" ;
+                    }
+         		return $("<div class='container'><li>")
+         			.data("ui-autocomplete-item", item)
+                    .append(wilaya)
+         			.append("<a style='color:#A8A8A8'>" 
+         			+ "<span style='font-weight: 600; color:#888888'>" + item.label + "</span>"+ "</a></li></div>")
+         			.appendTo(ul);
+         	};
+
+    </script>
+
+
+
+
+{#
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="{{asset('src/page_errour/style.css')}}"> 
+<link href="{{asset('src/doctor/style.css')}}" rel="stylesheet" type="text/css">
+
+
+<link rel="stylesheet" href="{{asset('css/mobiscroll.javascript.min.css')}}">
+<script src="{{asset('js/mobiscroll.javascript.min.js')}}"></script>
+
+
+
+
+<div class="content_wrapper">
+	<div class="container-fluid">
+
+
+  {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+
+{% if recharche == 0 %}
+    {% if doc == null and wilaaya != null %}
+    <div id="notfound">
+            <div class="notfound">
+                <div class="notfound-404">
+                    <h1>:(</h1>
+                </div>
+                <h2>{{'Doctor.error.mgs1'|trans}}<span class="h2">{{ wilaaya}}</span> {{'Doctor.error.mgs3'|trans}}</h2>
+                <p class="p">{{'Doctor.error.mgs4'|trans}}</p>
+                <a href="{{path('Index')}}">{{'Doctor.error.mgs5'|trans}}</a>
+            </div>
+        </div>    
+    {% elseif doc != null and wilaaya == null %}
+        <div id="notfound">
+            <div class="notfound">
+                <div class="notfound-404">
+                    <h1>:(</h1>
+                </div>
+                <h2>Désolé  - <span class="h2">{{ doc}}</span>{{'Doctor.error.mgs3'|trans}}</h2>
+                <p class="p">{{'Doctor.error.mgs4'|trans}}</p>
+                <a href="{{path('Index')}}">{{'Doctor.error.mgs5'|trans}}</a>
+            </div>
+        </div>
+        </div>    
+    {% else %}
+        <div id="notfound">
+		    <div class="notfound">
+			    <div class="notfound-404">
+				    <h1>:(</h1>
+			    </div>
+			        <h2>Désolé  - <span class="h2">{{ doc}}</span>  {{'Doctor.error.mgs2'|trans}} <span class="h2">{{ wilaaya}}</span>{{'Doctor.error.mgs3'|trans}}</h2>
+			        <p class="p">{{'Doctor.error.mgs4'|trans}}</p>
+			     <a href="{{path('Index')}}">{{'Doctor.error.mgs5'|trans}}</a>
+		    </div>
+	    </div>
+	</div> 
+    {% endif %}
+{% endif %}
+
+
+{% for doctor in doctors %}
+
+        
+                {{ form_start(Form) }}
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 p-2">
+                                    {{form_row(Form.doctor)}}
+                                </div>
+                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 p-2">
+                                    {{form_row(Form.willaya)}}
+                                </div>                                        
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 p-2">
+                                     {{form_row(Form.submit)}}
+                                </div>
+                            </div>
+                        </div>
+                {{ form_end(Form) }}
+<br>
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-5 col-md-12 col-sm-12">
+                        {% set type = ''%}
+                        {% set address = ''%}
+                        {% set wilaya = ''%}
+                        {% set town = ''%}
+                        {% set fax = ''%}
+                        {% set webSite = ''%}
+                        {% set phone = ''%}
+                {% for HospitalCenter in HospitalCenters %}
+                    {% if HospitalCenter.doctor.id == doctor.id %}
+                        {% set address = HospitalCenter.address %}
+                        {% set wilaya = HospitalCenter.wilaya %}
+                        {% set town = HospitalCenter.town %}
+                        {% set type = HospitalCenter.type  %}
+                        {% set fax = '/ fax: ' ~  HospitalCenter.fax %}
+                        {% set webSite = 'site: ' ~ HospitalCenter.webSite %}
+                        {% set phone = '/ Tel: ' ~  HospitalCenter.phone %}
+
+                    {% endif %}
+                {% endfor %}     
+
+ 
+                    <!-- Card -->
+                <div class="card testimonial-card">
+                    <div class="card-up indigo lighten-1  blue-gradient" style="padding-top: 4%;">
+                        <h2 class="card-header-title mb-2" style="text-align: center;">{{doctor.title}} {{doctor.lastName}} {{doctor.firstName}}</h2>
+                        <p class="card-header-subtitle mb-4" style="text-align: center;"></p>
+                    </div>
+
+                        <!-- Avatar -->
+                    <div class="avatar mx-auto white" style="max-width:30%;">
+                        <img src="{{asset('images/user_profile/')}}{{doctor.imageName }}" class="rounded-circle" alt="woman avatar">
+                    </div>
+
+                        <!-- Content -->
+                    <div class="card-body" style="text-align: center;">
+                            <!-- Name -->
+                        <h4 class="card-title"> {{doctor.specialisation.description}} </h4>
+                        <h5 class="card-title"> {{doctor.company|upper}} {{type}}</h5>
+                        <h6 class="card-title"> {{wilaya}} {{address}} {{town}}</h6>
+                        <h6 class="card-title"> {{webSite}} {{fax}} {{phone}}</h6>
+                        <hr>
+                        <button type="button" data-toggle="tooltip" data-placement="bottom" title="{{'Doctor.error.mgs7'|trans}}" class="btn aqua-gradient btn-rounded col-lg-12 col-md-12 col-sm-12 col-12 ">{{'Doctor.error.mgs6'|trans}}</button>
+                    </div>
+                </div>
+                    <!-- Card -->
+            </div>
+
+
+            <!-- calonder -->
+
+            <div class="col-lg-7 col-md-12 col-sm-12">
+                <div class="card testimonial-card">
+                    <div class="card-up  lighten-1">
+                        <div class="mbsc-align-center">
+                            <div id="{{doctor.id}}"></div>
+                        </div>
+                    </div>
+                </div>
+            
+
+                <div id="test{{doctor.id}}">
+                    <div class="card-body" id="test"style="margin-left:-1px;">
+                        {% set te =  '' %}
+                            {% set foo = [] %}
+                            {% set date_exst = [] %}
+                
+                                {% for PatientEvent in PatientEvents  %}
+
+                                    {% if PatientEvent.doctor.id == doctor.id and PatientEvent.startDatetime|date("Y-m-d") ==  datedep %}
+
+                                        {% set te =  PatientEvent.startDatetime|date("H:i") %}
+
+                                            {% if te not in foo %}
+
+                                                {% set foo = foo|merge([PatientEvent.startDatetime|date("H:i")])  %}
+
+                                            {% elseif te in foo and te not in date_exst %}
+
+                                                {% set date_exst = date_exst|merge([PatientEvent.startDatetime|date("H:i")])  %}
+
+                                            {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+
+
+                             {% set rr = 0 %}
+                                {% for workingtime in workingtimes %}
+                                    {% set test = 0 %}
+                                    {% set rr =  rr + test %}
+
+                                        {% if workingtime.doctor.id == doctor.id and workingtime.startDatetime|date("Y-m-d") ==  datedep %} 
+                                            {% set test =  1 %}
+                                            {% set rr =  rr + test %}
+
+                                        {% endif %}
+                                 {% endfor %}
+
+                            {% if rr >= 1 %}
+                                {% for workingtime in workingtimes %}
+
+                                    {% if workingtime.doctor.id == doctor.id and workingtime.startDatetime|date("Y-m-d") ==  datedep %} 
+                                        {% set date_disabled = "now"|date("Y-m-d H:i")|date_modify('+60 minute')|date("Y-m-d H:i") %}
+                                    {% if  workingtime.startDatetime|date("H:i") in foo or  workingtime.startDatetime|date("Y-m-d H:i") < date_disabled  %}        
+                                        {% if is_granted('ROLE_ADMIN') %}
+                                            <button id="{{doctor.id}}" type="button" class="btn btn-outline-info btn-rounded waves-effect" data-placement="top" data-toggle="tooltip" title="Prenez rendez-vous dont vous devez posséder le compte patient" style="margin: 4px 4px;" disabled>{{ workingtime.startDatetime|date("H:i")}}</button>
+                                        {% else %}
+                                            <button id="{{doctor.id}}" type="button" class="btn btn-outline-info btn-rounded waves-effect" style="margin: 4px 4px;" disabled>{{ workingtime.startDatetime|date("H:i")}}</button>
+                                        {% endif %}
+
+                                    {% else %}
+                                        {% if is_granted('ROLE_ADMIN') %}
+                                            <button id="{{doctor.id}}" type="button" class="btn btn-outline-info btn-rounded waves-effect" data-placement="top" data-toggle="tooltip" title="Prenez rendez-vous dont vous devez posséder le compte patient" style="margin: 4px 4px;">{{ workingtime.startDatetime|date("H:i")}}</button>
+                                        {% else %}
+                                            <a href="{{ path('Confirmation',{'id': doctor.id,'heure':workingtime.startDatetime|date("H:i") }) }}" > <button id="{{doctor.id}}" type="button" class="btn btn-outline-info btn-rounded waves-effect" style="margin: 4px 4px;">{{ workingtime.startDatetime|date("H:i")}}</button></a>
+                                        {% endif %}
+                                    {% endif %}
+                                        {% set date = workingtime.startDatetime|date("H:i") %}
+                                        {% set date1 = workingtime.startDatetime|date("Y-m-d H:i") %}
+                                        {% set condition = true %} 
+                                        {% set test1 = 0 %} 
+
+                                                {% for i in 1.. 10000 if condition %}
+                                                    {% set date = date|date_modify(workingtime.doctor.workingtime)|date("H:i") %}
+                                                    {% set date1 = date1|date_modify(workingtime.doctor.workingtime)|date("Y-m-d H:i") %}
+
+                                                        {% if date|date("H") == "01" %}
+                                                            {% set test1 = test1 + 1 %} 
+                                                        {% endif %}
+
+                                                            {% if date == workingtime.endDatetime|date("H:i") 
+                                                                or (date|date("H") > workingtime.endDatetime|date("H") ) 
+                                                                or date == "00:00" 
+                                                                or date|date("H") == "00"
+                                                                or test1 > 1 %}
+                                                                    {% set condition = false %}
+                                                            {% else %}
+
+                                                                    {% set date_disabled = "now"|date("Y-m-d H:i")|date_modify('+60 minute')|date("Y-m-d H:i") %}
+
+                                                                        {% if  date in foo or date1 < date_disabled %}
+
+                                                                            {% if is_granted('ROLE_ADMIN') %}
+                                                                                <button id="{{doctor.id}}" type="button" class="btn btn-outline-info btn-rounded waves-effect" disabled data-placement="top" data-toggle="tooltip" title="Prenez rendez-vous dont vous devez posséder le compte patient" style="margin: 4px 4px;">{{date}}</button>
+                                                                            {% else %}
+                                                                                <button id="{{doctor.id}}" type="button" class="btn btn-outline-info btn-rounded waves-effect" style="margin: 4px 4px;" disabled>{{date}}</button>
+                                                                            {% endif %}
+
+                                                                        {% else %}
+                                                                            {% if is_granted('ROLE_ADMIN') %}
+                                                                                <button id="{{doctor.id}}" type="button" class="btn btn-outline-info btn-rounded waves-effect" data-placement="top"  data-toggle="tooltip" title="Prenez rendez-vous dont vous devez posséder le compte patient" style="margin: 4px 4px;">{{date}}</button>
+                                                                            {% else %}
+                                                                                <a href="{{ path('Confirmation',{'id': doctor.id,'heure':date}) }}" > <button id="{{doctor.id}}" type="button" class="btn btn-outline-info btn-rounded waves-effect" style="margin: 4px 4px;">{{ date}}</button></a>
+                                                                            {% endif %}
+                                                                        {% endif %}
+                                                                    
+                                                            {% endif %}
+
+                                                {% endfor %}
+
+                                    {% endif %}
+
+                                {% endfor %}
+
+                            {% else %}
+
+                                <img id="img" src="{{asset('images/icon/tv.jpg')}}" alt="Smiley face" style="width: 100%;"  >
+                        {% endif %}
+
+
+                    </div>
+                </div>            
+             </div>
+        </div>
+    </div>
+    <br>
+<br>
+
+
+    <script>   
+        var date = new Date();
+        var date =  date.getFullYear()+ '-' +((date.getMonth() > 8) ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1))) + '-' + ((date.getDate() > 9) ? date.getDate() : ('0' + date.getDate())) ;
+            document.cookie="date_rdv="+date;
+                $('#test'+{{doctor.id}}).load(location.href +  ' #test'+{{doctor.id}});
+
+            mobiscroll.settings = {
+                lang: 'fr', // Specify language like: lang: 'pl' or omit setting to use default
+                theme: 'mobiscroll', // Specify theme like: theme: 'ios' or omit setting to use default
+                display: 'inline' // Specify display mode like: display: 'bottom' or omit setting to use default
+            };
+         
+            mobiscroll.calendar('#' +{{doctor.id}}, {
+                onSet: function(event, inst) {
+
+                var date = new Date(inst.getVal());
+                var date =  date.getFullYear()+ '-' +((date.getMonth() > 8) ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1))) + '-' + ((date.getDate() > 9) ? date.getDate() : ('0' + date.getDate())) ;
+                document.cookie="date_rdv="+date;
+                var cookieValue = getCook('date_rdv');
+                $('#test'+{{doctor.id}}).load(location.href +  ' #test'+{{doctor.id}});
+                        
+                    },
+                min: new Date(),
+                weeks: 1
+             });
+    </script>
+
+    <script>
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+                });
+
+        function getCook(cookiename)  {
+            var cookiestring=RegExp(cookiename+"=[^;]+").exec(document.cookie);
+            return decodeURIComponent(!!cookiestring ? cookiestring.toString().replace(/^[^=]+./,"") : "");
+             };
+
+        $(document).ready(
+            function() {
+            setInterval(function() {
+                $('#show').load('HomeController.php');
+                        }, 1000);
+             }
+        );
+
+        $( "#doctor, #willaya" ).removeClass( "moha" );
+        $("#submit , #doctor, #willaya").addClass("bntsubmite");
+
+    </script>
+
+{% endfor %}
+
+    <script>
+        //$.noConflict();
+ $('#doctor ').autocomplete({
+         	delay: 0, // show suggestions immediately
+         	position: { collision: 'flip' }, // automatic menu position up/down
+         	minLength: 1,
+         	source : function(requete, reponse){
+         		var term = $('#doctor').val();
+         		var DATA = 'term=' + term;
+         		$.ajax({
+         			type:"POST",
+         			url : "{{ path('ajax_autocomplete_doctor') }}",
+         			dataType : 'json',
+         			data : DATA,
+         
+         			success : function(donnee){
+         				//Use $.map() to change the values of an array.
+         				reponse($.map(donnee, function(objet){
+         					return objet;
+         				}));
+         			}
+         		});
+         	},
+         })
+
+		          	//pour afficher les informations sur deux lignes
+
+         	.data("ui-autocomplete")._renderItem = function (ul, item) {
+         		return $("<div class='container'><li>")
+         			.data("ui-autocomplete-item", item)
+                    .append("<img src='{{asset('images/user_profile/')}}"+item.c+"' class='avatar' alt='{{asset('images/user_profile/')}}"+item.c+"' style=' max-width:40px;border-radius: 50%;'>" )
+         			.append("<a style='color:#A8A8A8' >" 
+         			+ "<span style='font-weight: 600; color:#888888'>" +" " + item.label + "</span><br>" + item.desc+ "</a></li></div>")
+         			.appendTo(ul);
+         	}; 
+
+
+    $('#willaya').autocomplete({
+         	delay: 0, // show suggestions immediately
+         	position: { collision: 'flip' }, // automatic menu position up/down
+         	minLength: 1,
+         	source : function(requete, reponse){
+         		var term = $('#willaya').val();
+         		var DATA = 'term=' + term;
+         		$.ajax({
+         			type:"POST",
+         			url : "{{ path('ajax_autocomplete_Wilaya') }}",
+         			dataType : 'json',
+         			data : DATA,
+         
+         			success : function(donnee){
+         				//Use $.map() to change the values of an array.
+         				reponse($.map(donnee, function(objet){
+         					return objet;
+         				}));
+         			}
+         		});
+         	},
+         })
+		          	//pour afficher les informations sur deux lignes
+         	.data("ui-autocomplete")._renderItem = function (ul, item) {
+         		return $("<div class='container'><li>")
+         			.data("ui-autocomplete-item", item)
+                    .append("<img src='{{asset('images/country/algeria.png')}}' class='avatar' alt='{{asset('images/country/algeria.png')}}'>" )
+         			.append("<a style='margin:auto; color:#A8A8A8;'>" 
+         			+ "<span style='font-weight: 600; color:#888888'>" + item.label + "</span>"+ "</a></li></div>")
+         			.appendTo(ul);
+         	};
+
+    </script>
+
+    <div class="navigation">
+        {{ knp_pagination_render(doctors) }}
+    </div>
+
+	        </div>
+        </div> 
+    </div>
+</div>    
+
+#}
+
+
+
+
+
+{% endblock %}

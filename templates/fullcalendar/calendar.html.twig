@@ -1,0 +1,1647 @@
+{% extends 'baseDashboard.html.twig' %}
+{% block title test %} {% block body %}
+
+
+
+  			<div class="content_wrapper">
+				<div class="container-fluid">
+
+        
+
+{# start link css #}
+
+	<link href="{{asset('src/fullcalendar/css/style.css')}}" rel='stylesheet' />
+	<link href="{{asset('src/fullcalendar/packages/core/main.css')}}" rel='stylesheet' />
+	<link href="{{asset('src/fullcalendar/packages/daygrid/main.css')}}" rel='stylesheet' />
+	<link href="{{asset('src/fullcalendar/packages/timegrid/main.css')}}" rel='stylesheet' />
+	<link href="{{asset('src/fullcalendar/packages/bootstrap/main.css')}}" rel='stylesheet' />
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> 
+
+	<link rel="stylesheet" type="text/css" href="{{asset('src/datetime/jquery.datetimepicker.css')}}" />
+    <script src="{{asset('src/datetime/jquery.datetimepicker.full.js')}}"></script>
+ 
+{% if test == 'calendar' %}
+	{% for notification in notifications %}
+
+			{% if notification.NumberOfChangePatient == 1  and notification.startDatetime|date("Y-m-d H:i") >= "now"|date("Y-m-d H:i") %}
+		<div class="col-12">
+				<div class="alert alert-danger alert-dismissible fade show" role="alert" >
+			le rendez vous et modifié par <strong>{{notification.patient.lastName}} {{notification.patient.firstName}}</strong>
+			nouvelle date est  <strong> {{notification.startDatetime|date("Y-m-d H:i", "Europe/Paris")}}</strong>
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			</div>
+		</div>
+			{% endif %}
+	{% endfor %}
+{% endif %}
+
+     {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+	 {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+
+
+{% if test == 'les horaires de travail' %}
+
+<div class="col-md-4">
+<select class="browser-default custom-select">
+  <option disabled  selected> {{ 'calendar_hour.choose_the_working_time'|trans }}</option>
+  <option value="+15 minute">15 {{ 'calendar_hour.minutes'|trans }}</option>
+  <option value="+20 minute">20 {{ 'calendar_hour.minutes'|trans }}</option>
+  <option value="+30 minute">30 {{ 'calendar_hour.minutes'|trans }}</option>
+  <option value="+45 minute">45 {{ 'calendar_hour.minutes'|trans }}</option>
+  <option value="+50 minute">50 {{ 'calendar_hour.minutes'|trans }}</option>
+  <option value="+60 minute">1 {{ 'calendar_hour.hour'|trans }}</option>
+  <option value="+75 minute">1 {{ 'calendar_hour.hour'|trans }} 15 {{ 'calendar_hour.minutes'|trans }}</option>
+  <option value="+90 minute">1 {{ 'calendar_hour.hour'|trans }} 30 {{ 'calendar_hour.minutes'|trans }}</option>
+  <option value="+105 minute">1 {{ 'calendar_hour.hour'|trans }} 45 {{ 'calendar_hour.minutes'|trans }}</option>
+  <option value="+110 minute">1 {{ 'calendar_hour.hour'|trans }} 50 {{ 'calendar_hour.minutes'|trans }}</option>
+  <option value="+120 minute">2 {{ 'calendar_hour.hour'|trans }}</option>
+</select>
+</div>
+{% endif %}
+{% if workingtime == "+15 minute" %}
+{% set workingtime = "00:15:00" %}
+
+{% elseif workingtime == "+20 minute" %}
+{% set workingtime = "00:20:00" %}
+
+{% elseif workingtime == "+30 minute" %}
+{% set workingtime = "00:30:00" %}
+
+{% elseif workingtime == "+45 minute" %}
+{% set workingtime = "00:45:00" %}
+
+{% elseif workingtime == "+50 minute" %}
+{% set workingtime = "00:50:00" %}
+
+{% elseif workingtime == "+60 minute" %}
+{% set workingtime = "00:60:00" %}
+
+{% elseif workingtime == "+75 minute" %}
+{% set workingtime = "00:75:00" %}
+
+{% elseif workingtime == "+90 minute" %}
+{% set workingtime = "00:90:00" %}
+
+{% elseif workingtime == "+105 minute" %}
+{% set workingtime = "00:105:00" %}
+
+{% elseif workingtime == "+110 minute" %}
+{% set workingtime = "00:110:00" %}
+
+{% elseif workingtime == "+120 minute" %}
+{% set workingtime = "00:120:00" %}
+{% endif %}
+
+{# start script calander #}
+
+<style>#calendar .fc-highlight {
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 0%, rgba(1,180,234,1) 0%, rgba(0,255,244,0.773546918767507) 0%)!important;
+	
+}
+
+.fc-scroller{
+	overflow: auto !important;
+    height: 100% !important;
+}
+@media (max-width: 576px) {
+	.fc-toolbar {
+    display: block !important;
+	}
+}
+@media (max-width: 531px){
+.fc-toolbar .fc-right {
+    margin: 0px !important;
+}
+.fc-view{
+	margin-top: 10%;
+}
+}
+.erour{
+color:red;
+}
+ul.ks-cboxtags li label {
+    padding: 8px 17px !important;
+}
+.travail{
+width: 250px;
+}
+label[for="user_event_fgColor"] {
+	    width: 170px !important;
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            plugins: ['interaction', 'dayGrid', 'timeGrid','timeGridPlugin' , 'list', 'bootstrap', 'googleCalendarPlugin' ],
+			slotDuration: '{{workingtime}}' ,//(30 minutes) 
+			//hiddenDays: [ 2, 4 ],
+            timeZone: 'UTC',
+            locale: "{{ 'lang'|trans }}",
+            selectable: true,
+            themeSystem: 'bootstrap',
+            navLinks: true,
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridMonth,timeGridDay,listMonth'
+            },
+            weekNumbersWithinDays: true,
+            weekNumbers: true,
+            eventLimit: true,
+            editable: true,
+            droppable: true,
+			selectable: true,
+
+            dateClick: function(info) {
+
+			$("#reminding").on("change paste keyup", function() {
+				$("#reminding_event_startDatetime").val(info.dateStr+' '+$( this ).val());
+				$("#RemindingEvent").removeAttr("disabled"); 
+			}); 
+			$("#reminding_event_endDatetime").on("change paste keyup", function() {
+				$("#RemindingEvent").removeAttr("disabled"); 
+			}); 
+			$("#patient_event_motifid").attr("hidden", "true");
+
+			$( "select" ).change(function() {
+				 motif = $( this ).val();
+			$("#patient_event_motifid").val(motif);
+
+			});
+              document.cookie = "date="+info.dateStr;
+
+              $('#myModal').modal();     
+
+
+
+
+            },
+
+
+    select: function(info) {
+		var ed = info.endStr;
+		var sd = info.startStr;
+			if(sd.length==10){
+				var startStr = moment(sd).format('YYYY-MM-DD HH:mm');
+				var vEnd = moment(ed).subtract(1, 'minutes').format("YYYY-MM-DD HH:mm");
+				
+			}else{
+				var startStr = moment(sd).utc().format('YYYY-MM-DD HH:mm');				
+				var vEnd = moment(ed).subtract(1, 'hours').format("YYYY-MM-DD HH:mm");
+
+			}
+		var endStr = moment(vEnd).subtract(0, "days").format("YYYY-MM-DD HH:mm");
+		jour = moment(startStr).format('dddd');
+		$("#"+jour).prop('checked', true);
+
+		//alert('selected ' + startStr + ' to ' + endStr );
+		$('#myModalhour').modal(); 
+		$("#user_event_startDatetime").val(startStr);
+		$("#user_event_endDatetime").val(endStr);
+		$("#user_event_title").val('ce jour de travail');
+
+    },
+    eventClick: function(info,calEvent, jsEvent, view){
+
+          //var  motif =info.event.motif;
+		  var motif = info.event.constraint;
+		  var start = info.event.start;
+		  var start2 = start.getUTCFullYear() +"-"+((start.getUTCMonth() > 8) ? (start.getUTCMonth() + 1) : ('0' + (start.getUTCMonth() + 1)))+"-"+((start.getUTCDate() > 9) ? start.getUTCDate() : ('0' + start.getUTCDate())) ;
+		  var start = start.getUTCFullYear() +"-"+((start.getUTCMonth() > 8) ? (start.getUTCMonth() + 1) : ('0' + (start.getUTCMonth() + 1)))+"-"+((start.getUTCDate() > 9) ? start.getUTCDate() : ('0' + start.getUTCDate()))+ " "+((start.getUTCHours() > 5) ? start.getUTCHours() : ('0' + start.getUTCHours()))+ ":" + ((start.getUTCMinutes() > 5) ? start.getUTCMinutes() : ('0' + start.getUTCMinutes())) + ":" + ((start.getUTCSeconds() > 9) ? start.getUTCSeconds() : ('0' + start.getUTCSeconds()))  ;
+		  var end = info.event.end;
+		  var end2 = end.getUTCFullYear() +"-"+((end.getUTCMonth() > 8) ? (end.getUTCMonth() + 1) : ('0' + (end.getUTCMonth() + 1)))+"-"+((end.getUTCDate() > 9) ? end.getUTCDate() : ('0' + end.getUTCDate()));
+		  var end = end.getUTCFullYear() +"-"+((end.getUTCMonth() > 8) ? (end.getUTCMonth() + 1) : ('0' + (end.getUTCMonth() + 1)))+"-"+((end.getUTCDate() > 9) ? end.getUTCDate() : ('0' + end.getUTCDate()))+ " "+((end.getUTCHours() > 5) ? end.getUTCHours() : ('0' + end.getUTCHours()))+ ":" + ((end.getUTCMinutes() > 5) ? end.getUTCMinutes() : ('0' + end.getUTCMinutes())) + ":" + ((end.getUTCSeconds() > 9) ? end.getUTCSeconds() : ('0' + end.getUTCSeconds()))  ;
+		  var  title =info.event.borderColor +' '+ info.event.classNames +' '+ motif;
+		  var dater= start;
+            //alert(info.event.title);
+
+
+ 
+		  $( "select" ).change(function() {
+				 motif = $( this ).val();
+				 //alert($( this ).val());
+			$("#motif").val(motif);
+
+			});
+
+
+		$("#date").val(start);
+		$("#motif").val(motif);
+		  $("#text2").val(title);
+
+
+		 $("#text2").bind("change keyup input",function() {
+  				title = $("#text2").val();
+			//alert(tit);
+		});
+		 $("#date").bind("change",function() {
+  				dater = $("#date").val();
+			//alert(dater);
+		});
+
+		
+         
+
+          $("#modifier").click(function () {
+			  			//alert(dater);
+
+			    var  id =info.event.id;
+			  title =info.event.borderColor +' '+ info.event.classNames +' '+ motif;
+			  //alert(title);
+              $.ajax({
+                 url:"{{ path('ajax_edit') }}",
+                   data: {'id':id,'title':title,'idmotif':motif,'dater':dater},
+                    method: 'post',
+                   success: function (data) {
+
+					   $('#myModal2').modal('hide');
+                        
+					Swal.fire({
+						position: 'top-end',
+						icon: 'success',
+						title: 'la modification d\'un rendez-vous avec succès',
+						showConfirmButton: false,
+						timer: 3000
+						});
+						setTimeout(function(){
+						window.location.reload(1);
+						}, 2500);                  
+						},
+                    error: function (data) {
+						
+					   $('#myModal2').modal('hide');
+                        
+					Swal.fire({
+						position: 'top-end',
+						icon: 'error',
+						title: 'Oops...',
+						text: 'Something went wrong!',
+						showConfirmButton: false,
+						timer: 3000
+						});
+						setTimeout(function(){
+						window.location.reload(1);
+						}, 2500); 
+						console.log("error");
+                        console.log("PLease Re delete"+JSON.stringify(data) );
+                  },
+                });
+				    });
+
+
+			$('#myModal2').modal(); 
+
+            $("#supprimer").click(function () 
+				{
+
+    			$('#myModal1').modal();
+	
+				});
+
+    		$('#myModal1').modal('hide');
+
+        	$("#Delete").click(function () {
+					var  id =info.event.id;
+				$.ajax({
+					url:"{{ path('ajax_Delete') }}",
+					data: {'id':id},
+							method: 'post',
+								success: function (data) 
+							{	
+								location.reload()
+								console.log("success");
+								console.log(data);
+								
+							
+							},
+								error: function () 
+							{
+								console.log("error");
+                      		    console.log("PLease Re delete"+JSON.stringify(data) );
+							},
+						});
+						
+					});  
+
+					 /*medifie hour*/ 
+
+		var hure_date_fin = ''; var hure_date_deb= '';var hure_titel= info.event.title;
+
+		  $( "#hure_title" ).change(function() {
+  			hure_titel = $( this ).val();	 
+			});
+
+		  $( "#hure_hure_deb" ).change(function() {
+	   $("#hure_hure_date_deb").val(start2+' '+ $( this ).val());
+			hure_date_deb = start2+' '+ $( this ).val();	 
+			});
+
+		$( "#hure_hure_fin" ).change(function() {
+		 $("#hure_hure_date_fin").val(end2+' '+ $( this ).val());
+			hure_date_fin = end2+' '+ $( this ).val();
+			});
+		$("#hure_title").val(info.event.title);
+		$("#hure_date_deb").val(start);
+		$("#hure_date_fin").val(end);
+     
+          $("#modifier_hure").click(function () {
+			  if(hure_titel == '' || hure_date_fin =='' || hure_date_deb == '' ){
+				  alert("Vous devez remplir tous les champs pour terminer le processus");
+			  }else if(hure_date_fin < hure_date_deb){
+				  alert("Vous avez une erreur dans l'heure");
+
+			  }else{
+
+			    var  id =info.event.id;
+
+              $.ajax({
+                 url:"{{ path('ajax_edit_hure') }}",
+                   data: {'id':id,'hure_date_deb':hure_date_deb,'hure_date_fin':hure_date_fin,'hure_titel':hure_titel},
+                    method: 'post',
+                   success: function (data) {
+
+					   $('#myModal2').modal('hide');
+                        
+					Swal.fire({
+						position: 'top-end',
+						icon: 'success',
+						title: 'la modification d\'un rendez-vous avec succès',
+						showConfirmButton: false,
+						timer: 3000
+						});
+						setTimeout(function(){
+						window.location.reload(1);
+						}, 2500);                  
+						},
+                    error: function (data) {
+						
+					   $('#myModal2').modal('hide');
+                        
+					Swal.fire({
+						position: 'top-end',
+						icon: 'error',
+						title: 'Oops...',
+						text: 'Something went wrong!',
+						showConfirmButton: false,
+						timer: 3000
+						});
+						setTimeout(function(){
+						window.location.reload(1);
+						}, 2500); 
+						console.log("error");
+                        console.log("PLease Re delete"+JSON.stringify(data) );
+                  },
+                });
+				}
+				    });
+
+		$("#supprimer_hure").click(function () 
+				{
+
+    			$('#myModal_hure').modal();
+	
+				});
+
+    		$('#myModal_hure').modal('hide');
+
+        	$("#Delete_hure").click(function () {
+					var  id =info.event.id;
+					//alert(id);
+				$.ajax({
+					url:"{{ path('ajax_Delete_hure') }}",
+					data: {'id':id},
+							method: 'post',
+								success: function (data) 
+							{	
+								location.reload()
+								console.log("success");
+								console.log(data);
+								
+							
+							},
+								error: function () 
+							{
+								console.log("error");
+                      		    console.log("PLease Re delete"+JSON.stringify(data) );
+							},
+						});
+						
+					});  
+/* note */
+
+
+		$("#note_Date_début").val(start);
+		$("#note_Date_fin").val(end);
+		$("#form18").val(info.event.rendering);
+					$("#note_Date_début").attr("readonly", "true");
+					$("#note_Date_fin").attr("readonly", "true");
+					$("#note_heure_début").attr("readonly", "true");
+					$("#note_heure_fin").attr("readonly", "true");
+					$("#note_Date_Nouveau_début").attr("readonly", "true");
+					$("#note_Date_Nouveau_fin").attr("readonly", "true");
+
+    		$('select option[value='+info.event.overlap+']').attr("selected",true);
+
+			$("#note_heure_début").on("change paste keyup", function() {
+				$("#note_Date_Nouveau_début").val(start2+' '+$( this ).val());
+			}); 
+			$("#note_heure_fin").on("change paste keyup", function() {
+				$("#note_Date_Nouveau_fin").val(end2+' '+$( this ).val());
+			}); 
+
+				var statu = info.event.overlap;
+
+		  $( "select" ).change(function() {
+				statu = $( this ).val();
+			});
+
+          $("#modifier_note").click(function () {
+			  if($("#note_heure_début").val() =='' || $("#note_heure_fin").val() ==''){
+				  alert("Vous devez remplir tous les champs pour terminer le processus");
+			  }else if($("#note_heure_début").val() > $("#note_heure_fin").val() ){
+				  alert("Vous avez une erreur dans l'heure");
+
+			  }else{
+
+			    var  note_date_deb =$("#note_Date_Nouveau_début").val();
+			    var  note_date_fin =$("#note_Date_Nouveau_fin").val();
+			    var  body =$("#form18").val();
+			    var  id =info.event.id;
+
+              $.ajax({
+                 url:"{{ path('ajax_edit_note') }}",
+                   data: {'id':id,'statu':statu,'note_date_deb':note_date_deb,'note_date_fin':note_date_fin,'body':body},
+                    method: 'post',
+                   success: function (data) {
+
+					   $('#myModal2').modal('hide');
+                        
+					Swal.fire({
+						position: 'top-end',
+						icon: 'success',
+						title: 'la modification d\'un rendez-vous avec succès',
+						showConfirmButton: false,
+						timer: 3000
+						});
+						setTimeout(function(){
+						window.location.reload(1);
+						}, 2500);                  
+						},
+                    error: function (data) {
+						
+					   $('#myModal2').modal('hide');
+                        
+					Swal.fire({
+						position: 'top-end',
+						icon: 'error',
+						title: 'Oops...',
+						text: 'Something went wrong!',
+						showConfirmButton: false,
+						timer: 3000
+						});
+						setTimeout(function(){
+						window.location.reload(1);
+						}, 2500); 
+						console.log("error");
+                        console.log("PLease Re delete"+JSON.stringify(data) );
+                  },
+                });
+				}
+				    });
+
+$("#supprimer_note").click(function () 
+				{
+
+    			$('#myModal_note').modal();
+	
+				});
+
+    		$('#myModal_note').modal('hide');
+
+        	$("#Delete_note").click(function () {
+					var  id =info.event.id;
+					//alert(id);
+				$.ajax({
+					url:"{{ path('ajax_Delete_note') }}",
+					data: {'id':id},
+							method: 'post',
+								success: function (data) 
+							{	
+								location.reload()
+								console.log("success");
+								console.log(data);
+								
+							
+							},
+								error: function () 
+							{
+								console.log("error");
+                      		    console.log("PLease Re delete"+JSON.stringify(data) );
+							},
+						});
+						
+					});  
+
+
+        },     
+			
+			events: [{
+						{% for cal in cals %}
+
+						},
+						{ 
+					
+							id: '{{cal.id}}',
+							title: '{{cal.title}}',
+							start: '{{cal.startDatetime|date('Y-m-d H:i')}}',
+							end: moment('{{cal.endDatetime|date('Y-m-d H:i')}}').add(0, 'days').format("YYYY-MM-DD HH:mm:ss"),
+							color: '{{cal.bgColor}}',
+							textColor: '{{cal.fgColor}}',
+							{% if test == 'calendar'  %}
+							constraint: '{{cal.motif.Motif}}',
+							classNames:'{{cal.patient.firstName }}',
+							borderColor:'{{cal.patient.lastName}}',
+							{% endif %}
+							{% if test == 'note'  %}
+							rendering: '{{cal.body}}',
+							overlap: '{{cal.state}}',
+							{% endif %}
+						},{
+						{% endfor %} 
+						}
+					],
+   			eventRender: function (eventInfo) {
+				$(eventInfo.el).tooltip({                
+					title: eventInfo.event.title +"<BR>"+ "<BR>"+  eventInfo.event.groupId +"<BR>"+ eventInfo.event.groupId,
+					html: true,
+				});
+
+			},
+        });
+
+        calendar.render();
+    });
+
+</script>
+
+{# fin script calander #}
+
+
+
+{# start calander #}
+
+<div class="container col-sm-12">
+    <div id='calendar'></div>
+</div>
+
+{# end calander #}
+
+<!-- start calendar Hour  -->
+
+{% if test == 'les horaires de travail' %}
+<style>
+.modal-header {
+	padding: 0rem !important;
+}
+.waves-input-wrapper {
+    display:flex !important; 
+
+	}
+input[type="radio"] {
+  position: absolute;
+  visibility: hidden;
+  display: none;
+}
+
+label {
+  color: #9a929e;
+  display: inline-block;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 5px 20px;
+}
+label {
+    margin-bottom: .0rem !important;;
+}
+input[type="radio"]:checked + label {
+  color: #2c2a2d;
+  background: #00f3ff;
+}
+
+label + input[type="radio"] + label {
+  border-left: solid 3px #675f6b;
+}
+
+.radio-group {
+  border: solid 3px #675f6b;
+  display: inline-block;
+  margin: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+{# [type=checkbox]:checked, [type=checkbox]:not(:checked) {
+    opacity: 1 !important;
+}#}
+[type=radio]:checked, [type=radio]:not(:checked) {
+    opacity: 1 !important;
+} 
+
+ul.ks-cboxtags {
+    list-style: none;
+    padding: 20px;
+}
+ul.ks-cboxtags li{
+  display: inline;
+}
+ul.ks-cboxtags li label{
+    display: inline-block;
+    background-color: rgba(255, 255, 255, .9);
+    border: 2px solid rgba(139, 139, 139, .3);
+    color: #adadad;
+    border-radius: 25px;
+    white-space: nowrap;
+    margin: 3px 0px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: all .2s;
+}
+
+ul.ks-cboxtags li label {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+ul.ks-cboxtags li label::before {
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 12px;
+    padding: 2px 6px 2px 2px;
+    content: "\f067";
+    transition: transform .3s ease-in-out;
+}
+
+ul.ks-cboxtags li input[type="checkbox"]:checked + label::before {
+    content: "\f00c";
+    transform: rotate(-360deg);
+    transition: transform .3s ease-in-out;
+}
+
+ul.ks-cboxtags li input[type="checkbox"]:checked + label {
+    border: 2px solid #1bdbf8;
+    background-color: #12bbd4;
+    color: #fff;
+    transition: all .2s;
+}
+
+ul.ks-cboxtags li input[type="checkbox"] {
+  display: absolute;
+}
+ul.ks-cboxtags li input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+}
+ul.ks-cboxtags li input[type="checkbox"]:focus + label {
+  border: 2px solid #e9a1ff;
+}
+
+</style>
+<!-- start Modal HTML les horaires de travail  -->
+<div id="myModalhour" class="modal fade">
+	<div class="modal-dialog modal-login">
+		<div class="modal-content" id="travail">
+			<div class="modal-header">				
+				<h4 class="modal-title">{{'calendar_hour.Work_schedule'|trans}}</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+ {{ form_start(form) }}
+
+			<div class="form-group">
+
+						{{ form_widget(form.title ,{'attr': {'placeholder': "calendar_hour.title", 'autocomplete': 'off'}})}}
+
+			</div>
+			<div class="form-group">
+				<div class="row">
+					<div class="col-6">
+						{{ form_row(form.startDatetime ,{'label': 'calendar_hour.Start_date' ,'attr': {'autocomplete': 'off',}})}}
+					</div>
+					<div class="col-6">
+						{{ form_row(form.endDatetime ,{'label': 'calendar_hour.end_date' ,'attr': {'autocomplete': 'off'}})}}
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="row">
+					<div class="col-6">
+						{{ form_row(form.bgColor ,{'label': 'calendar_hour.background' ,'attr': {'autocomplete': 'off',}})}}
+					</div>
+					<div class="col-6">
+						{{ form_row(form.fgColor ,{'label': 'calendar_hour.text_color' ,'attr': {'autocomplete': 'off'}})}}
+					</div>
+				</div>
+			</div>
+			<div class="custom-control custom-checkbox">
+
+</div>
+	<div class="container">
+  		<ul class="ks-cboxtags"style="margin-left: -68px;margin-right: -100px;">
+		  	<h6>{{'calendar_hour.the_days_of_this_week'|trans}}</h6>
+			<li>{{ form_widget(form.week )}}</li>
+	    </ul>
+	</div>
+		<div class="container">
+  		<ul class="ks-cboxtags"style="margin-left: -50px;margin-right: -100px;">
+		  	<h6>{{'calendar_hour.the_next_period'|trans}}</h6>
+			<li>{{ form_widget(form.period )}}</li>
+	    </ul>
+	</div>
+
+
+
+					<div class="form-group">
+						<input type="submit" class="btn btn-primary btn-block btn-lg" id="Prendre"  value="{{'calendar_hour.Work_schedule'|trans}}">
+					</div>
+    {{ form_end(form) }}
+			</div>
+		</div>
+	</div>
+</div>  
+	
+
+<!-- start Modal HTML modifier les horaires de travail  -->
+
+<div id="myModal2" class="modal fade">
+	<div class="modal-dialog modal-login">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="avatar">
+					<img src="{{asset('images/avatar/avatar.png')}}" alt="Avatar">
+				</div>				
+				<h4 class="modal-title">{{'calendar_hour.modify_hour'|trans}}</h4>	
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body1">
+					<br><br>
+					<div class="form-group">
+						<input type="text" class="form-control" name="text1" placeholder="{{'calendar_hour.title'|trans}}"  autocomplete="off" id="hure_title">		
+					</div>
+					<div class="form-group row">
+							<div class="col-6">
+						<input type="text" class="form-control" name="text1" placeholder="{{'calendar_hour.time_date_start'|trans}}"  autocomplete="off" id="hure_date_deb" disabled>
+							</div>
+							<div class="col-6">		
+						<input type="text" class="form-control" name="text1" placeholder="{{'calendar_hour.time_end_date'|trans}}" autocomplete="off" id="hure_date_fin" disabled>		
+					</div>
+					</div>
+					<div class="form-group row">
+							<div class="col-6">
+						<input type="text" class="form-control" name="text1" placeholder="{{'calendar_hour.start_time'|trans}}"  autocomplete="off" id="hure_hure_deb" readonly>
+							</div>
+							<div class="col-6">		
+						<input type="text" class="form-control" name="text1" placeholder="{{'calendar_hour.end_time'|trans}}"   autocomplete="off" id="hure_hure_fin" readonly>		
+					</div>
+					</div> 
+					<div class="form-group row">
+							<div class="col-6">
+						<input type="text" class="form-control" name="text1" placeholder="{{'calendar_hour.Start_date'|trans}}"  id="hure_hure_date_deb" readonly>
+							</div>
+							<div class="col-6">		
+						<input type="text" class="form-control" name="text1" placeholder="{{'calendar_hour.end_date'|trans}}"  id="hure_hure_date_fin" readonly>		
+					</div>
+					</div>       
+					<div class="form-group">
+						<button type="submit" class="btn btn-info btn-lg btn-block login-btn" id="modifier_hure">{{'calendar_hour.edit_hour'|trans}}</button>
+					</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-outline-danger btn-lg btn-block" id="supprimer_hure">{{'calendar_hour.remove_hure'|trans}}</button>
+			</div>
+		</div>
+	</div>
+</div> 
+<!-- end Modal HTML modifier les horaires de travail  -->
+
+
+<!-- start Modal HTML supprimer les horaires de travail  -->
+<div id="myModal_hure" class="modal fade">
+	<div class="modal-dialog modal-confirm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="icon-box">
+					<i class="material-icons">&#xE5CD;</i>
+				</div>				
+				<h4 class="modal-title">{{'calendar_hour.Are_you_sure'|trans}}</h4>	
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body">
+				<p>{{'calendar_hour.msg'|trans}}</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-info" data-dismiss="modal">{{'calendar_hour.cancel'|trans}}</button>
+				<button type="button" class="btn btn-danger" id="Delete_hure">{{'calendar_hour.remove'|trans}} </button>
+			</div>
+		</div>
+	</div>
+</div> 
+<!-- end Modal HTML supprimer les horaires de travail  -->
+
+<script>
+   jQuery(document).ready(function() {
+
+            'use strict';
+
+        jQuery('#hure_hure_deb').datetimepicker({
+		datepicker:false,
+		format:'H:i'                       
+
+            });
+
+			jQuery('#hure_hure_fin').datetimepicker({
+				datepicker:false,
+				format:'H:i'
+					});
+        });
+
+
+
+{# $("#patient_event_startDatetime").attr("hidden",true); #}
+
+  {# $("#patient").on("change paste keyup", function() {
+      var date = $(this).val();
+      $("#patient_event_startDatetime").val(date);
+
+});      #}
+
+
+
+    </script>
+
+
+
+
+
+<script>
+		  $( "select" ).change(function() {
+				 dure = $( this ).val();
+
+              $.ajax({
+                 url:"{{ path('ajax_Temp') }}",
+                   data: {'Temp':dure},
+                    method: 'post',
+                   success: function (data) {                        
+					Swal.fire({
+						position: 'top-end',
+						icon: 'success',
+						title: 'la modification d\'un la durée de travail avec succès',
+						showConfirmButton: false,
+						timer: 3000
+						});
+						setTimeout(function(){
+						window.location.reload(1);
+						}, 2500);                  
+						},
+                    error: function (data) {
+						                        
+					Swal.fire({
+						position: 'top-end',
+						icon: 'error',
+						title: 'Oops...',
+						text: 'Something went wrong!',
+						showConfirmButton: false,
+						timer: 3000
+						});
+						setTimeout(function(){
+						window.location.reload(1);
+						}, 2500); 
+
+                  },
+                });
+
+
+			});
+
+
+$("#user_event_period_0").prop('checked', true);
+
+</script>
+
+{% endif %}
+
+
+<!-- end calendar Hour  -->
+
+
+
+
+<!-- start calendar remindingevent  -->
+
+
+{% if test == 'note' %}
+<style>
+.css .form-group .form-control {
+    border-radius: 20px;
+}
+.waves-input-wrapper {
+    display:flex !important; 
+
+	}
+#reminding_event_startDatetime{
+	                margin-top: 0%;
+                margin-bottom: 0%;
+         }
+
+.md-form label {
+    position: absolute;
+    top: -20% !important;
+	}
+	#ajouter_la_note{
+    width: 40%;
+    margin-top: -20%;
+    margin-left: 28%;
+    border-bottom: 1px solid #fff !important; 
+	}
+</style>
+
+<!-- start Modal HTML note  -->
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog cascading-modal modal-avatar modal-sm" role="document">
+    <!--Content-->
+    <div class="modal-content" style="width: 350px;">
+
+      <!--Header-->
+      <div class="modal-header" id="ajouter_la_note">
+        <img src="{{asset('images/avatar/1.jpg')}}" alt="avatar" class="rounded-circle img-responsive">
+      </div>
+	<div style="margin: -17% 4% 10%;">		            
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	</div>
+      <!--Body-->
+      <div class="modal-body css">
+		{{ form_start(form) }}
+			<div class="form-group">
+					{{ form_widget(form.username  ,{'attr': {'placeholder': "calendar_Reminding.Username_or_Email_or_Phone"}})}}
+			</div>
+					<div class='erour'></div>
+
+			<div class="form-group row">
+				 <div class="col-5">
+					<input id="reminding" class="form-control" type="text" placeholder=" {{'calendar_Reminding.hour'|trans}}"  autocomplete="off" required maxlength="5" readonly >					
+					</div>	
+					<div class="col-7">
+					{{ form_widget(form.startDatetime,{'attr': {'placeholder': "calendar_Reminding.Date_and_hour_start", 'class': 'md-form form-control md-form', 'autocomplete': 'off'} } ) }}
+				</div>		
+				</div>		
+
+				 <div class="form-group">
+					{{ form_widget(form.endDatetime,{'attr': {'placeholder': "calendar_Reminding.End_date_and_time", 'class': 'md-form form-control md-form', 'autocomplete': 'off'} } ) }}
+				</div>	
+				<div class="form-group" >
+            {{ form_widget(form.state ,{'attr': {'placeholder': "calendar_Reminding.state", 'autocomplete': 'off'}})}}
+				</div>	
+			<div class="form-group" >
+            {{ form_widget(form.body ,{'attr': {'placeholder': "calendar_Reminding.write", 'autocomplete': 'off'}})}}
+				</div>		
+					<div class="form-group">
+						<input type="submit" class="btn btn-primary btn-block btn-lg" id="RemindingEvent"  value="{{'calendar_Reminding.Add_Reminding'|trans}}">
+					</div>
+    {{ form_end(form) }}
+
+    <!--/.Content-->
+</div>
+</div>
+</div>
+</div>
+<!-- end Modal HTML note  -->
+  <script>// Material Select Initialization
+$(document).ready(function() {
+$('.mdb-select').materialSelect();
+});</script>
+
+
+<!-- start Modal HTML modifier note  -->
+
+<div id="myModal2" class="modal fade">
+	<div class="modal-dialog modal-login">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="avatar">
+					<img src="{{asset('images/avatar/avatar.png')}}" alt="Avatar">
+				</div>				
+				<h4 class="modal-title">{{'calendar_Reminding.edit_Reminding'|trans}}</h4>	
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body1">
+
+					<div class="form-group row">
+					<div class="col-6">
+						<input type="text" class="form-control" name="text1" placeholder="{{'calendar_Reminding.Date_and_hour_start'|trans}}" required="required" id="note_Date_début">		
+					</div>
+						<div class="col-6">
+						<input type="text" class="form-control" name="text1" placeholder="{{'calendar_Reminding.End_date_and_time'|trans}}" required="required" id="note_Date_fin">		
+					</div></div>
+					<div class="form-group row">
+					<div class="col-6">
+						<input type="text" class="form-control" name="text1" placeholder="{{'calendar_Reminding.New_start_time'|trans}}" required="required" id="note_heure_début">		
+					</div>
+						<div class="col-6">
+						<input type="text" class="form-control" name="text1" placeholder="{{'calendar_Reminding.New_end_time'|trans}}" required="required" id="note_heure_fin">		
+					</div></div>
+					<div class="form-group row">
+					<div class="col-6">
+						<input type="text" class="form-control" name="text1" placeholder="{{'calendar_Reminding.New_Date_and_time'|trans}}" required="required" id="note_Date_Nouveau_début">		
+					</div>
+						<div class="col-6">
+						<input type="text" class="form-control" name="text1" placeholder="{{'calendar_Reminding.New_End_date_and_time'|trans}}" required="required" id="note_Date_Nouveau_fin">		
+					</div></div>
+						<select class="browser-default custom-select">
+						<option selected disabled>{{'calendar_Reminding.choose_status'|trans}}</option>
+						<option value="urgence">{{'calendar_Reminding.emergency'|trans}}</option>
+						<option value="intermédiaire">{{'calendar_Reminding.intermediate'|trans}}</option>
+						<option value="important">{{'calendar_Reminding.important'|trans}}</option>
+						</select><br><br>  
+						<div class="md-form mb-2 pink-textarea active-pink-textarea">
+						<textarea id="form18" class="md-textarea form-control" rows="2"></textarea>
+						<label for="form18">{{'calendar_Reminding.write'|trans}}</label>
+						</div> 
+					<div class="form-group">
+						<button type="submit" class="btn btn-info btn-lg btn-block login-btn" id="modifier_note">{{'calendar_Reminding.edit'|trans}}</button>
+					</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-outline-danger btn-lg btn-block" id="supprimer_note">{{'calendar_Reminding.delete_Reminding'|trans}}  </button>
+			</div>
+		</div>
+	</div>
+</div> 
+<!-- end Modal HTML modifier note  -->
+
+
+<!-- start Modal HTML supprimer note  -->
+<div id="myModal_note" class="modal fade">
+	<div class="modal-dialog modal-confirm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="icon-box">
+					<i class="material-icons">&#xE5CD;</i>
+				</div>				
+				<h4 class="modal-title">{{'calendar_Reminding.Are_you_sure'|trans}}</h4>	
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body">
+				<p>{{'calendar_Reminding.msg'|trans}}</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-info" data-dismiss="modal">{{'calendar_Reminding.cancel'|trans}}</button>
+				<button type="button" class="btn btn-danger" id="Delete_note">{{'calendar_Reminding.remove'|trans}} </button>
+			</div>
+		</div>
+	</div>
+</div> 
+<!-- end Modal HTML supprimer note  -->
+
+
+<!-- start script datepicker  -->
+
+<script>
+
+
+
+        jQuery(document).ready(function() {
+
+            'use strict';
+
+            jQuery('#reminding').datetimepicker({
+  datepicker:false,
+  format:'H:i'                       
+
+            });	
+  jQuery('#reminding_event_endDatetime').datetimepicker({
+  datepicker:true,
+	format:'Y-m-d H:i'
+
+            });	
+
+	jQuery('#note_heure_fin').datetimepicker({
+  datepicker:false,
+  format:'H:i'                       
+
+            });	
+	jQuery('#note_heure_début').datetimepicker({
+  datepicker:false,
+  format:'H:i'                       
+
+            });	
+			
+			
+			        });
+
+   
+	$( "#RemindingEvent" ).click(function() {
+		if($("#reminding_event_endDatetime").val() < $("#reminding_event_startDatetime").val()){
+  		alert( "Vous avez une erreur dans l'heure" );	$("#RemindingEvent").attr("disabled", "true"); 
+		}
+});
+
+
+ $("#reminding_event_endDatetime").attr("readonly", "true");
+	$("#reminding_event_startDatetime").attr("readonly", "true"); 
+
+    </script>
+
+<!-- end script datepicker  -->
+
+
+{% endif %} 
+
+
+<!-- end calendar remindingevent   -->
+
+
+<!-- start calendar rendez vous   -->
+
+{% if test == 'calendar' %}
+<style>.css .form-group .form-control {
+    border-radius: 20px;
+}
+.waves-input-wrapper {
+    display:flex !important; 
+
+	}
+</style>
+
+
+<!-- start Modal HTML AJOUTER calendar  -->
+
+<div id="myModal" class="modal fade">
+	<div class="modal-dialog modal-login">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="avatar">
+					<img src="{{asset('images/avatar/avatar.png')}}" alt="Avatar">
+				</div>				
+				<h4 class="modal-title">{{'calendar_Appointment.Add_Appointment'|trans}}</h4>	
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<br>
+			<div class="modal-body1">
+		{{ form_start(form) }}
+			<div class="form-group">
+					{{ form_widget(form.username  ,{'attr': {'placeholder': 'calendar_Appointment.Username_or_Email_or_Phone'}})}}
+			</div>
+								<div class='erour'></div>
+
+			<div class="modal-body1">
+			<div class='row'>
+			<div class='col-12'>
+
+					<select id="Choix_du_motif" class="browser-default custom-select" >
+					<option value="" disabled selected>Choix du motif</option>
+						{% for Motif in Motifs %}
+						<option value="{{Motif}}">{{Motif}}</option>
+						{% endfor %}
+					</select>		
+			</div>	
+			</div>
+			</div> 
+                <div class="form-group">
+				   {{ form_widget(form.motifid  ,{'attr': {'placeholder': " motif", 'autocomplete': 'off'}})}}
+				</div>	
+				<div class="form-group" hidden>
+            {{ form_widget(form.title ,{'attr': {'placeholder': " Title", 'autocomplete': 'off'}})}}
+				</div>		
+                <div class="form-group">
+					<input id="patient" class="form-control" type="text" placeholder=" {{'calendar_Appointment.choice_of_time'|trans}}"  autocomplete="off" required maxlength="5" >					
+					<br>
+					{{ form_widget(form.startDatetime,{'attr': {'placeholder': 'calendar_Appointment.Date_and_hour', 'class': 'md-form form-control md-form', 'autocomplete': 'off'} } ) }}
+				</div>			
+					<div class="form-group">
+						<input type="submit" class="btn btn-primary btn-block btn-lg" id="Prendre"  value="{{'calendar_Appointment.confirm'|trans}}">
+					</div>
+    {{ form_end(form) }}
+
+
+			</div>
+
+		</div>
+	</div>
+</div> 
+<!-- end Modal HTML AJOUTER calendar  -->
+
+
+
+
+
+<!-- start Modal HTML supprimer note  -->
+<div id="myModal_BtnSupprimer" class="modal fade">
+	<div class="modal-dialog modal-confirm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="icon-box">
+					<i class="material-icons">&#xE5CD;</i>
+				</div>				
+				<h4 class="modal-title">Êtes-vous sûr?</h4>	
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body">
+				<p>Voulez-vous vraiment supprimer ces enregistrements? Ce processus ne peut pas être annulé.</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-info" data-dismiss="modal">Annuler</button>
+				<button type="button" class="btn btn-danger" id="btn_myModal_BtnSupprimer">supprimer </button>
+			</div>
+		</div>
+	</div>
+</div> 
+<!-- end Modal HTML supprimer note  -->
+
+
+<!-- start Modal HTML rendez vous  -->
+<div id="myModal0" class="modal fade">
+	<div class="modal-dialog modal-login">
+		<div class="modal-content">
+			<div class="modal-header">				
+				<h4 class="modal-title">rendez vous</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			<div class="modal-body">
+ {{ form_start(form) }}
+				<div class="form-group">
+            {{ form_widget(form.title ,{'attr': {'placeholder': " Title", 'autocomplete': 'off'}})}}
+					</div>
+                <div class="form-group">
+            {{ form_widget(form.motifid  ,{'attr': {'placeholder': " Note", 'autocomplete': 'off'}})}}
+					</div>			
+                <div class="form-group">
+            <input id="patient" class="form-control" type="text" placeholder=" choice Hour"  autocomplete="off"   >					
+            {{ form_widget(form.startDatetime,{'attr': {'placeholder': " Date et Hour", 'class': 'md-form form-control md-form', 'autocomplete': 'off'} } ) }}
+					</div>			
+					<div class="form-group">
+						<input type="submit" class="btn btn-primary btn-block btn-lg" id="Prendre"  value="Prendre">
+					</div>
+    {{ form_end(form) }}
+			</div>
+		</div>
+	</div>
+</div>  
+	
+<!-- end Modal HTML rendez vous  -->
+
+
+<!-- start Modal HTML modifier calendar  -->
+
+<div id="myModal2" class="modal fade">
+	<div class="modal-dialog modal-login">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="avatar">
+					<img src="{{asset('images/avatar/avatar.png')}}" alt="Avatar">
+				</div>				
+				<h4 class="modal-title">{{'calendar_Appointment.Edit_Appointment'|trans}}</h4>	
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body1">
+	<div class='row'>
+	<div class='col-12'>
+					<select id="Choix_du_motif" class="browser-default custom-select">
+					<option value="" disabled selected>Choix du motif</option>
+					{% for Motif in Motifs %}
+					<option value="{{Motif}}">{{Motif}}</option>
+					{% endfor %}
+					</select>		
+				</div>	
+				</div> <br>
+					<div class="form-group">
+						<input type="text" class="form-control" name="text1" placeholder=" motif" required="required" id="motif">		
+					</div>
+					<div class="form-group">
+						<input type="text" class="form-control" name="text2" placeholder="{{'calendar_Appointment.title'|trans}}" required="required" id="text2">	
+					</div> 
+					<div class="form-group">
+						<input type="text" class="form-control" name="date" placeholder="{{'calendar_Appointment.date'|trans}}" required="required" id="date">	
+					</div>       
+					<div class="form-group">
+						<button type="submit" class="btn btn-info btn-lg btn-block login-btn" id="modifier">{{'calendar_Appointment.edit'|trans}}</button>
+					</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-outline-danger btn-lg btn-block" id="supprimer">{{'calendar_Appointment.delete_appointment'|trans}} </button>
+			</div>
+		</div>
+	</div>
+</div> 
+<!-- end Modal HTML modifier calendar  -->
+
+  <script>// Material Select Initialization
+$(document).ready(function() {
+$('.mdb-select').materialSelect();
+});</script>
+
+			
+
+<!-- start Modal HTML supprimer rendez vous  -->
+<div id="myModal1" class="modal fade">
+	<div class="modal-dialog modal-confirm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="icon-box">
+					<i class="material-icons">&#xE5CD;</i>
+				</div>				
+				<h4 class="modal-title">{{'calendar_Appointment.Are_you_sure'|trans}}</h4>	
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body">
+				<p>{{'calendar_Appointment.msg'|trans}}</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-info" data-dismiss="modal">{{'calendar_Appointment.cancel'|trans}}</button>
+				<button type="button" class="btn btn-danger" id="Delete">{{'calendar_Appointment.remove'|trans}} </button>
+			</div>
+		</div>
+	</div>
+</div> 
+<!-- end Modal HTML supprimer rendez vous  -->
+
+
+<!-- start script datepicker  -->
+	<script>        
+		jQuery(document).ready(function() {
+				'use strict';
+
+			jQuery('#patient').datetimepicker({
+				datepicker:false,
+				format:'H:i'
+					});
+
+			jQuery('#date').datetimepicker({
+				format:'Y-m-d H:i'
+					});
+
+				});	
+				
+
+
+
+				var name = "date";
+
+			  function readCookie(name) 
+				{
+					var nameEQ = name + "=";
+					var ca = document.cookie.split(';');
+					for(var i=0;i < ca.length;i++) {
+						var c = ca[i];
+						while (c.charAt(0)==' ') c = c.substring(1,c.length);
+						if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+					}
+					return null;
+				}
+
+				//alert(document.cookie);
+				//alert(cookieValue);
+
+
+
+			{# $("#patient_event_startDatetime").attr("hidden",true); #}
+			$("#patient_event_startDatetime").attr("required", "true");
+			$("#patient_event_startDatetime").attr("readonly", "true");
+
+			$("#patient").click( function() {
+				$("#patient").change( function() {
+				var cookieValue = readCookie('date');
+				//alert(cookieValue);
+
+				var date = cookieValue +' '+ $(this).val();
+			$("#patient_event_startDatetime").val(date);
+//alert(date); 
+		});
+			});	
+
+
+
+
+	$( "#supprimer_motif" ).change(function() {
+
+		var id = '{{app.user.id}}';
+		var supprimer_motif = $( this ).val();
+
+          	$( "#BtnSupprimer" ).click(function() {
+              $('#myModal_BtnSupprimer').modal();     
+});
+
+
+$( "#btn_myModal_BtnSupprimer" ).click(function() {
+			$.ajax({
+					url:"{{ path('ajaxDeleteMotif') }}",
+					data: {'id':id,'motif':supprimer_motif},
+							method: 'post',
+								success: function (data) 
+							{	
+								//alert("success");
+								//alert(data);
+							    location.reload()
+							
+							},
+								error: function () 
+							{
+								//alert("errora");
+                      		    //console.log("PLease Re delete"+JSON.stringify(data) );
+							},
+						});
+
+
+					
+		});
+		});
+
+		
+
+    </script>
+
+
+
+<!-- end script datepicker  -->
+
+
+{% endif %} 
+<!-- end calendar rendez vous   -->
+
+	<script src="{{asset('src/fullcalendar/packages/google-calendar/main.js')}}"></script>
+	<script src="{{asset('src/fullcalendar/packages/core/main.js')}}"></script>
+	<script src="{{asset('src/fullcalendar/packages/daygrid/main.js')}}"></script>
+	<script src="{{asset('src/fullcalendar/packages/timegrid/main.js')}}"></script>
+	<script src="{{asset('src/fullcalendar/packages/bootstrap/main.js')}}"></script>
+	<script src="{{asset('src/fullcalendar/packages/interaction/main.js')}}"></script>
+	<script src="{{asset('src/fullcalendar/packages/core/locales-all.js')}}"></script>
+	<script src="https://unpkg.com/@popperjs/core@2.0.0-rc.3"></script>
+
+
+
+	<!-- end script -->
+{# 
+    <div id='test'>
+       
+	<script>		
+				       // alert(" annuler");
+
+{% for notification in notifications  %}
+
+	{% if notification.updatedate|date_modify(" + 960 minute")|date("Y-m-d H:i") <= "now"|date("Y-m-d H:i") %}
+
+			var annuler ='{{notification.id}}';
+          //alert(annuler);
+			$.ajax({
+					url:"{{ path('annuler') }}",
+					data: {'id':annuler},
+							method: 'post',
+								success: function (data) 
+							{	
+								alert("success");
+								//alert(data);
+							    //location.reload()
+							
+							},
+								error: function () 
+							{
+								alert("errora");
+                      		    //console.log("PLease Re delete"+JSON.stringify(data) );
+							},
+						});
+
+
+
+	{% endif %}
+{% endfor %}
+
+ setInterval(function(){   
+        $('#test'.load(location.href +  '#test'));
+				        alert(" annuler");
+
+}, 3000);
+
+		
+</script> #}
+
+
+<script>
+
+        	$("#reminding_event_username" ).bind("change keyup paste keypress",function() {
+                							//alert("change");
+
+					var  username_email_phone = $("#reminding_event_username").val();
+				
+				$.ajax({
+					url:"{{ path('username_exists_note') }}",
+					data: {'username_email_phone':username_email_phone},
+							method: 'post',
+								success: function (data) 
+							{	
+								//location.reload()
+								//alert("success");
+								//alert(data);
+                                $(".erour").html(data);
+                                if(data == "Ce nom n'est pas un nom d'utilisateur, ce n'est pas un numéro de téléphone, ni un e-mail Ou pas un patient." && username_email_phone != ''  ){
+                                    $("#RemindingEvent").attr('disabled','disabled');
+                                    $("#Prendre").attr('disabled','disabled');
+                                }else{
+                                    $("#RemindingEvent").removeAttr('disabled');
+                                    $("#Prendre").removeAttr('disabled');
+                                    $(".erour").html('');
+
+                                }
+                            
+                                //$('#username').load(location.href +  ' #username');
+								//alert(data);
+								
+							
+							},
+								error: function () 
+							{
+								//alert("error");
+                      		   // alert("PLease Re delete"+JSON.stringify(data) );
+							},
+						});
+						
+					});  
+
+
+			$("#patient_event_username" ).bind("change keyup paste keypress",function() {
+                							//alert("change");
+
+					var  username_email_phone = $("#patient_event_username").val();
+				
+				$.ajax({
+					url:"{{ path('username_exists_note') }}",
+					data: {'username_email_phone':username_email_phone},
+							method: 'post',
+								success: function (data) 
+							{	
+								//location.reload()
+								//alert("success");
+								//alert(data);
+                                $(".erour").html(data);
+                                if(data == "Ce nom n'est pas un nom d'utilisateur, ce n'est pas un numéro de téléphone, ni un e-mail Ou pas un patient." && username_email_phone != ''  ){
+                                    $("#RemindingEvent").attr('disabled','disabled');
+                                    $("#Prendre").attr('disabled','disabled');
+                                }else{
+                                    $("#RemindingEvent").removeAttr('disabled');
+                                    $("#Prendre").removeAttr('disabled');
+                                    $(".erour").html('');
+
+                                }
+                            
+                                //$('#username').load(location.href +  ' #username');
+								//alert(data);
+								
+							
+							},
+								error: function () 
+							{
+								//alert("error");
+                      		    //alert("PLease Re delete"+JSON.stringify(data) );
+							},
+						});
+						
+					});  
+
+
+
+
+</script>
+
+</div>
+
+
+
+
+</div>
+</div>
+{% endblock %}

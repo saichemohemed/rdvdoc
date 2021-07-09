@@ -1,0 +1,89 @@
+{% trans_default_domain 'FOSUserBundle' %} 
+
+	<link href="{{asset('src/fosuser/login/style.css')}}" rel="stylesheet" type="text/css">
+
+
+
+{% if error %}
+<div class="alert alert-danger">
+{{ error.messageKey|trans(error.messageData, 'security') }}    
+</div>
+
+{% endif %}
+<br><br>
+    <div class="container">
+    <div class="sufee-login d-flex align-content-center flex-wrap">
+        <div class="container">
+            <div class="login-content">
+
+                <div class="login-form">
+                    <form action="{{path("fos_user_security_check")}}" method="post" class="needs-validation" novalidate>
+                        {% if csrf_token %}
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" /> {% endif %}
+                                             <div class="form-row">
+                                                <div class="col-sm-12 mb-20">
+                                                    <label for="validationCustomUsername">{{ 'security.login.username'|trans }}</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="inputGroupPrepend">@</span>
+                                                        </div>
+                                                        <input type="text" class="form-control" id="validationCustomUsername" name="_username" placeholder="{{ 'security.login.username'|trans }}" value="{{ last_username }}" aria-describedby="inputGroupPrepend" required autocomplete="username">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                                <div class="form-row" style="margin-left:1%;">
+                                                    <div class="col-sm-12 mb-30">
+                                                        <label for="validationCustom03">{{ 'security.login.password'|trans }}</label>
+                                                        <input type="password" class="form-control" id="validationCustom03" placeholder="{{ 'security.login.password'|trans }}" name="_password" required autocomplete="current-password">
+                                                        <span toggle="#validationCustom03" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+
+                                                    </div>
+                        <div class="checkbox">
+                            <label class="pull-right">
+                                <a href="{{ path('fos_user_resetting_request') }}">{{ 'security.login.Forgot_your_password'|trans }}</a>
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-success btn-flat m-b-30 m-t-30">{{ 'security.login.submit'|trans }}</button>
+
+                        <div class="register-link m-t-15 text-center">
+                            <p>{{ 'security.login.You_do_not_have_an_account'|trans }}
+                                <a href="{{ path('fos_user_registration_register') }}"> {{ 'security.login.register_here'|trans }}</a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+
+    $(".toggle-password").click(function() {
+
+        $(this).toggleClass("fa-eye fa-eye-slash");
+        var input = $($(this).attr("toggle"));
+        if (input.attr("type") == "password") {
+            input.attr("type", "text");
+        } else {
+            input.attr("type", "password");
+        }
+    });
+</script>

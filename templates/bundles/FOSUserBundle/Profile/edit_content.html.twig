@@ -1,0 +1,327 @@
+{% trans_default_domain 'FOSUserBundle' %} 
+
+<div class="content_wrapper">
+<div class="container-fluid">
+
+
+{{ form_start(form, { 'action': path('fos_user_profile_edit'), 'attr': {'novalidate': 'novalidate', 'class': 'fos_user_profile_edit' } }) }} 
+<input type="hidden" name="_csrf_token" value="{{ csrf_token('intention') }}">
+<div>
+</div>
+
+
+{% if is_granted('ROLE_ADMIN') %}
+<link href="{{asset('src/profile/style-admin.css')}}" rel="stylesheet">
+<div class="admin" >
+<div> 
+<div class="row">
+
+        <div class="col-lg-4">
+           <div class="profile-card-4 z-depth-3">
+            <div class="card">
+              <div class="card-body text-center bg-primary rounded-top">
+               <div class="user-box">
+                <img src='{{asset(app.user.imagePath)}}{{app.user.imageName }}' class="avatar" alt="Avatar">
+              </div>
+              <h5 class="mb-1 text-white">DR {{app.user.firstName }} {{app.user.lastName }}</h5>
+              {% if is_granted('ROLE_SUPER_ADMIN') %}
+                {% else %}
+              <h6 class="text-light">{{app.user.specialisation.description }}</h6>
+              {% endif %}
+              
+             </div>
+              <div class="card-body">
+                <ul class="list-group shadow-none">
+                <li class="list-group-item">
+                  <div class="list-icon">
+                    <i class="fa fa-phone-square"></i>
+                  </div>
+                  <div class="list-details">
+                    <span>{{app.user.phone }}</span>
+                    <small>{{ 'profile_edit.mobile_number'|trans }}</small>
+                  </div>
+                </li>
+                <li class="list-group-item">
+                  <div class="list-icon">
+                    <i class="fa fa-envelope"></i>
+                  </div>
+                  <div class="list-details" style="word-break: break-all;">
+                    <span>{{app.user.email }}</span>
+                    <small>{{ 'profile_edit.Email_Address'|trans }}</small>
+                  </div>
+                </li>
+                <li class="list-group-item">
+                  <div class="list-icon">
+<br>
+                  </div>
+                  <div class="list-details">
+                    <span></span>
+                    <small></small>
+                  </div>
+                </li>
+                </ul>
+
+               </div>
+               <div class="card-footer text-center">
+                 <br>
+                 <br>
+                </div>
+             </div>
+           </div>
+        </div>
+        <div class="col-lg-8">
+           <div class="card z-depth-3">
+            <div class="card-body">
+            <ul class="nav nav-pills nav-pills-primary nav-justified">
+                <li class="nav-item">
+                    <a href="javascript:void();" data-target="#profile" data-toggle="pill" class="nav-link active show"><i class="icon-user"></i> <span class="hidden-xs">{{ 'profile_edit.Edit_Profile'|trans }}</span></a>
+                </li>
+            </ul>
+            <div class="tab-content p-3">
+                <div class="tab-pane active show" id="profile">
+                    <div class="row">
+         {% if is_granted('ROLE_SUPER_ADMIN') %}
+
+    {% else %}
+        
+{% endif %}                   
+<div class="col-md-12">
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="inputEmail4">{{ 'profile_edit.Email'|trans }}</label>
+{{ form_widget(form.email, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+    </div>
+                  {% if is_granted('ROLE_SUPER_ADMIN') %}
+                {% else %}
+    <div class="form-group col-md-6">
+      <label for="inputPassword4">{{ 'profile_edit.Headline'|trans }}</label>
+{{ form_widget(form.title, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+    </div>
+                  {% endif %}
+                  
+  </div>
+   <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="inputEmail4">{{ 'profile_edit.Lastname'|trans }}</label>
+      {{ form_widget(form.lastname, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputPassword4">{{ 'profile_edit.First_name'|trans }}</label>
+{{ form_widget(form.firstName, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+    </div>
+                  {% if is_granted('ROLE_SUPER_ADMIN') %}
+                {% else %}
+    <div class="form-group col-md-4">
+      <label for="inputPassword4">{{ 'profile_edit.Profession_number'|trans }}</label>
+{{ form_widget(form.numProf, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+    </div>
+                  {% endif %}
+                  
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="inputEmail4">{{ 'profile_edit.Date_of_Birth'|trans }}</label>
+{{ form_widget(form.birthDate, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+    </div>
+    <div class="form-group col-md-5">
+      <label for="inputPassword4">{{ 'profile_edit.Place_of_birth'|trans }}</label>
+{{ form_widget(form.birthPlace, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+    </div>
+  <div class="form-group col-md-3">
+      <label for="inputPassword4">{{ 'profile_edit.Gender'|trans }}</label>
+{{ form_widget(form.gender, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+    </div>
+ 
+
+
+  </div>
+
+  <div class="form-row">
+                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                {% else %}
+    <div class="form-group col-md-6">
+    <label for="inputAddress">{{ 'profile_edit.Doctor_s_office'|trans }}</label>
+{{ form_widget(form.company, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+    </div>
+                {% endif %}
+                
+    <div class="form-group col-md-6">
+      <label for="inputPassword4">{{ 'profile_edit.Address'|trans }} </label>
+{{ form_widget(form.address, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-6">
+    <label for="inputAddress">{{ 'profile_edit.Phone'|trans }}</label>
+{{ form_widget(form.phone, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+    </div>
+    <div class="col-md-6">
+        <label for="customFileLang">{{ 'profile_edit.Edit_photo'|trans }}</label>
+<div class="custom-file">
+  {{ form_widget(form.imageFile, {'attr': {'class': 'custom-file-input', 'autocomplete': 'off'}}) }}
+  <label class="custom-file-label" for="customFileLang">Modifie photo</label>
+</div>
+  </div>
+
+    <input type="submit" class="btn btn-primary" value="{{ 'profile.edit.submit'|trans }}" />
+{{ form_end(form) }}
+                          </div> 
+                        </div>
+                    </div>
+                    <!--/row-->
+                </div>
+            </div>
+        </div>
+      </div>
+      </div>
+    </div>
+</div>
+<br><br>
+</div>
+
+
+  {% else %}
+<link href="{{asset('src/profile/style.css')}}" rel="stylesheet">
+{{ form_start(form, { 'action': path('fos_user_profile_edit'), 'attr': { 'class': 'fos_user_profile_edit' } }) }} 
+
+<link href="{{asset('src/profile/style.css')}}" rel="stylesheet">
+
+<div class="container emp-profile">
+            <form method="post">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="profile-img">
+                <img src='{{asset(app.user.imagePath)}}{{app.user.imageName }}' alt="user avatar" style="width: 150px;height: 150px;margin-left: -12%;">
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="profile-head">
+                                    <h5>
+                                        {{app.user.lastName}} {{app.user.firstName}}
+                                    </h5>
+                                    <h6>
+                                        {{app.user.profession}}
+                                    </h6>
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">{{'profile_user.edit_Profile_Patient.edit_Profile_Patient'|trans}}</a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div><br>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="profile-work">
+                            <div class="form-group col-md-12">
+                            <label for="inputAddress">{{'profile_user.edit_Profile_Patient.Phone'|trans}}</label>
+                                {{ form_widget(form.phone, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                            </div>                            
+                            <div class="form-group col-md-12">
+                            <label for="inputAddress">{{'profile_user.edit_Profile_Patient.Emergency_telephone'|trans}}</label>
+                                {{ form_widget(form.EmergencyPhone, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                            </div> 
+                            <div class="form-group col-md-12">
+                            <label for="inputAddress">{{'profile_user.edit_Profile_Patient.fax'|trans}}</label>
+                                {{ form_widget(form.fax, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                            </div>
+                            <div class="form-group col-md-12">
+                            <label for="inputAddress">{{'profile_user.edit_Profile_Patient.Chifae_Card_Num'|trans}}</label>
+                                {{ form_widget(form.numCartechifae, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                            </div>
+                            <div class="form-group col-md-12">
+                            <label for="inputAddress">{{'profile_user.edit_Profile_Patient.Family_situation'|trans}}</label>
+                                {{ form_widget(form.familyStatus, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                            </div>  
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="tab-content profile-tab" id="myTabContent">
+                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+
+
+    <div class="col-md-12">
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="inputEmail4">{{'profile_user.edit_Profile_Patient.Email'|trans}}</label>
+{{ form_widget(form.email, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+    </div>
+
+    <div class="form-group col-md-6">
+      <label for="inputPassword4">{{'profile_user.edit_Profile_Patient.Address'|trans}}</label>
+{{ form_widget(form.address, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+    </div>
+                  
+  </div>
+   <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="inputEmail4">{{'profile_user.edit_Profile_Patient.Last_name'|trans}}</label>
+      {{ form_widget(form.lastname, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputPassword4">{{'profile_user.edit_Profile_Patient.first_name'|trans}}</label>
+{{ form_widget(form.firstName, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputPassword4">{{'profile_user.edit_Profile_Patient.Profession'|trans}}</label>
+{{ form_widget(form.profession, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+    </div>
+                  
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="inputEmail4">{{'profile_user.edit_Profile_Patient.Date_of_Birth'|trans}}</label>
+{{ form_widget(form.birthDate, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+    </div>
+    <div class="form-group col-md-5">
+      <label for="inputPassword4">{{'profile_user.edit_Profile_Patient.Place_of_birth'|trans}}</label>
+{{ form_widget(form.birthPlace, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+    </div>
+  <div class="form-group col-md-3">
+      <label for="inputPassword4">{{'profile_user.edit_Profile_Patient.gender'|trans}}</label>
+{{ form_widget(form.gender, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+    </div>
+
+
+
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-3">
+    <label for="inputAddress">{{'profile_user.edit_Profile_Patient.Origin'|trans}}</label>
+{{ form_widget(form.origin, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+    </div>
+        <div class="form-group col-md-3">
+    <label for="inputAddress">{{'profile_user.edit_Profile_Patient.Blood_group'|trans}}</label>
+{{ form_widget(form.bloodGroup, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+    </div>
+    <div class="col-md-6">
+        <label for="customFileLang">{{'profile_user.edit_Profile_Patient.Edit_photo'|trans}}</label>
+<div class="custom-file">
+  {{ form_widget(form.imageFile, {'attr': {'class': 'custom-file-input', 'autocomplete': 'off'}}) }}
+  <label class="custom-file-label" for="customFileLang">{{'profile_user.edit_Profile_Patient.change_photo'|trans}}</label>
+</div>
+  </div>
+                <div class="form-group col-md-12">
+            <label for="inputAddress">{{'profile_user.edit_Profile_Patient.referenced_by'|trans}}</label>
+    {{ form_widget(form.referencedBy, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                            </div>
+    <input type="submit" class="btn btn-primary" value="{{ 'profile.edit.submit'|trans }}" />
+
+                                           </div>
+                           
+                        </div>
+                    </div>
+                </div>
+                   </div>
+                </div>
+            </form>           
+        </div>    
+{{ form_end(form) }}
+    
+         {% endif %}
+<div>
+</div>

@@ -1,0 +1,19 @@
+{% extends "@FOSUser/layout.html.twig" %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block fos_user_content %}
+<br>
+<link href="{{asset('src/profile/style.css')}}" rel="stylesheet">
+
+<div class="container emp-profile">
+
+<p>
+{{ 'resetting.check_email'|trans({'%tokenLifetime%': tokenLifetime})|nl2br }}
+</p>
+
+
+</div>
+
+
+{% endblock %}

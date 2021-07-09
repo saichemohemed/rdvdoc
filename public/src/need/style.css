@@ -1,0 +1,23 @@
+    p{
+        margin-bottom: -18%;
+        color: #000 !important;
+        text-align: center;
+        background-color: white;
+        font-size: 14px;
+
+    }
+    .pad{
+            padding-bottom: 8%;
+    }
+
+     .ui-autocomplete-row
+      {
+        padding:8px;
+        background-color: #f4f4f4;
+        border-bottom:1px solid #ccc;
+        font-weight:bold;
+      }
+      .ui-autocomplete-row:hover
+      {
+        background-color: #ddd;
+      }

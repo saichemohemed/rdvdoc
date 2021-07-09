@@ -1,0 +1,208 @@
+easy_admin:
+    design:
+        assets:
+            favicon: 'asset/img/images/logo/favicon.ico'
+        menu:
+            - { entity: 'User', icon: 'user' }
+            - { entity: 'Admin', icon: 'user-shield' }
+            - { entity: 'Doctor', icon: 'user-md' }
+            - { entity: 'Patient', icon: 'user-injured' }
+            - { entity: 'Calendar', icon: 'calendar-alt' }
+            - { entity: 'Evenement', icon: 'calendar-check' }
+            - { entity: 'Service', icon: 'notes-medical' }
+            - { entity: 'Hospital_center', icon: 'clinic-medical' }
+    list:
+        collapse_actions: false
+        actions:
+            - { name: 'edit', icon: 'pencil', label: false, title: 'edit' }
+            - { name: 'show', icon: 'eye', label: false, title: 'voir' }
+            - { name: 'delete', icon: 'trash-alt', label: false, title: 'Supprimer' }
+    formats:
+        date:     'Y-m-d'
+        time:     'H:i'
+        datetime: 'Y-m-d H:i:s'
+    site_name: '<img src="/images/icon/logo2.png" style="max-width: 20%;">'
+
+
+    entities:
+        User:
+            class: App\Entity\User 
+            image_base_path: 'http://static.acme.org/img/'
+
+            label: 'admin.User.User'
+            list:
+                title: 'admin.User.title'
+                fields: [{ property: 'id', label: 'admin.User.fields.id' },{ property: 'username', label: 'admin.User.fields.username' },{ property: 'firstName', label: 'admin.User.fields.firstName' },{ property: 'lastName', label: 'admin.User.fields.lastName' },{ property: 'enabled', label: 'admin.User.fields.enabled' },{ property: 'phone', label: 'admin.User.fields.phone' },{ property: 'email', label: 'admin.User.fields.email' },{ property: 'gender', label: 'admin.User.fields.gender' },{ property: 'firstLoginToday', label: "admin.User.fields.firstLoginToday" }]
+            show:
+                fields: [{ property: 'id', label: 'admin.User.fields.id' },{ property: 'username', label: 'admin.User.fields.username' },{ property: 'firstName', label: 'admin.User.fields.firstName' },{ property: 'lastName', label: 'admin.User.fields.lastName' },{ property: 'enabled', label: 'admin.User.fields.enabled' },{ property: 'phone', label: 'admin.User.fields.phone' },{ property: 'email', label: 'admin.User.fields.email' },{ property: 'gender', label: 'admin.User.fields.gender' },{ property: 'firstLoginToday', label: "admin.User.fields.firstLoginToday" }]
+
+            form:
+                fields:
+                    - { property: 'firstName', label: 'admin.User.form.firstName' }
+                    - { property: 'lastName', label: 'admin.User.form.lastName' }
+                    - { property: 'username', label: 'admin.User.form.username' }
+                    - { property: 'email', label: 'admin.User.form.email' }
+                    - { property: 'imageFile', label: 'admin.User.form.imageFile', type: 'vich_file' }
+                    - { property: 'updatedAt', label: 'admin.User.form.updatedAt',type: 'date'}
+                    - { property: 'phone', label: 'admin.User.form.phone' }
+                    - { property: 'enabled', label: 'admin.User.form.enabled' }
+                    - { property: 'lastLogin', label: 'admin.User.form.lastLogin' }
+                    - { property: 'plainPassword', label: 'admin.User.form.plainPassword', type: 'text', type_options: { required: false } }
+                    - { property: 'roles',label: 'admin.User.form.roles', type: 'choice', type_options: { multiple: true, choices: { 'admin.User.form.ADMIN': 'ROLE_SUPER_ADMIN', 'admin.User.form.Doctor': 'ROLE_ADMIN','admin.User.form.Patient': 'ROLE_USER' } } }
+        
+        Admin:
+            class: App\Entity\Admin
+            label: 'admin.admin.admin'
+            list:
+                title: "admin.admin.title"
+                fields: [{ property: 'id', label: 'admin.admin.fields.id' },{ property: 'username', label: 'admin.admin.fields.username' },{ property: 'firstName', label: 'admin.admin.fields.firstName' },{ property: 'lastName', label: 'admin.admin.fields.lastName' },{ property: 'enabled', label: 'admin.admin.fields.enabled' },{ property: 'phone', label: 'admin.admin.fields.phone' },{ property: 'email', label: 'admin.admin.fields.email' },{ property: 'gender', label: 'admin.admin.fields.gender' },{ property: 'firstLoginToday', label: "admin.admin.fields.firstLoginToday" } ]
+            show:
+                fields: [{ property: 'id', label: 'admin.admin.fields.id' },{ property: 'username', label: 'admin.admin.fields.username' },{ property: 'firstName', label: 'admin.admin.fields.firstName' },{ property: 'lastName', label: 'admin.admin.fields.lastName' },{ property: 'enabled', label: 'admin.admin.fields.enabled' },{ property: 'phone', label: 'admin.admin.fields.phone' },{ property: 'email', label: 'admin.admin.fields.email' },{ property: 'gender', label: 'admin.admin.fields.gender' },{ property: 'firstLoginToday', label: "admin.admin.fields.firstLoginToday" } ]
+            form:
+                fields: [{ property: 'username', label: 'admin.admin.form.username' },{ property: 'firstName', label: 'admin.admin.form.firstName' },{ property: 'lastName', label: 'admin.admin.form.lastName' },{ property: 'enabled', label: 'admin.admin.form.enabled' },{ property: 'phone', label: 'admin.admin.form.phone' },{ property: 'email', label: 'admin.admin.form.email' },{ property: 'gender', label: 'admin.admin.form.gender' },{ property: 'imageFile', label: "admin.admin.form.imageFile", type: 'vich_file' },{ property: 'updatedAt', label: "admin.admin.form.updatedAt",type: 'date'},{ property: 'plainPassword', label: 'admin.admin.form.plainPassword', type: 'text', type_options: { required: false } } { property: 'roles',label: 'admin.admin.form.roles', type: 'choice', type_options: { multiple: true, choices: { 'admin.admin.form.ADMIN': 'ROLE_SUPER_ADMIN' } } }]
+  
+        Doctor:
+            class: App\Entity\Doctor
+            label: 'admin.Doctor.Doctor'
+            list:
+                title: "admin.Doctor.title"
+                fields: [{ property: 'id', label: 'admin.Doctor.fields.id' },{ property: 'username', label: 'admin.Doctor.fields.username' },{ property: 'firstName', label: 'admin.Doctor.fields.firstName' },{ property: 'lastName', label: 'admin.Doctor.fields.lastName' },{ property: 'enabled', label: 'admin.Doctor.fields.enabled' },{ property: 'phone', label: 'admin.Doctor.fields.phone' },{ property: 'email', label: 'admin.Doctor.fields.email' },{ property: 'numProf', label: 'admin.Doctor.fields.Professionalnumber' },{ property: 'company', label: 'admin.Doctor.fields.medicaloffice' },{ property: 'gender', label: 'admin.Doctor.fields.gender' },{ property: 'specialisation.name', label: 'admin.Doctor.fields.specialty' },{ property: 'firstLoginToday', label: "admin.Doctor.fields.firstLoginToday" },{ property: 'dateOpened', label: 'admin.Doctor.fields.accountopeningdate' },{ property: 'workingtime', label: 'admin.Doctor.fields.workingtime' }]
+            show:
+                fields: [{ property: 'id', label: 'admin.Doctor.fields.id' },{ property: 'username', label: 'admin.Doctor.fields.username' },{ property: 'firstName', label: 'admin.Doctor.fields.firstName' },{ property: 'lastName', label: 'admin.Doctor.fields.lastName' },{ property: 'enabled', label: 'admin.Doctor.fields.enabled' },{ property: 'phone', label: 'admin.Doctor.fields.phone' },{ property: 'email', label: 'admin.Doctor.fields.email' },{ property: 'numProf', label: 'admin.Doctor.fields.Professionalnumber' },{ property: 'company', label: 'admin.Doctor.fields.medicaloffice' },{ property: 'gender', label: 'admin.Doctor.fields.gender' },{ property: 'specialisation.name', label: 'admin.Doctor.fields.specialty' },{ property: 'firstLoginToday', label: "admin.Doctor.fields.firstLoginToday" },{ property: 'dateOpened', label: 'admin.Doctor.fields.accountopeningdate' },{ property: 'workingtime', label: 'admin.Doctor.fields.workingtime' }]
+            form:
+                fields: [{ property: 'username', label: 'admin.Doctor.form.username' },{ property: 'firstName', label: 'admin.Doctor.form.firstName' },{ property: 'lastName', label: 'admin.Doctor.form.lastName' },{ property: 'enabled', label: 'admin.Doctor.form.enabled' },{ property: 'phone', label: 'admin.Doctor.form.phone' },{ property: 'email', label: 'admin.Doctor.form.email' },{ property: 'numProf', label: 'admin.Doctor.form.Professionalnumber' },{ property: 'company', label: 'admin.Doctor.form.medicaloffice' },{ property: 'gender', label: 'admin.Doctor.form.gender' },{ property: 'specialisation', label: 'admin.Doctor.form.specialty' },{ property: 'imageFile', label: "admin.Doctor.form.imageFile", type: 'vich_file' },{ property: 'updatedAt', label: "admin.Doctor.form.updatedAt",type: 'date'},{ property: 'dateOpened', label: 'admin.Doctor.form.accountopeningdate' },{ property: 'plainPassword', label: 'admin.Doctor.form.plainPassword', type: 'text', type_options: { required: false } },{ property: 'roles',label: 'admin.Doctor.form.roles', type: 'choice', type_options: { multiple: true, choices: {'admin.Doctor.Doctor': 'ROLE_ADMIN' } } } ]       
+
+        Patient:
+            class: App\Entity\Patient
+            label: 'admin.Patient.Patient'
+            list:
+                title: "admin.Patient.title"
+                fields: [{ property: 'id', label: 'admin.Patient.fields.id'},{ property: 'username', label: 'admin.Patient.fields.username' },{ property: 'firstName', label: 'admin.Patient.fields.firstName' },{ property: 'lastName', label: 'admin.Patient.fields.lastName' }, {property: 'enabled', label: 'admin.Patient.fields.enabled' },{ property: 'phone', label: 'admin.Patient.fields.phone' },{ property: 'email', label: 'admin.Patient.fields.email' },{ property: 'gender', label: 'admin.Patient.fields.gender' },{ property: 'firstLoginToday', label: "admin.Patient.fields.firstLoginToday" } ]
+            show:
+                fields: [{ property: 'id', label: 'admin.Patient.fields.id'},{ property: 'username', label: 'admin.Patient.fields.username' },{ property: 'firstName', label: 'admin.Patient.fields.firstName' },{ property: 'lastName', label: 'admin.Patient.fields.lastName' }, {property: 'enabled', label: 'admin.Patient.fields.enabled' },{ property: 'phone', label: 'admin.Patient.fields.phone' },{ property: 'email', label: 'admin.Patient.fields.email' },{ property: 'gender', label: 'admin.Patient.fields.gender' },{ property: 'firstLoginToday', label: "admin.Patient.fields.firstLoginToday" } ]
+            form:
+                fields: [{ property: 'username', label: 'admin.Patient.form.username' },{ property: 'firstName', label: 'admin.Patient.form.firstName' },{ property: 'lastName', label: 'admin.Patient.form.lastName' }, {property: 'enabled', label: 'admin.Patient.form.enabled' },{ property: 'phone', label: 'admin.Patient.form.phone' },{ property: 'email', label: 'admin.Patient.form.email' },{ property: 'gender', label: 'admin.Patient.form.gender' },{ property: 'imageFile', label: "admin.Patient.form.imageFile", type: 'vich_file' },{ property: 'updatedAt', label: "admin.Patient.form.updatedAt",type: 'date'},{ property: 'plainPassword', label: 'admin.Patient.form.plainPassword', type: 'text', type_options: { required: false } },{ property: 'roles', label: 'admin.Patient.form.roles', type: 'choice', type_options: { multiple: true, choices: {'admin.Patient.Patient': 'ROLE_USER' } } } ]
+                 
+        Calendar:
+            class: App\Entity\Calendar
+            label: 'admin.Calendar.Calendar'
+            list:
+                title: "admin.Calendar.title"
+                fields: [{ property: 'id', label: 'admin.Calendar.fields.id'},{ property: 'bgColor', label: 'admin.Calendar.fields.bgColor'},{ property: 'type', label: 'admin.Calendar.fields.type'},{ property: 'service', label: 'admin.Calendar.fields.service'}  ]
+            show:
+                fields: [{ property: 'id', label: 'admin.Calendar.fields.id'},{ property: 'bgColor', label: 'admin.Calendar.fields.bgColor'},{ property: 'type', label: 'admin.Calendar.fields.type'},{ property: 'service', label: 'admin.Calendar.fields.service'}  ]
+            form:
+                fields: [{ property: 'bgColor', label: 'admin.Calendar.form.bgColor'},{ property: 'type', label: 'admin.Calendar.form.type'},{ property: 'service', label: 'admin.Calendar.form.service'}]
+
+        Evenement:
+            class: App\Entity\Evenement
+            label: 'admin.Evenement.Evenement'
+            list:
+                title: "admin.Evenement.title"
+                fields: [{ property: 'id', label: 'admin.Evenement.fields.id'},{ property: 'title', label: 'admin.Evenement.fields.title'},{ property: 'startDatetime', label: 'admin.Evenement.fields.startDatetime'},{ property: 'endDatetime', label: 'admin.Evenement.fields.endDatetime'},{ property: 'bgColor', label: 'admin.Evenement.fields.bgColor'},,{ property: 'fgColor', label: 'admin.Evenement.fields.fgColor'}]
+            show:
+                fields: [{ property: 'id', label: 'admin.Evenement.fields.id'},{ property: 'title', label: 'admin.Evenement.fields.title'},{ property: 'startDatetime', label: 'admin.Evenement.fields.startDatetime'},{ property: 'endDatetime', label: 'admin.Evenement.fields.endDatetime'},{ property: 'bgColor', label: 'admin.Evenement.fields.bgColor'},,{ property: 'fgColor', label: 'admin.Evenement.fields.fgColor'}]
+            form:
+                fields: [{ property: 'title', label: 'admin.Evenement.form.title'},{ property: 'startDatetime', label: 'admin.Evenement.form.startDatetime'},{ property: 'endDatetime', label: 'admin.Evenement.form.endDatetime'},{ property: 'bgColor', label: 'admin.Evenement.form.bgColor'},{ property: 'bgColor', label: 'admin.Evenement.form.fgColor'}]
+
+        Service:
+            class: App\Entity\Service
+            label: 'admin.Service.Service'
+            list:
+                title: "admin.Service.title"
+                fields: [{ property: 'id', label: 'admin.Service.fields.id'},{ property: 'name', label: "admin.Service.fields.name" },{ property: 'updateDate', label: 'admin.Service.fields.updateDate' },{ property: 'adminCreated', label: 'admin.Service.fields.adminCreated' },{ property: 'responsible', label: 'admin.Service.fields.responsible' } ]
+            show:
+                fields: [{ property: 'id', label: 'admin.Service.fields.id'},{ property: 'name', label: "admin.Service.fields.name" },{ property: 'updateDate', label: 'admin.Service.fields.updateDate' },{ property: 'adminCreated', label: 'admin.Service.fields.adminCreated' },{ property: 'responsible', label: 'admin.Service.fields.responsible' } ]
+            form:
+                fields: [{ property: 'name', label: "admin.Service.form.name" },{ property: 'Description', label: 'admin.Service.form.Description' },{ property: 'updateDate', label: 'admin.Service.form.updateDate' },{ property: 'responsible', label: 'admin.Service.form.responsible' },{ property: 'adminCreated', label: 'admin.Service.form.adminCreated' } ]
+
+        Hospital_center:
+            class: App\Entity\HospitalCenter
+            label: 'admin.Hospital_center.Hospital_center'
+            list:
+                title: "admin.Hospital_center.title"
+                fields: [{ property: 'id', label: 'admin.Hospital_center.fields.id'},
+                { property: 'doctor', label: "admin.Hospital_center.fields.doctor" },
+                { property: 'name', label: "admin.Hospital_center.fields.name" },
+                { property: 'type', label: 'admin.Hospital_center.fields.type'},
+                { property: 'phone', label: 'admin.Hospital_center.fields.phone' },
+                { property: 'wilaya', label: 'admin.Hospital_center.fields.wilaya' },
+                { property: 'address', label: 'admin.Hospital_center.fields.address' },
+                { property: 'town', label: 'admin.Hospital_center.fields.town' },
+                { property: 'fax', label: 'admin.Hospital_center.fields.fax' },
+                { property: 'webSite', label: 'admin.Hospital_center.fields.webSite' }]
+            show:
+                fields: [{ property: 'id', label: 'admin.Hospital_center.fields.id'},
+                { property: 'doctor', label: "admin.Hospital_center.fields.doctor" },
+                { property: 'name', label: "admin.Hospital_center.fields.name" },
+                { property: 'type', label: 'admin.Hospital_center.fields.type'},
+                { property: 'phone', label: 'admin.Hospital_center.fields.phone' },
+                { property: 'wilaya', label: 'admin.Hospital_center.fields.wilaya' },
+                { property: 'address', label: 'admin.Hospital_center.fields.address' },
+                { property: 'town', label: 'admin.Hospital_center.fields.town' },
+                { property: 'fax', label: 'admin.Hospital_center.fields.fax' },
+                { property: 'webSite', label: 'admin.Hospital_center.fields.webSite' }]
+
+            form:
+                fields: [{ property: 'doctor', label: "admin.Hospital_center.form.doctor" },
+                { property: 'name', label: "admin.Hospital_center.form.name" },
+                { property: 'type', label: 'admin.Hospital_center.form.type' ,type: 'choice',type_options: { mapped: true ,expanded: false,multiple: false ,choices: 
+                {'admin.Hospital_center.form.Type_Establishments.doctors_office': 'cabinet',
+                 'admin.Hospital_center.form.Type_Establishments.group_medical_office': 'cabinet de groupe',
+                 'admin.Hospital_center.form.Type_Establishments.clinical': 'clinique',
+                 'admin.Hospital_center.form.Type_Establishments.radiology_center': 'centre de radiologie'}}},
+                { property: 'phone', label: 'admin.Hospital_center.form.phone' },
+                { property: 'wilaya', label: 'admin.Hospital_center.form.wilaya',type: 'choice',type_options: { mapped: true ,expanded: false,multiple: false ,choices: 
+                {'admin.Hospital_center.form.wilaya_alger.Adrar' : 'Adrar',
+                'admin.Hospital_center.form.wilaya_alger.Chlef' : 'Chlef',
+                'admin.Hospital_center.form.wilaya_alger.Laghouat' : 'Laghouat',
+                'admin.Hospital_center.form.wilaya_alger.Oum_bouaghi' :'Oum bouaghi',
+                'admin.Hospital_center.form.wilaya_alger.Batna' : 'Batna',
+                'admin.Hospital_center.form.wilaya_alger.Bejaia' : 'Bejaia',
+                'admin.Hospital_center.form.wilaya_alger.Biskra' : 'Biskra',
+                'admin.Hospital_center.form.wilaya_alger.Bechar' : 'Bechar',
+                'admin.Hospital_center.form.wilaya_alger.Blida' : 'Blida',
+                'admin.Hospital_center.form.wilaya_alger.Bouira' : 'Bouira',
+                'admin.Hospital_center.form.wilaya_alger.Tamanrasset' : 'Tamanrasset',
+                'admin.Hospital_center.form.wilaya_alger.Tebessa' : 'Tebessa',
+                'admin.Hospital_center.form.wilaya_alger.Tlemcen' : 'Tlemcen',
+                'admin.Hospital_center.form.wilaya_alger.Tiaret' : 'Tiaret',
+                'admin.Hospital_center.form.wilaya_alger.Tizi_ouzou' : 'Tizi ouzou',
+                'admin.Hospital_center.form.wilaya_alger.Alger' : 'Alger',
+                'admin.Hospital_center.form.wilaya_alger.Djelfa' : 'Djelfa',
+                'admin.Hospital_center.form.wilaya_alger.Jijel' : 'Jijel',
+                'admin.Hospital_center.form.wilaya_alger.Setif' : 'Setif',
+                'admin.Hospital_center.form.wilaya_alger.Saida' : 'Saida',
+                'admin.Hospital_center.form.wilaya_alger.Skikda' : 'Skikda',
+                'admin.Hospital_center.form.wilaya_alger.Sidi_Bel_Abbes' : 'Sidi Bel Abbes',
+                'admin.Hospital_center.form.wilaya_alger.Annaba' : 'Annaba',
+                'admin.Hospital_center.form.wilaya_alger.Guelma' : 'Guelma',
+                'admin.Hospital_center.form.wilaya_alger.Constantine' : 'Constantine',
+                'admin.Hospital_center.form.wilaya_alger.Medea' : 'Medea',
+                'admin.Hospital_center.form.wilaya_alger.Mostaganem' : 'Mostaganem',
+                "admin.Hospital_center.form.wilaya_alger.Msila" : "M'sila",
+                'admin.Hospital_center.form.wilaya_alger.Mascara' : 'Mascara',
+                'admin.Hospital_center.form.wilaya_alger.Ouargla' : 'Ouargla',
+                'admin.Hospital_center.form.wilaya_alger.Oran' : 'Oran',
+                'admin.Hospital_center.form.wilaya_alger.El_Baydh' : 'El Baydh',
+                'admin.Hospital_center.form.wilaya_alger.Illizi' : 'Illizi',
+                'admin.Hospital_center.form.wilaya_alger.Bordj_Bou_Arreridj' : 'Bordj Bou Arreridj',
+                'admin.Hospital_center.form.wilaya_alger.Boumerdes' : 'Boumerdes',
+                'admin.Hospital_center.form.wilaya_alger.El_Taref' : 'El Taref',
+                'admin.Hospital_center.form.wilaya_alger.Tindouf' : 'Tindouf',
+                'admin.Hospital_center.form.wilaya_alger.Tissemsilt' : 'Tissemsilt',
+                'admin.Hospital_center.form.wilaya_alger.El_Oued' : 'El Oued',
+                'admin.Hospital_center.form.wilaya_alger.Khenchla' : 'Khenchla',
+                'admin.Hospital_center.form.wilaya_alger.Souk_Ahrass' : 'Souk Ahrass',
+                'admin.Hospital_center.form.wilaya_alger.Tipaza' : 'Tipaza',
+                'admin.Hospital_center.form.wilaya_alger.Mila' : 'Mila',
+                'admin.Hospital_center.form.wilaya_alger.Aïn_Defla' : 'Aïn Defla',
+                'admin.Hospital_center.form.wilaya_alger.Nâama' : 'Nâama',
+                'admin.Hospital_center.form.wilaya_alger.Aïn_Temouchent' : 'Aïn Temouchent',
+                'admin.Hospital_center.form.wilaya_alger.Ghardaïa' : 'Ghardaïa',
+                'admin.Hospital_center.form.wilaya_alger.Relizane' : 'Relizane'} } } ,
+                { property: 'address', label: 'admin.Hospital_center.form.address' },
+                { property: 'town', label: 'admin.Hospital_center.form.town' },
+                { property: 'fax', label: 'admin.Hospital_center.form.fax' },
+                { property: 'webSite', label: 'admin.Hospital_center.form.webSite' },
+                { property: 'updateDate', label: 'admin.Hospital_center.form.updateDate' }]

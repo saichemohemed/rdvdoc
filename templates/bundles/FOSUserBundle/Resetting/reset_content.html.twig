@@ -1,0 +1,42 @@
+{% trans_default_domain 'FOSUserBundle' %}
+<br>
+
+<style>
+li{
+        color: red;
+
+}
+</style>
+
+
+<link href="{{asset('src/profile/style.css')}}" rel="stylesheet">
+
+<div class="container emp-profile">
+{{ form_start(form, { 'action': path('fos_user_resetting_reset', {'token': token}), 'attr': { 'class': 'fos_user_resetting_reset' } }) }}
+
+                              <div class="form-row">
+                            <div class="form-group col-md-6 errors">
+                            <label for="inputEmail4">{{'resetting.New_Password'|trans}}</label>
+                        {{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                            {{ form_errors(form.plainPassword.first) }}
+
+                            </div> 
+                            </div> 
+
+                        <div class="form-row">
+                          <div class="form-group col-md-6 errors">
+                            <label for="inputEmail4">{{'resetting.Repeat_the_new_password'|trans}}</label>
+                            {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+                            {{ form_errors(form.plainPassword.second) }}
+
+                            </div>                   
+                            </div>                   
+                        
+
+
+    <div>
+                                    <input class="btn btn-primary"  type="submit" value="{{ 'resetting.reset.submit'|trans }}" />
+
+    </div>
+{{ form_end(form) }}
+</div>

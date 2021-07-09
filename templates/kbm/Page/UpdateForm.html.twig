@@ -1,0 +1,51 @@
+<style>
+select {
+    display: block !important;
+}
+</style>
+
+{{ form_start(form) }}
+							<div class="card">
+								<div class="card-body">
+									<div class="booking-doc-info">
+                    <div class="container">
+                      <div class="row">
+
+                        <div class="col-4">
+                  			  <input id="Hour" class="form-control" type="text" placeholder=" choice Hour"  autocomplete="off" required maxlength="5" ><br>					
+									      </div>
+
+                        <div class="col-4">
+                  			  <input id="date" class="form-control" type="text" placeholder=" choice date"  autocomplete="off" required maxlength="5" ><br>					
+									      </div>
+
+                        <div class="col-4">
+                          {{ form_widget(form.motif,{'attr': {'placeholder': "Titel", 'class': 'md-form form-control md-form', 'autocomplete': 'off'} } ) }}			
+									      </div>
+
+								      </div>
+                      <div class="row">
+										    <div class="col-12">
+                        			{{ form_widget(form.title,{'attr': {'placeholder': "Titel", 'class': 'md-form form-control md-form', 'autocomplete': 'off'} } ) }}
+                         </div>
+                       </div><br>
+                      <div class="row">
+										    <div class="col-12">
+										        <button class="btn btn-primary btn-lg btn-block" id="bt">{{ button_label|default('Save') }}</button>
+                         </div>
+                       </div>
+                    </div>
+									</div>
+								</div>
+							</div>
+
+
+
+      {{ form_widget(form.motifid,{'attr': {'placeholder': "Titel", 'class': 'md-form form-control md-form', 'autocomplete': 'off'} } ) }}			
+      {{ form_widget(form.motif,{'attr': {'placeholder': "Titel", 'class': 'md-form form-control md-form', 'autocomplete': 'off'} } ) }}			
+			{{ form_widget(form.startDatetime,{'attr': {'placeholder': "Titel", 'class': 'md-form form-control md-form', 'autocomplete': 'off'} } ) }}
+    
+
+ {{ form_end(form) }}
+
+ 

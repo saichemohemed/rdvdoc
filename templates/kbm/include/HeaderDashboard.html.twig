@@ -1,0 +1,289 @@
+
+<style>
+	.side_bg_img {
+	    background:linear-gradient(to right bottom, #0039a6, #0060c3, #0083d7, #00a5e3, #12c5eb)  !important;
+}
+.side_bg_img .mCSB_container:before{
+	    background:linear-gradient(to right bottom, #0039a6, #0060c3, #0083d7, #00a5e3, #12c5eb)  !important;
+}
+.side_bar{
+	    height: -webkit-fill-available !important;
+
+}
+.dropdown .dropdown-menu {
+    display: block !important;
+}
+#déconnecter{
+	margin-top: -15%;
+	margin-left: 20%;
+	font-size: 20px;
+
+}
+.dropdown-user>a{
+	    border: none;
+		border-radius: 0%;
+
+}
+.logo {
+    width: auto;
+}
+#se{
+	color:white !important;
+}
+#sa:hover{
+	color:white !important;
+}
+#gtco-main-nav .navbar-nav li a {
+    margin-left: 10px;
+}
+</style>
+{% if is_granted('ROLE_ADMIN') %}
+	{% set notif_auj = 0  %}
+    	{% for notification_au in notifications_auj  %}
+			{% if  notification_au.startDatetime|date("Y-m-d", "Europe/Paris") == newdate1|date("Y-m-d", "Europe/Paris") %}
+                {% set notif_auj = notif_auj + 1  %}
+            {% endif %}
+		{% endfor %}
+
+	{% set notif = 0  %}
+        {% for notification in notifications %}
+			{% if  notification.startDatetime|date("Y-m-d H:i", "Europe/Paris") >= newdate|date("Y-m-d H:i", "Europe/Paris") %}
+ 				{% set notif = notif + 1  %}
+			{% endif %}
+		{% endfor %}
+{% elseif is_granted('ROLE_USER') %}
+	{% set notifpat = 0 %}
+      	{% for notificationpat in notificationpats %}
+				{% if  notificationpat.startDatetime|date("Y-m-d H:i", "Europe/Paris") >= newdatepat|date("Y-m-d H:i", "Europe/Paris") %}
+					{% set notifpat = notifpat + 1 %}
+				{% endif %}     
+		{% endfor %}
+{% endif %} 
+
+		<!-- header -->
+		<header class="main-header">
+			<div class="container_header">
+				<div class="logo d-flex align-items-center">
+				
+					<a href="{{path('Index')}}"> <strong class="logo_icon" > <img src="{{asset('images/icon/logo2.png')}}" alt=""> </strong> <span class="logo-default">
+							<img src="{{asset('images/icon/logo2.png')}}" alt=""> </span> </a>
+				{% if is_granted('ROLE_USER') %}
+
+					<div class="icon_menu full_menu">
+						<a href="#" class="menu-toggler sidebar-toggler"></a>
+					</div>
+				{% endif %} 
+
+				</div>
+				<div class="right_detail">
+					<div class="row d-flex align-items-center min-h pos-md-r">
+						<div class="col-3 search_col ">
+							<div class="top_function">
+
+								<div class="search">
+
+									<form id="search_form" role="search" class="search-form collapse" action="#">
+										<div class="input-group">
+
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+						<div class=" col-9 d-flex justify-content-end">
+							<div class="right_bar_top d-flex align-items-center">
+
+
+								<div class="dropdown dropdown-user ttid">
+									<a href="{{path('Need')}}" style="height: 40%;font-size: 180%;margin-top: 25%; color: #337ab7 !important;"><i class="fa fa-question-circle"></i></a>
+								</div>
+
+
+
+{% if is_granted('ROLE_ADMIN') %}
+								<!-- startseting -->
+								<div class="dropdown dropdown-user ttid">
+									<a href="javascript:;"  data-toggle="dropdown" data-hover="dropdown" data-close-others="true"
+									 aria-expanded="true" style="height: 40%;font-size: 160%;margin-top: 25%;color: #337ab7 !important;"><i class="fa fa-cog" aria-hidden="true"></i></a>
+									<ul class="dropdown-menu dropdown-menu-default">
+										<li>
+										<a href="{{ path('hospital_center')}}"> <i class="far fa-hospital"></i> <span> {{ 'Menu.Establishment'|trans }}</span> <span class="styleicon"></span> </a>
+										</li>
+										<li>
+											<a href="{{ path('pattern')}}"> <i class="fa fa-plus-square"></i> <span> {{ 'Menu.Reason_for_consultation'|trans }}</span> <span class=" styleicon"></span> </a>
+										</li>
+										<li>
+											<a href="{{ path('hour')}}"> <i class="fas fa-user-clock"></i> <span> {{ 'Menu.My_schedule'|trans }} </span> <span class=" styleicon"></span> </a>
+										</li>
+									</ul>
+								</div>
+							<!-- end siting --> 
+
+{% endif %} 
+{% if is_granted('ROLE_USER') %}
+								<!-- DropDown_Inbox -->
+								<div class="dropdown dropdown-inbox" style="margin-top: 2%;">
+									<a href="javascript:;"  data-toggle="dropdown" data-hover="dropdown" data-close-others="true"
+									 aria-expanded="true" style="height: 40%;font-size: 160%;margin-left: -12%;color: #337ab7 !important;"><i class="far fa-envelope"></i><span class="badge_coun"> 2 </span></a>
+								
+									<ul class="dropdown-menu scroll_auto height_fixed">
+										<li class="bigger">
+											<h3><span class="bold">Messages</span></h3>
+											<span class="notification-label">New 2</span>
+										</li>
+										<li>
+											<ul class="dropdown-menu-list">
+												<li>
+													<a href="#"> <span class="photo"> <img src="#" class="img-circle" alt=""> </span>
+														<span class="subject"> <span class="from"> Sarah Smith </span> <span class="time">Just Now </span> </span>
+														<span class="message"> Jatin I found you on LinkedIn... </span> </a>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</div>
+
+								<!-- trad -->
+								<div class="dropdown dropdown-user ttid">
+									<a href="javascript:;"  data-toggle="dropdown" data-hover="dropdown" data-close-others="true"
+									 aria-expanded="true" style="width: 120%;height: 40%;font-size: 200%;margin-top: 40%;color: #337ab7 !important;margin-left: -12%;"><i class="fas fa-language"></i></a>
+									<ul class="dropdown-menu dropdown-menu-default">
+										<li>
+                    						<a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({ '_locale': 'fr' })) }}" class="dropdown-item"><img src="{{asset('images/trans/FR.png')}}" style="max-width: 15%;"> &nbsp;Français</a>
+										</li>
+										<li>
+                    						<a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({ '_locale': 'ar' })) }}" class="dropdown-item"><img src="{{asset('images/trans/DZ.png')}}" style="max-width: 15%;"> &nbsp;Arabe</a>
+										</li>
+										<li>
+                    						<a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({ '_locale': 'en' })) }}" class="dropdown-item"><img src="{{asset('images/trans/GB.jpg')}}" style="max-width: 15%;"> &nbsp;English</a>
+										</li>
+									</ul>
+								</div>
+							<!-- end trad --> 
+
+								<!-- Dropdown_User -->
+								<div class="dropdown dropdown-user">
+									<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true"
+									 aria-expanded="true"> <img src='{{asset(app.user.imagePath )}}{{app.user.imageName }}' class="avatar" alt="Avatar"> </a>
+									<ul class="dropdown-menu dropdown-menu-default">
+										<li>
+											<a href="{{ path('fos_user_profile_show') }}" class="dropdown-item text1 "><i class="far fa-user"></i> {{ 'Menu.Profile'|trans }}</a>
+										</li>
+										<li>
+											<a href="{{ path('fos_user_profile_edit') }}" class="dropdown-item text1"><i class="fas fa-user-cog"></i> {{ 'Menu.Edit_Profile'|trans }}</a>
+										</li>
+										<li>
+											<a href="{{ path('fos_user_change_password') }}" class="dropdown-item text1"><i class="fas fa-user-lock"></i> {{ 'Menu.Change_password'|trans }}</a>
+										</li>
+										<li>
+											<a href="{{ path('fos_user_security_logout') }}" class="dropdown-item text1"><i class="fas fa-sign-out-alt"></i> {{ 'Menu.Disconnect'|trans }}</a>
+										</li>
+									</ul>
+								</div>
+								<!-- Dropdown_User_End -->
+    {% else %}
+
+
+
+								<!-- trad -->
+								<div class="dropdown dropdown-user ttid">
+									<a href="javascript:;"  data-toggle="dropdown" data-hover="dropdown" data-close-others="true"
+									 aria-expanded="true" style="width: 120%;height: 40%;font-size: 200%;margin-top: 40%;color: #337ab7 !important;margin-left: -12%;"><i class="fas fa-language"></i></a>
+									<ul class="dropdown-menu dropdown-menu-default">
+
+										<li>
+                    						<a href="{{ path(app.request.attributes.get('_route'), app.request.get('_route_params')|merge({'_locale': 'fr'})) }}" class="dropdown-item"><img src="{{asset('images/trans/FR.png')}}" style="max-width: 15%;"> &nbsp;Français</a>
+										</li>
+										<li>
+                    						<a href="{{ path(app.request.attributes.get('_route'), app.request.get('_route_params')|merge({'_locale': 'ar'}))}}" class="dropdown-item"><img src="{{asset('images/trans/DZ.png')}}" style="max-width: 15%;"> &nbsp;Arabe</a>
+										</li>
+										<li>
+                    						<a href="{{ path(app.request.attributes.get('_route'), app.request.get('_route_params')|merge({'_locale': 'en'})) }}" class="dropdown-item"><img src="{{asset('images/trans/GB.jpg')}}" style="max-width: 15%;"> &nbsp;English</a>
+										</li>
+									</ul>
+								</div>
+							<!-- end trad --> 
+
+								<!-- startseting -->
+								<div class="dropdown dropdown-user ttid">
+									<a href="javascript:;"  data-toggle="dropdown" data-hover="dropdown" data-close-others="true"
+									 aria-expanded="true" style="height: 40%;font-size: 180%;margin-top: 25%; color: #337ab7 !important;"><i class="far fa-user"></i></a>
+									<ul class="dropdown-menu dropdown-menu-default">
+										<li>
+											<a href="{{ path('fos_user_security_login') }}"> <i class="fas fa-sign-in-alt"></i> <span style="color: #555;"> &nbsp;{{ 'Menu.log_in'|trans }}</span> <span class=" styleicon"></span> </a>
+										</li>
+										<li>
+											<a href="{{ path('fos_user_registration_register') }}"> <i class="fas fa-user"></i> <span style="color: #555;"> &nbsp;{{ 'Menu.Registerp'|trans }}</span> <span class="styleicon"></span> </a>
+										</li>
+										<li>
+											<a href="{{path('Professeure')}}"> <i class="fas fa-user-md"></i> <span style="color: #555;">&nbsp; {{ 'Menu.Registerm'|trans }}</span> <span class="styleicon"></span> </a>
+										</li>
+									</ul>
+								</div>
+							<!-- end siting --> 
+
+
+<style>
+.logo {
+    width: 20% !important;
+}
+</style>
+    {% endif %}
+						
+
+				
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</header>
+        <!-- header_End -->
+        
+
+
+		<div class="container_full">
+
+			<div class="side_bar dark_blue side_bg_img scroll_auto">
+				 <ul id="dc_accordion" class="sidebar-menu tree">
+					<li class="menu_title"></li>
+					<li class="menu_sub">
+						{% if is_granted('ROLE_SUPER_ADMIN') %}
+							<a href="#"> <i class="fa fa-home"></i> <span>site web</span></a>
+						{% elseif is_granted('ROLE_ADMIN')  %}
+							<a href="{{path('calendar')}}"> <i class="fa fa-home"></i> <span>{{ 'Menu.Dashboard'|trans }}</span> </a>
+						{% else %}
+							<a href="{{path('patient_appointment')}}"> <i class="fa fa-home"></i> <span>{{ 'Menu.Dashboard'|trans }}</span> </a>
+						{% endif %}
+					</li>
+					<li class="menu_sub">
+						<a href="{{path('Index')}}"> <i class="fas fa-globe-africa"></i> <span>{{ 'Menu.website'|trans }}</span> </a>
+					</li>
+				<li class="menu_title">{{ 'Menu.MENU'|trans }}</li>
+					{% if is_granted('ROLE_ADMIN') and (is_granted('ROLE_SUPER_ADMIN') == false) %}
+					<li class="menu_sub">
+						<a href="{{ path('note')}}"> <i class="far fa-calendar-alt"></i> <span>{{ 'Menu.personal_agenda'|trans }}</span>  </a>
+					</li>
+					<li class="menu_sub">
+						<a href="{{ path('notification')}}"> <i class="far fa-calendar-minus"></i> <span>{{ 'Menu.Appointment_unconfirmed'|trans }}</span> <span class="badge badge-pill badge-danger float-right">{{notif}}</span> </a>
+					</li>
+					<li class="menu_sub">
+						<a href="{{ path('calendar')}}"> <i class="far fa-calendar-check"></i> <span>{{ 'Menu.Appointment_confirmed'|trans }}</span></a>
+					</li>
+
+					<li class="menu_sub">
+						<a href="{{ path('Rendez-vous_aujourdhui')}}"> <i class="fa fa-stethoscope"></i> <span>{{ 'Menu.Appointment_Of_the_Day'|trans }}</span> <span class="badge badge-pill badge-danger float-right">{{notif_auj}}</span> </a>
+					</li>
+					{% elseif  is_granted('ROLE_USER') and (is_granted('ROLE_ADMIN') == false) %}
+					<li class="menu_sub">
+						<a href="{{ path('patient_appointment')}}"> <i class="fas fa-clipboard-check"> </i> <span> {{ 'Menu.My_Appointments'|trans }}</span> <span class="styleicon"></span> </a>
+					</li>
+					<li class="menu_sub">
+						<a href="{{ path('patient_appointment_waiting')}}"> <i class="fa fa-list-alt"> </i> <span> {{ 'Menu.Waiting_appointment'|trans }}</span> <span class="styleicon"></span><span class="badge badge-pill badge-danger float-right">{{notifpat}}</span> </a>
+					</li>
+					{% endif %}
+				</ul>
+			</div>
+
+

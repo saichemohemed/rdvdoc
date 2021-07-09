@@ -1,0 +1,40 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<br>
+<link href="{{asset('src/profile/style.css')}}" rel="stylesheet">
+
+<div class="container emp-profile">
+<form action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="fos_user_resetting_request">
+    
+    
+<div class="row">
+    <div class="col-md-4 col-sm-12">
+        <label for="username">{{ 'resetting.request.username'|trans }}</label>
+    </div>
+
+    <div class="col-md-7 col-sm-12">
+        <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">@</span>
+                </div>
+            <input type="text" id="username" name="username" required="required" class="form-control" placeholder="{{ 'resetting.Please_enter_your_Username_or_email_address'|trans }}" aria-label="Username" aria-describedby="basic-addon1">
+        </div>
+    </div>
+</div>
+
+
+
+    <div>
+        <input type="submit" value="{{ 'resetting.request.submit'|trans }}" class="btn btn-outline-primary" style="border-radius: 40px !important;">
+    </div>
+</form>
+
+
+        </div>           
+
+
+
+
+
+
+

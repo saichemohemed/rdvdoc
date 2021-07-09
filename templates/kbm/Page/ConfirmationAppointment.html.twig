@@ -1,0 +1,138 @@
+{% extends 'baseDashboard.html.twig' %}
+{% block title 'Mes Rendez-vous' %} {% block body %}
+         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+
+
+<div class="content_wrapper">
+<div class="container-fluid">
+ 
+ 
+ <style>
+.jumbotron-fluid{
+    background-color: white;
+    box-shadow: -1px 1px 20px 8px rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+    border-radius: 40px;
+    padding-top: 20px;
+    padding-bottom: 20px;    
+    border: 5px solid #06c3ee;
+    }
+.btn[class*=btn-outline-] {
+    width: 120px;
+    border-radius: 30px;
+}
+.btn-outline-success.disabled, .btn-outline-success:disabled {
+color: #28a74573 !important;
+    background-color: transparent;
+}
+
+ .btn-outline-success:disabled:hover {
+    color: #28a74573 !important;
+    background-color: transparent !important;
+}
+
+@media only screen and (min-width: 771px) {
+.btn:not(:disabled):not(.disabled) {
+    margin-left: 42%;
+    }
+    .btn.disabled, .btn:disabled {
+    margin-left: 42%;
+}
+
+}
+
+@media only screen and (max-width: 770px) {
+.btn:not(:disabled):not(.disabled) {
+    margin-left: 0%;
+    }
+    .btn.disabled, .btn:disabled {
+    margin-left: 42%;
+    }
+.btn-outline-danger{
+    float: right;
+    }
+.btnInfo{
+    float: right;
+    }
+.btnModifier{
+        float: right;
+    }
+}
+
+</style>
+<br>
+
+
+    <table class="table">
+        <thead>
+           
+        </thead>
+        <tbody>
+                        {% set cpt = 0 %}
+                        {% set Specialisate = '' %}                            
+
+      {% for patient_event in patient_events %}
+
+        	{% if  patient_event.startDatetime|date("Y-m-d H:i", "Europe/Paris") >= newdate1|date("Y-m-d H:i", "Europe/Paris") %}
+                        {% set cpt = cpt + 1 %}
+
+                {% set test = patient_event.doctor.specialisation.id %}
+
+                 {% for Specialisati in Specialisation  %}
+
+                     {% if test == Specialisati.id  %}
+                             {% set Specialisate = Specialisati %}                            
+                    {% endif %}
+
+                {% endfor %}
+               
+   
+              <div class="container">
+                <div class="jumbotron jumbotron-fluid" style="background-color: white;border-radius: 50px;">
+                    <div class="container">
+                         <div class="row">
+
+                            <div class="col-md-8 col-sm-12 pl-5">
+                                <p class="lead"> {{ app.user.firstName|upper }} {{ app.user.lastName|upper }}   &nbsp;&nbsp;&nbsp; {{'profile_user.ConfirmationAppointment.Your_appointment_on'|trans}}
+                                  {{patient_event.startDatetime|date("Y-m-d H:i", "Europe/Paris")}} <marquee>{{'profile_user.ConfirmationAppointment.Confirmed'|trans}}</marquee>
+                                <hr>
+                                {{'profile_user.ConfirmationAppointment.Doctor'|trans}} :  {{ patient_event.doctor.firstName  }} {{ patient_event.doctor.lastName  }}<br>
+                                {{'profile_user.ConfirmationAppointment.Address'|trans}} : {{ patient_event.doctor.address  }} {{ patient_event.doctor.company  }}<br>
+                                {{'profile_user.ConfirmationAppointment.Specialty'|trans}} : {{ Specialisate }}<br>
+                                {{'profile_user.ConfirmationAppointment.Reason'|trans}} : {{ patient_event.motif.Motif  }}<br>
+
+                                </p>
+                            </div>
+
+                            <div class="col-md-4 col-sm-12">
+                                <div  class="btn-btn">
+                                    <a href="{{ path('patient_show', {'id': patient_event.id}) }}" class="btnInfo"><button type="button" class="btn btn-outline-primary">{{'profile_user.ConfirmationAppointment.informations'|trans}}</button></a>
+                                {% if "now"|date("Y-m-d H:i")  >= patient_event.startDatetime|date_modify('-180 minute')|date("Y-m-d H:i") or  patient_event.NumberOfChangePatient == 1    %}
+                                    <br><button type="button" class="btn btn-outline-success btnModifier" disabled>{{'profile_user.ConfirmationAppointment.edit'|trans}}</button>
+                                {% else %}
+                                    <a href="{{ path('patient_edit', {'id': patient_event.id}) }}"class="btnModifier"><button type="button" class="btn btn-outline-success">{{'profile_user.ConfirmationAppointment.edit'|trans}}</button></a>
+                                {% endif %}
+                                    {{ include('kbm/Page/DeleteForm.html.twig') }}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+              </div>
+        	
+        {% endif %}
+        
+
+        {% endfor %}
+
+              {% if cpt == 0  %}
+              <tr>
+               <td colspan="100"> <h4>{{'profile_user.ConfirmationAppointment.No_confirmed_appointment_found'|trans}} </h4></td>
+            </tr>
+        {% endif %}
+        </tbody>
+    </table>
+
+ </div>
+</div>
+{% endblock %}

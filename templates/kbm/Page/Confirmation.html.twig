@@ -1,0 +1,419 @@
+{% extends 'baseDashboard.html.twig' %}
+{% block title 'Recherche Médecin' %} {% block body %}
+
+
+<link rel="stylesheet" href="{{asset('src/wizard/css/style.css')}}">
+
+<div class="content_wrapper">
+	<div class="container-fluid">
+
+
+     {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+
+ <div class='wid'>
+        <div id="msform">
+            <!-- progressbar -->
+            <ul id="progressbar" style="padding-inline-start: 0px !important;">
+                <li class="active">{{'Confirmation.choose_your_motif'|trans}}</li>
+                <li>{{'Confirmation.patient_information'|trans}}</li>
+                <li>{{'Confirmation.It_s_over'|trans}}</li>
+            </ul>
+            <!-- fieldsets -->
+
+            <fieldset>
+
+                <h2 class="fs-title">{{'Confirmation.choose_your_motif'|trans}}</h2>
+                <h3 class="fs-subtitle"></h3>
+
+                <div class="container">
+    <div class="row">
+        <div class="col-md-3">
+                <label for="Praticien" class="form-label">{{'Confirmation.Practitioner'|trans}}</label>
+        </div>
+        <div class="col-md-9">
+                <input type="text" name="text" id="Praticien" value="Dr {{ firstName.value }}" disabled> <br>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+                        <label for="Praticien" class="form-label">{{'Confirmation.Place_of_consultation'|trans}}</label>
+        </div>
+        <div class="col-md-9">
+                        <input type="text" name="text" id="consultation" disabled><br>
+        </div>
+    </div>
+
+      <div class="row">
+        <div class="col-md-3">
+                        <label for="Praticien" class="form-label">{{'Confirmation.Specialty'|trans}}</label>
+        </div>
+        <div class="col-md-9">
+                        <input type="text" name="text" id="Spécialité" value="{{ specialisation.value }}" disabled><br>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+                        <label for="Praticien" class="form-label">{{'Confirmation.Date_and_hour'|trans}}</label>
+        </div>
+        <div class="col-md-9">
+                        <input type="text" name="text" id="Date" value="{{ heure.value }}" disabled><br>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <label for="Praticien" class="form-label">{{'Confirmation.Choice_of_reason'|trans}}</label>
+        </div>
+        <div class="col-md-9">
+        <select id="mySelect"  class="custom-select custom-select mb-3" >
+            <option value="" disabled selected>{{'Confirmation.Choice_of_reason'|trans}}</option>
+            {% for Motif in Motifs %}
+            <option value="{{Motif}}">{{Motif}}</option>
+            {% endfor %}
+        </select>
+        </div>
+        </div>
+    </div>
+            <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="{{'Confirmation.msg'|trans}}"style="float: right;">
+            <input type="button" name="next" id="Suivant" class="next action-button" value="{{'Confirmation.next'|trans}}" style="background-color: #00d3fe;!important" >
+            </span>
+            <input type="button" name="next"  id="Suivant2" class="next action-button" value="{{'Confirmation.next'|trans}}" style="background-color: #00d3fe;!important" >
+
+
+        </fieldset>
+
+        <fieldset>
+                <h2 class="fs-title">{{'Confirmation.patient_information'|trans}}</h2>
+                <h3 class="fs-subtitle"></h3>
+                {% if is_granted('ROLE_USER') %}
+
+        <div class="container">
+              <div class="row">
+            <div class="col-md-3">
+                <label for="full_name" class="form-label">{{'Confirmation.Lastname'|trans}}</label>
+            </div>
+            <div class="col-md-9">
+                <input type="text" name="full_name" id="lastName" placeholder="Full Name" value="{{ app.user.lastName }}" disabled><br>
+            </div>
+        </div>
+          <div class="row">
+            <div class="col-md-3">
+                <label for="full_name" class="form-label">{{'Confirmation.Firstname'|trans}}</label>
+            </div>
+            <div class="col-md-9">
+                <input type="text" name="full_name" id="firstName" placeholder="Full Name" value="{{ app.user.firstName }}" disabled><br>
+            </div>
+        </div>
+                <div class="row">
+            <div class="col-md-3">
+                <label for="full_name" class="form-label">{{'Confirmation.E-mail'|trans}}</label>
+            </div>
+            <div class="col-md-9">
+                <input type="text" name="full_name" id="full_name" placeholder="Full Name" value="{{ app.user.email }}" disabled><br>
+            </div>
+        </div>
+                <div class="row">
+            <div class="col-md-3">
+                <label for="full_name" class="form-label">{{'Confirmation.gender'|trans}}</label>
+            </div>
+            <div class="col-md-9">
+                <input type="text" name="full_name" id="full_name" placeholder="Full Name" value="{{ app.user.gender }}" disabled><br>
+            </div>
+        </div>
+                <div class="row">
+            <div class="col-md-3">
+                <label for="full_name" class="form-label">{{'Confirmation.Phone'|trans}}</label>
+            </div>
+            <div class="col-md-9">
+                <input type="text" name="full_name" id="full_name" placeholder="Full Name" value="{{ app.user.phone }}" disabled><br>
+            </div>
+        </div>
+    </div>
+                <input type="button" name="next" class="next action-button" value="{{'Confirmation.next'|trans}}" style="background-color: #00d3fe;!important"> 
+                <input type="button" id="Précédent" name="previous" class="previous action-button" value="{{'Confirmation.previous'|trans}}" style="background-color: #aab7af;!important">
+            {% else %}
+                <a href="{{ path('fos_user_security_login',{'rdv':'user'}) }}" class="btn btn-info my-2 my-sm-0 text-uppercase" style="float: right;margin-top: 1% !important;">{{'Confirmation.login'|trans}}</a>
+                <a href="{{ path('fos_user_registration_register') }}" class="btn btn-info my-2 my-sm-0 text-uppercase"style="float: right;margin-top: 1% !important;margin-right: 1%;">{{'Confirmation.register'|trans}}</a> 
+                 <input type="button" id="Précédent" name="previous" class="previous action-button" value="{{'Confirmation.previous'|trans}}"  style="background-color: #aab7af;!important">
+
+            {% endif %}
+            </fieldset>
+
+            <fieldset>
+                <h2 class="fs-title">{{'Confirmation.msg1'|trans}}</h2>
+                <h3 class="fs-subtitle"></h3>
+                <div class="container" style="word-break: break-all;">
+
+                <br><br>
+                          {% if is_granted('ROLE_USER') %}
+
+		<!-- Fontawesome CSS -->
+		<link href="{{asset('src/SearchDoctor/plugins/fontawesome/css/fontawesome.min.css')}}" rel="stylesheet" type="text/css">
+        <link href="{{asset('src/SearchDoctor/plugins/fontawesome/css/all.min.css')}}" rel="stylesheet" type="text/css">
+        <link href="{{asset('src/SearchDoctor/css/style.css')}}" rel="stylesheet" type="text/css">
+
+
+                          			<!-- Page Content -->
+			<div class="content success-page-cont">
+				<div class="container-fluid">
+				
+					<div class="row justify-content-center">
+						<div class="col-lg-12">
+						
+							<!-- Success Card-->
+								<div class="card-body">
+									<div class="success-cont" style="text-align: center;">
+										<i class="fas fa-check"></i>
+										<h3>{{'Confirmation.msag'|trans}}</h3>
+										<p>{{'Confirmation.msag1'|trans}} <strong>Dr. {{ LastName.value }} {{ firstName.value }}</strong><br> {{'Confirmation.msag2'|trans}} <strong>{{date_rdv.value}} {{'Confirmation.msag2'|trans}} {{ heure.value }}</strong></p>
+									</div>
+								</div>
+							<!-- /Success Card -->
+							
+						</div>
+					</div>
+					
+				</div>
+			</div>		
+			<!-- /Page Content -->
+
+                     {# <div class="row">
+                       <div class="col-md-1">
+                      </div>
+                      <div class="col-md-3">
+                        <h5>{{'Confirmation.Lastname'|trans}} :</h5>
+                      </div>
+                        <div class="col-md-6">
+                        <h5>{{ app.user.lastName }}</h5>
+                      </div>
+                    </div>
+
+                      <div class="row">
+                       <div class="col-md-1">
+                      </div>
+                      <div class="col-md-3">
+                        <h5>{{'Confirmation.Firstname'|trans}} :</h5>
+                      </div>
+                        <div class="col-md-8">
+                        <h5>{{ app.user.firstName }}</h5>
+                      </div>
+                    </div>
+
+                  <div class="row">
+                       <div class="col-md-1 col-sm-12">
+                      </div>
+                      <div class="col-md-3 col-sm-12">
+                        <h5>{{'Confirmation.E-mail'|trans}} :</h5>
+                      </div>
+
+                    <div class="col-md-8 col-sm-12" id="email" >
+                        <h5>{{ app.user.email }}</h5>
+                    </div>
+
+                    </div>
+
+                  <div class="row">
+                       <div class="col-md-1">
+                      </div>
+                      <div class="col-md-3">
+                        <h5>{{'Confirmation.reason'|trans}} :</h5>
+                      </div>
+                        <div class="col-md-8">
+                        <h5 id="motif"></h5>
+                      </div>
+                    </div>
+
+                  <div class="row">
+                       <div class="col-md-1">
+                      </div>
+                      <div class="col-md-3">
+                        <h5>{{'Confirmation.Date'|trans}}x :</h5>
+                      </div>
+                        <div class="col-md-8">
+                        <h5 id="date"></h5>
+                      </div>
+                    </div> #}
+
+   {% endif %}
+<br><br>
+                         {{ form_start(form) }}
+                        {{ form_widget(form.title ,{'attr': {'placeholder': " TitleR", 'autocomplete': 'off'}})}}
+                        {{ form_widget(form.startDatetime ,{'attr': {'placeholder': " TitleR", 'autocomplete': 'off'}})}}
+                        {{ form_widget(form.motifid ,{'attr': {'placeholder': " motifid", 'autocomplete': 'off'}})}}
+
+                    <button class="btn prendre_rendez_vous" style="float: right;background-color: #00d3fe;!important;font-family: 'Roboto Slab';color: white;font-weight: bold;font-size: medium;">{{'Confirmation.make_an_appointment'|trans}}</button> 
+                {{ form_end(form) }}
+                </div>
+                <input type="button" name="previous" class="previous action-button" value="{{'Confirmation.previous'|trans}}" style="float: left !important;background-color: #aab7af;!important">
+            </fieldset>
+     </div>
+
+        </div>
+     </div>
+</div>
+</div>
+
+
+<!-- JS -->
+<script src="{{asset('src/wizard/vendor/jquery/jquery.min.js')}}"></script>
+<script src="{{asset('src/wizard/vendor/jquery/jquery-ui.min.js')}}"></script>
+<script src="{{asset('src/wizard/vendor/jquery-validation/dist/jquery.validate.min.js')}}"></script>
+<script src="{{asset('src/wizard/vendor/jquery-validation/dist/additional-methods.min.js')}}"></script>
+<script src="{{asset('src/wizard/vendor/jquery-steps/jquery.steps.min.js')}}"></script>
+<script src="{{asset('src/wizard/js/main.js')}}"></script>
+
+
+
+<script>
+			$("#patient_event1_title").attr("hidden",true);
+			$("#patient_event1_startDatetime").attr("hidden",true);
+			$("#patient_event1_motifid").attr("hidden",true);
+
+$("#Suivant").attr("disabled", "true");
+
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+
+    $( "select" ).change(function() {
+    $('#Suivant').hide();
+    $('#Suivant2').show();
+
+        $("#Suivant").removeAttr("disabled"); 
+        document.getElementById('patient_event1_motifid').value = $( this ).val();
+            var motif = $( this ).val();
+                $( "#motif" ).html( motif );
+          {% if is_granted('ROLE_USER') %}
+	
+        var patfirstName =  "{{ app.user.lastName }}";
+        var patLastName =   "{{ app.user.LastName }}";
+        document.getElementById('patient_event1_title').value = patfirstName +' '+ patLastName +' '+ motif;
+
+         {% endif %}
+
+			});
+
+
+			
+
+    var wilaya = "{{wilaya.value}}";
+    var vill = "{{vill.value}}";
+    var addres = "{{ addres.value }}";
+    var LastName = " {{ LastName.value }}"; 
+    var date = '{{date_rdv.value}}';
+    $( "#date" ).html( date );
+    //alert(document.cookie);
+    document.getElementById('Date').value = date + ' ' + document.getElementById('Date').value;
+    document.getElementById('patient_event1_startDatetime').value =document.getElementById('Date').value;
+    document.getElementById('Praticien').value = document.getElementById('Praticien').value + ' ' + LastName;
+    document.getElementById('consultation').value = wilaya + ' ' + vill + ' ' + addres;
+
+    
+
+</script>
+
+
+<!-- multistep form -->
+
+<script>
+    //jQuery time
+    var current_fs, next_fs, previous_fs; //fieldsets
+    var left, opacity, scale; //fieldset properties which we will animate
+    var animating; //flag to prevent quick multi-click glitches
+$('#Suivant2').hide();
+
+    $(".next").click(function() {
+        if (animating) return false;
+        animating = true;
+
+        current_fs = $(this).parent();
+        next_fs = $(this).parent().next();
+
+        //activate next step on progressbar using the index of next_fs
+        $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+
+        //show the next fieldset
+        next_fs.show();
+        //hide the current fieldset with style
+        current_fs.animate({
+            opacity: 0
+        }, {
+            step: function(now, mx) {
+                //as the opacity of current_fs reduces to 0 - stored in "now"
+                //1. scale current_fs down to 80%
+                scale = 1 - (1 - now) * 0.2;
+                //2. bring next_fs from the right(50%)
+                left = (now * 50) + "%";
+                //3. increase opacity of next_fs to 1 as it moves in
+                opacity = 1 - now;
+                current_fs.css({
+                    'transform': 'scale(' + scale + ')',
+                    'position': 'absolute'
+                });
+                next_fs.css({
+                    'left': left,
+                    'opacity': opacity
+                });
+            },
+            duration: 800,
+            complete: function() {
+                current_fs.hide();
+                animating = false;
+            },
+            //this comes from the custom easing plugin
+            easing: 'easeInOutBack'
+        });
+    });
+
+    $(".previous").click(function() {
+        if (animating) return false;
+        animating = true;
+
+        current_fs = $(this).parent();
+        previous_fs = $(this).parent().prev();
+
+        //de-activate current step on progressbar
+        $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
+
+        //show the previous fieldset
+        previous_fs.show();
+        //hide the current fieldset with style
+        current_fs.animate({
+            opacity: 0
+        }, {
+            step: function(now, mx) {
+                //as the opacity of current_fs reduces to 0 - stored in "now"
+                //1. scale previous_fs from 80% to 100%
+                scale = 0.8 + (1 - now) * 0.2;
+                //2. take current_fs to the right(50%) - from 0%
+                left = ((1 - now) * 50) + "%";
+                //3. increase opacity of previous_fs to 1 as it moves in
+                opacity = 1 - now;
+                current_fs.css({
+                    'left': left
+                });
+                previous_fs.css({
+                    'transform': 'scale(' + scale + ')',
+                    'opacity': opacity
+                });
+            },
+            duration: 800,
+            complete: function() {
+                current_fs.hide();
+                animating = false;
+            },
+            //this comes from the custom easing plugin
+            easing: 'easeInOutBack'
+        });
+    });
+
+    $(".submit").click(function() {
+        return false;
+    })
+</script>
+{% endblock %}

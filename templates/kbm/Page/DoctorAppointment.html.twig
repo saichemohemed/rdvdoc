@@ -1,0 +1,213 @@
+{% extends 'baseDashboard.html.twig' %}
+{% block title 'liste des rendez-vous' %} {% block body %}
+    
+    <link href="{{asset('src/Dashboard/css/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+	<link href="{{asset('src/Dashboard/css/responsive.css')}}" rel="stylesheet">
+	<link href="{{asset('src/Waiting appointment/style.css')}}" rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+
+     {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+     {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+
+
+          <!--main contents start-->
+                <main class="content_wrapper">
+                    <!--page title start-->
+                    <div class="page-heading">
+                        <div class="container-fluid">
+                            <div class="row d-flex align-items-center">
+                                <div class="col-12">
+                                    <div class="page-breadcrumb">
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!--page title end-->
+                    <div class="container-fluid">
+                        <!-- state start-->
+                        <div class="row">
+                            <div class=" col-sm-12">
+                                <div class="card card-shadow mb-4">
+                                    <div class="card-header">
+                                        <div class="card-title">
+                                           {{ 'Waiting_appointment.Waiting_appointment'|trans }}
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <table id="bs4-table" class="table table-bordered table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>{{ 'DataTable.N°'|trans }}</th>
+                                                    <th>{{ 'DataTable.Lastname'|trans }}</th>
+                                                    <th>{{ 'DataTable.Firstname'|trans }}</th>
+                                                    <th>{{ 'DataTable.date_hour'|trans }}</th>
+													<th>{{ 'DataTable.pattern'|trans }}</th>
+                                                    <th>{{ 'DataTable.status'|trans }}</th>
+                                                    <th>{{ 'DataTable.validate'|trans }}</th>
+                                                    <th>{{ 'DataTable.remove'|trans }}</th>
+                                                </tr>
+                                            </thead>
+                                            	<tbody>
+                                           {% for notification in notifications %}
+											{% if  notification.startDatetime|date("Y-m-d H:i", "Europe/Paris") >= newdate|date("Y-m-d H:i", "Europe/Paris") %}
+                  							  <tr>
+												<td> {{notification.id}}</td>
+												<td>{{notification.patient.lastName}}</td>
+												<td>{{notification.patient.firstName}}</td>
+												<td>{{notification.startDatetime|date("Y-m-d H:i", "Europe/Paris")}}</td>
+												<td>{{notification.motif}}</td>
+												<td><span class="status text-success">&bull;</span> en attendant</td>
+												
+												<td><button class="view" title="accepte" data-toggle="tooltip" id="accepte"><i class="fas fa-check"></i><div hidden>valider</div></button ></td>
+												<td><button class="view" title="annuler" data-toggle="tooltip" id="annuler"><i class="fas fa-trash-alt"></i><div hidden>supprimer</div></button ></td>
+												</tr>
+												{% endif %}
+												{% endfor %}
+											</tbody>
+                                            <tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- state end-->
+                    </div>
+
+                </main>
+                <!--main contents end-->
+
+
+<script>
+
+$(document).ready(function() {
+    $('#bs4-table').on( 'click', '#accepte', function () {
+        var data = $('#bs4-table').DataTable().row( $(this).parents('tr') ).data();
+
+        //alert( data[0] + " accepte");
+		var accepte =data[0];
+	$.ajax({
+					url:"{{ path('ajax_accepte') }}",
+					data: {'id':accepte},
+							method: 'post',
+								success: function (data) 
+							{	
+								alert("success");
+								console.log(data);
+							location.reload()
+							
+							},
+								error: function () 
+							{
+								//alert("error");
+                      		    console.log("PLease Re delete"+JSON.stringify(data) );
+							},
+						});
+
+    });
+
+
+
+
+	    $('#bs4-table').on( 'click', '#annuler', function () {
+        var data = $('#bs4-table').DataTable().row( $(this).parents('tr') ).data();
+        alert( data[0] + " annuler");
+
+			var annuler =data[0];
+			$.ajax({
+					url:"{{ path('ajax_annuler') }}",
+					data: {'id':annuler},
+							method: 'post',
+								success: function (data) 
+							{	
+								alert("success");
+								console.log(data);
+							location.reload()
+							
+							},
+								error: function () 
+							{
+								//alert("error");
+                      		    console.log("PLease Re delete"+JSON.stringify(data) );
+							},
+						});
+
+
+
+
+    });
+
+
+});
+
+</script>
+
+  
+<script>
+$(document).ready(function(){
+            $('#bs4-table').DataTable( {
+                language: {
+    "sEmptyTable":     "{{ 'DataTable.sEmptyTable'|trans }}",
+    "sInfo":           "{{ 'DataTable.sInfo'|trans }}",
+    "sInfoEmpty":      "{{ 'DataTable.sInfoEmpty'|trans }}",
+    "sInfoFiltered":   "{{ 'DataTable.sInfoEmpty'|trans }}",
+    "sInfoPostFix":    "",
+    "sInfoThousands":  ",",
+    "sLengthMenu":     "{{ 'DataTable.sLengthMenu'|trans }}",
+    "sLoadingRecords": "{{ 'DataTable.sLoadingRecords'|trans }}",
+    "sProcessing":     "{{ 'DataTable.sProcessing'|trans }}",
+    "sSearch":         "{{ 'DataTable.sSearch'|trans }} :",
+    "sZeroRecords":    "{{ 'DataTable.sZeroRecords'|trans }}",
+    "oPaginate": {
+        "sFirst":    "{{ 'DataTable.oPaginate_sFirst'|trans }}",
+        "sLast":     "{{ 'DataTable.oPaginate_sLast'|trans }}",
+        "sNext":     "{{ 'DataTable.oPaginate_sNext'|trans }}",
+        "sPrevious": "{{ 'DataTable.oPaginate_sPrevious'|trans }}"
+    },
+    "oAria": {
+        "sSortAscending":  ": {{ 'DataTable.oAria_sSortAscending'|trans }}",
+        "sSortDescending": ": {{ 'DataTable.oAria_sSortDescending'|trans }}"
+    }
+
+},
+			"lengthMenu": [[10, 25, 50, 159, 500, -1], [10, 25, 50, 159, 500, "Tout"]],
+        		   dom: 'lBfrtip',
+ 	               buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
+            });
+
+});
+
+</script>
+
+
+
+ 	<script src="{{asset('src/Dashboard/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{asset('src/Dashboard/js/dataTables.bootstrap4.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('src/Dashboard/js/jquery.dcjqaccordion.2.7.js')}}"></script>
+    <script src="{{asset('js/lib/data-table/dataTables.buttons.min.js')}}"></script>
+    <script src="{{asset('js/lib/data-table/buttons.flash.min.js')}}"></script>
+    <script src="{{asset('js/lib/data-table/jszip.min.js')}}"></script>
+    <script src="{{asset('js/lib/data-table/pdfmake.min.js')}}"></script>
+    <script src="{{asset('js/lib/data-table/vfs_fonts.js')}}"></script>
+    <script src="{{asset('js/lib/data-table/buttons.html5.min.js')}}"></script>
+    <script src="{{asset('js/lib/data-table/buttons.print.min.js')}}"></script>
+
+
+
+
+  
+{% endblock %}

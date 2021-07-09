@@ -1,0 +1,533 @@
+{% extends 'baseDashboard.html.twig' %}
+
+{% block title %}Edit rdv{% endblock %}
+
+{% block body %}
+
+		<!-- Bootstrap CSS -->
+		<link href="{{asset('src/SearchDoctor/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
+
+		<!-- Fontawesome CSS -->
+		<link href="{{asset('src/SearchDoctor/plugins/fontawesome/css/fontawesome.min.css')}}" rel="stylesheet" type="text/css">
+        <link href="{{asset('src/SearchDoctor/plugins/fontawesome/css/all.min.css')}}" rel="stylesheet" type="text/css">
+
+		<!-- Datetimepicker CSS -->
+		<link href="{{asset('src/SearchDoctor/css/bootstrap-datetimepicker.min.css')}}" rel="stylesheet" type="text/css">
+
+		<!-- Select2 CSS -->
+		<link href="{{asset('src/SearchDoctor/plugins/select2/css/select2.min.css')}}" rel="stylesheet" type="text/css">
+
+		<!-- Fancybox CSS -->
+		<link href="{{asset('src/SearchDoctor//plugins/fancybox/jquery.fancybox.min.css')}}" rel="stylesheet" type="text/css">
+
+		<!-- Main CSS -->
+        <link href="{{asset('src/SearchDoctor/css/style.css')}}" rel="stylesheet" type="text/css">
+
+<link rel="stylesheet" href="{{asset('css/mobiscroll.javascript.min.css')}}">
+<script src="{{asset('js/mobiscroll.javascript.min.js')}}"></script>
+
+<style>
+
+.mbsc-ios.mbsc-fr-inline .mbsc-fr-c {
+    border-bottom: none;
+}
+
+</style>
+        {% set type = ''%}
+        {% set address = ''%}
+        {% set wilaya = ''%}
+        {% set town = ''%}
+        {% set fax = ''%}
+        {% set webSite = ''%}
+        {% set phone = ''%}
+            {% for HospitalCenter in HospitalCenters %}
+                {% if HospitalCenter.doctor.id == patient_event.doctor.id %}
+                    {% set address = HospitalCenter.address %}
+                    {% set wilaya = HospitalCenter.wilaya %}
+                    {% set town = HospitalCenter.town %}
+                    {% set type = HospitalCenter.type  %}
+                    {% set fax = HospitalCenter.fax %}
+                    {% set webSite =  HospitalCenter.webSite %}
+                    {% set phone = HospitalCenter.phone %}
+
+                {% endif %}
+            {% endfor %}
+		<!-- Main Wrapper -->
+		<div class="main-wrapper">
+
+
+			<!-- Page Content -->
+			<div class="content">
+				<div class="container">
+					<div class="row">
+						<div class="col-12">
+						
+							<div class="card">
+								<div class="card-body">
+									<div class="booking-doc-info">
+										<a href="doctor-profile.html" class="booking-doc-img">
+												<img src="{{asset(patient_event.doctor.imagePath)}}{{patient_event.doctor.imageName }}" class="img-fluid" alt="User Image">
+										</a>
+										<div class="booking-info">
+											<h4><a href="doctor-profile.html">{{patient_event.doctor.title}}. {{patient_event.doctor.lastName}} {{patient_event.doctor.firstName}}</a></h4>
+												<h5 class="doc-department"><img src="{{asset('src/SearchDoctor/img/specialities/specialities-05.png')}}"class="img-fluid" alt="Speciality">{{patient_event.doctor.specialisation.description}}</h5>
+											<p class="text-muted mb-0"><i class="fas fa-map-marker-alt"></i>{{wilaya}} {{address}} {{town}}</p>
+										</div>
+									</div>
+								</div>
+							</div>
+	   
+							<!-- Schedule Widget -->
+							<div class="card booking-schedule schedule-widget">
+							
+								<!-- Schedule Header -->
+								<div class="schedule-header">
+									<div class="row">
+										<div class="col-md-12">
+										
+
+											<!-- Day Slot -->
+										         <div id="calendar"></div>
+											<!-- /Day Slot -->
+											
+										</div>
+									</div>
+								</div>
+								<!-- /Schedule Header -->
+								
+								<!-- Schedule Content -->
+								<div class="schedule-cont" >
+									<div class="row">
+										<div class="col-md-12" >
+										
+											<!-- Time Slot -->
+											<div class="time-slot">
+                                            <ul class="clearfix">
+{#  #}
+
+
+ {% set te =  '' %}
+                {% set foo = [] %}
+                {% set date_exst = [] %}
+
+            {% for PatientEvent in PatientEvents  %}
+                {% if PatientEvent.startDatetime|date("Y-m-d") ==  startDatetime|date("Y-m-d") %}
+
+                    {% set te =  PatientEvent.startDatetime|date("H:i") %}
+
+                {% if te not in foo %}
+                    {% set foo = foo|merge([PatientEvent.startDatetime|date("H:i")])  %}
+                {% elseif te in foo and te not in date_exst %}
+                    {% set date_exst = date_exst|merge([PatientEvent.startDatetime|date("H:i")])  %}
+
+                {% endif %}
+                {% endif %}
+            {% endfor %}
+
+
+
+    {% set rr = 0 %}
+        {% for workingtime in workingtimes %}
+                {% set test = 0 %}
+                {% set rr =  rr + test %}
+
+            {% if workingtime.startDatetime|date("Y-m-d") ==  startDatetime|date("Y-m-d") %} 
+                {% set test =  1 %}
+                {% set rr =  rr + test %}
+
+        {% endif %}
+
+    {% endfor %}
+
+{% if rr == 1 %}
+    {% for workingtime in workingtimes %}
+
+        {% set datedep = "now"|date("m/d/Y") %}
+
+
+  
+            {% if workingtime.startDatetime|date("Y-m-d") ==  startDatetime|date("Y-m-d") %} 
+                   {% set date_disabled = "now"|date("Y-m-d H:i")|date_modify('+60 minute')|date("Y-m-d H:i") %}
+                   {% if  workingtime.startDatetime|date("H:i") in foo or  workingtime.startDatetime|date("Y-m-d H:i") < date_disabled %}  
+                            <li><a class="timing"   name="{{ workingtime.startDatetime|date("H:i")}}"><span>{{ workingtime.startDatetime|date("H:i")}}</span></a></li>
+                    {% else %}
+                            <li><a class="timingg"  name="{{ workingtime.startDatetime|date("H:i")}}"><span>{{ workingtime.startDatetime|date("H:i")}}</span></a></li>
+                    {% endif %}
+     
+
+            {% set date = workingtime.startDatetime|date("H:i") %}
+            {% set condition = true %} 
+            {% set test1 = 0 %} 
+            {% set date1 = workingtime.startDatetime|date("Y-m-d H:i") %}
+
+                {% for i in 1.. 10000 if condition %}
+
+                    {% set date = date|date_modify(workingtime.doctor.workingtime)|date("H:i") %}
+                    {% set date1 = date1|date_modify(workingtime.doctor.workingtime)|date("Y-m-d H:i") %}
+
+                         {% if date|date("H") == "01" %}
+                            {% set test1 = test1 + 1 %} 
+                        {% endif %}
+
+                        {% if date == workingtime.endDatetime|date("H:i") 
+                        or (date|date("H") > workingtime.endDatetime|date("H") ) 
+                        or date == "00:00" 
+                        or date|date("H") == "00"
+                        or test1 > 1 
+                         %}
+                            {% set condition = false %}
+                        {% else %}
+                                {% set date_disabled = "now"|date("Y-m-d H:i")|date_modify('+60 minute')|date("Y-m-d H:i") %}
+                            {% if  date in foo  or date1 < date_disabled %}  
+                                     <li><a class="timing" name="{{ date}}"><span>{{ date}}</span></a></li>
+                                {% else %}
+                                     <li><a class="timingg" name="{{ date}}"><span >{{ date}}</span></a></li>
+                                     {# <button  type="button" class="btn btn-outline-info btn-rounded waves-effect" name="{{ date}}">{{ date}}</button> #}
+                            {% endif %}
+
+                        {% endif %}
+
+                {% endfor %}
+
+    
+
+        {% endif %}
+
+
+    {% endfor %}
+
+{% else %}
+                                <center><h3>Aucun horaires de travail trouvé</h3></center>
+                        {% endif %} 
+
+{#  #}
+                                            </ul>
+											</div>
+											<!-- /Time Slot -->
+											
+										</div>
+									</div>
+								</div>
+								<!-- /Schedule Content -->
+								
+							</div>
+							<!-- /Schedule Widget -->
+
+
+
+                                            {{ include('kbm/Page/UpdateForm.html.twig', {'button_label': 'Modifier'}) }}
+
+
+
+						</div>
+					</div>
+				</div>
+			</div>		
+			<!-- /Page Content -->
+
+ 
+            <!-- Submit Section -->
+            <div class="submit-section proceed-btn text-left ">
+                <a href="{{ path('Index',{'doctor':'','willaya':'','submit':'','page':'1'}) }}" class="btn btn-secondary submit-btn">Retour</a>
+            </div>
+             <!-- /Submit Section -->
+		   
+		</div>
+		<!-- /Main Wrapper -->
+
+
+
+
+
+		<!-- jQuery -->
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+
+		<!-- Sticky Sidebar JS -->
+        <script src="{{asset('src/SearchDoctor/plugins/theia-sticky-sidebar/ResizeSensor.js')}}"></script>
+        <script src="{{asset('src/SearchDoctor/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js')}}"></script>
+
+		<!-- Select2 JS -->
+		<script src="{{asset('src/SearchDoctor/plugins/select2/js/select2.min.js')}}"></script>
+
+
+		<!-- Fancybox JS -->
+		<script src="{{asset('src/SearchDoctor/plugins/fancybox/jquery.fancybox.min.js')}}"></script>
+
+
+
+    <script>   
+        var date = new Date();
+        var date =  date.getFullYear()+ '-' +((date.getMonth() > 8) ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1))) + '-' + ((date.getDate() > 9) ? date.getDate() : ('0' + date.getDate())) ;
+
+            mobiscroll.settings = {
+                lang: 'fr', 
+                theme: 'ios', 
+                display: 'inline' // https://demo.mobiscroll.com/javascript/calendar/week-view#
+            };
+         
+             mobiscroll.calendar('#calendar', {
+
+                min: new Date(),
+                max: new Date(),
+                weeks: 1
+             });
+
+    </script>
+
+
+<script>
+
+	$("#date").val('{{patient_event.startDatetime|date("Y-m-d")}}');
+	$("#Hour").val('{{patient_event.startDatetime|date("H:i")}}');
+	$("#patient_event1_startDatetime").val('{{patient_event.startDatetime|date("Y-m-d")}}'+' '+'{{patient_event.startDatetime|date("H:m")}}');
+    var vx= $("#patient_event1_motif").val();
+    $("#patient_event1_motifid").val(vx) ;
+
+    $("#date").attr("readonly", "true");
+	$("#Hour").attr("readonly", "true");
+    $("#patient_event1_title").attr("readonly", "true");
+    $("#patient_event1_startDatetime").attr("hidden",true); 
+    $("#patient_event1_motifid").attr("hidden",true); 
+
+
+$( '.timingg' ).click(function() {
+  var x = $(this).attr("name");
+  //alert(x);
+$("#Hour").val(x);
+$("#patient_event1_startDatetime").val('{{patient_event.startDatetime|date("Y-m-d")}}'+' '+x);
+
+});
+  </script> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{# <div class="content_wrapper">
+<div class="container-fluid">
+    <br><br>
+<div class="container">
+    <div class="row">
+    <div class="col-lg-3 col-md-3 col-sm-12">
+
+    {{ include('kbm/Page/UpdateForm.html.twig', {'button_label': 'Modifier'}) }}
+
+ </div>
+    <style>
+    button {
+        width: 70px;
+        border-radius: 25px !important;
+    }
+    
+    #test {
+        background-color: white !important;
+    }
+    .card {
+    border: none;
+    background-color: white;
+}
+.btn:not(:disabled):not(.disabled) {
+    margin-left: 15px;
+}
+
+    .btn.disabled, .btn:disabled{
+    margin-left: 15px;
+}
+#bt{
+        width: 200px;
+
+}
+
+</style>
+                        {% set Specialisate = '' %}                            
+
+                {% set test = patient_event.doctor.specialisation.id %}
+
+                 {% for Specialisati in Specialisation  %}
+
+                     {% if test == Specialisati.id  %}
+                             {% set Specialisate = Specialisati %}                            
+                    {% endif %}
+
+                {% endfor %}
+
+<div class="col-lg-9 col-md-9 col-sm-12">
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12">
+
+            <!-- Card -->
+            <div class="card testimonial-card">
+                <!-- Background color -->
+                <div class="card-up indigo lighten-1  blue-gradient">
+
+                    <h2 class="card-header-title mb-2" style="text-align: center;font-size: 26px;">Dc {{ patient_event.doctor.firstName }} {{ patient_event.doctor.lastName }}</h2>
+                    <!-- Subtitle -->
+                    <p class="card-header-subtitle mb-4" style="text-align: center;"></p>
+
+                </div>
+                <!-- Avatar -->
+                <div class="avatar mx-auto white " style="margin-top:-4%;">
+                    <img src="{{asset('images/user_profile/')}}{{patient_event.doctor.imageName }}" class="rounded-circle" alt="woman avatar">
+                </div>
+
+                <!-- Content -->
+                <div class="card-body">
+                    <!-- Name -->
+                    <h4 class="card-title" style="font-size: 20px;">Address : {{ patient_event.doctor.address  }} {{ patient_event.doctor.company  }}</h4>
+                    <hr>
+                    <!-- Quotation -->
+                </div>
+                                <div class="card-body">
+
+                                    <h4 class="card-title" style="font-size: 20px;">Specialite : {{ Specialisate }}</h4>
+
+            </div>
+            </div>
+            <!-- Card -->
+            <div>
+            </div>
+
+        </div>
+        <!-- calonder -->
+
+        <div class="col-lg-6 col-md-6 col-sm-12">
+
+<div id="test">
+
+            <div class="card-body" id="test" style="padding-left:0px;">
+
+
+                {% set te =  '' %}
+                {% set foo = [] %}
+                {% set date_exst = [] %}
+
+            {% for PatientEvent in PatientEvents  %}
+                {% if PatientEvent.startDatetime|date("Y-m-d") ==  startDatetime|date("Y-m-d") %}
+
+                    {% set te =  PatientEvent.startDatetime|date("H:i") %}
+
+                {% if te not in foo %}
+                    {% set foo = foo|merge([PatientEvent.startDatetime|date("H:i")])  %}
+                {% elseif te in foo and te not in date_exst %}
+                    {% set date_exst = date_exst|merge([PatientEvent.startDatetime|date("H:i")])  %}
+
+                {% endif %}
+                {% endif %}
+            {% endfor %}
+
+
+
+    {% set rr = 0 %}
+        {% for workingtime in workingtimes %}
+                {% set test = 0 %}
+                {% set rr =  rr + test %}
+
+            {% if workingtime.startDatetime|date("Y-m-d") ==  startDatetime|date("Y-m-d") %} 
+                {% set test =  1 %}
+                {% set rr =  rr + test %}
+
+        {% endif %}
+
+    {% endfor %}
+
+{% if rr == 1 %}
+    {% for workingtime in workingtimes %}
+        {% set datedep = "now"|date("m/d/Y") %}
+
+
+  
+            {% if workingtime.startDatetime|date("Y-m-d") ==  startDatetime|date("Y-m-d") %} 
+                   {% if  workingtime.startDatetime|date("H:i") in foo %}  
+                            <button disabled type="button" class="btn btn-outline-info btn-rounded waves-effect" name="{{ workingtime.startDatetime|date("H:i")}}">{{ workingtime.startDatetime|date("H:i")}}</button>
+                    {% else %}
+                            <button  type="button" class="btn btn-outline-info btn-rounded waves-effect" name="{{ workingtime.startDatetime|date("H:i")}}">{{ workingtime.startDatetime|date("H:i")}}</button>
+                    {% endif %}
+     
+
+            {% set date = workingtime.startDatetime|date("H:i") %}
+            {% set condition = true %} 
+            {% set test1 = 0 %} 
+
+                {% for i in 1.. 10000 if condition %}
+
+                    {% set date = date|date_modify(workingtime.doctor.workingtime)|date("H:i") %}
+
+                         {% if date|date("H") == "01" %}
+                            {% set test1 = test1 + 1 %} 
+                        {% endif %}
+
+                        {% if date == workingtime.endDatetime|date("H:i") 
+                        or (date|date("H") > workingtime.endDatetime|date("H") ) 
+                        or date == "00:00" 
+                        or date|date("H") == "00"
+                        or test1 > 1 
+                         %}
+                            {% set condition = false %}
+                        {% else %}
+                                        
+                            {% if  date in foo %}  
+                                     <button disabled type="button" class="btn btn-outline-info btn-rounded waves-effect" name="{{ date}}">{{ date}}</button>
+                                {% else %}
+                                     <button  type="button" class="btn btn-outline-info btn-rounded waves-effect" name="{{ date}}">{{ date}}</button>
+                            {% endif %}
+
+                        {% endif %}
+
+                {% endfor %}
+
+    
+
+        {% endif %}
+
+
+    {% endfor %}
+
+{% else %}
+                <img id="img" src="{{asset('images/icon/edite.png')}}" alt="Smiley face" style="width: 100%;margin-left: 10px;" >
+{% endif %}
+
+            </div>
+
+</div> 
+        </div>
+    </div>
+</div>
+  </div>
+    </div>
+    
+</div>
+</div>
+
+<script>
+
+	$("#date").val('{{patient_event.startDatetime|date("Y-m-d")}}');
+	$("#Hour").val('{{patient_event.startDatetime|date("H:i")}}');
+	$("#patient_event1_startDatetime").val('{{patient_event.startDatetime|date("Y-m-d")}}'+' '+'{{patient_event.startDatetime|date("H:m")}}');
+	$("#date").attr("readonly", "true");
+	$("#Hour").attr("readonly", "true");
+    $("#patient_event1_motifid").attr("readonly", "true");
+    $("#patient_event1_startDatetime").attr("hidden",true); 
+    $("#patient_event1_title").attr("hidden",true); 
+
+$( '.btn-rounded' ).click(function() {
+  var x = $(this).attr("name");
+  //alert(x);
+$("#Hour").val(x);
+$("#patient_event1_startDatetime").val('{{patient_event.startDatetime|date("Y-m-d")}}'+' '+x);
+
+});
+  </script> #}
+
+
+
+{% endblock %}
